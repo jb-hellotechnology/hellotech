@@ -19,5 +19,8 @@ wp-content/themes/hellotechnology/
 *.sqlite
 *.DS_Store
 
+# Include cPanel GitHub config
+!.cpanel.yml
+
 # don't ignore this file
 !.gitignore
