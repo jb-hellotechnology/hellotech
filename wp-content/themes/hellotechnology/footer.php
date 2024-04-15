@@ -145,7 +145,7 @@ var AUTOHIDE = Boolean(0);
 
 <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
 <!-- Fathom - beautiful, simple website analytics -->
-<!--<script src="https://cdn.usefathom.com/script.js" data-site="VPKMAXJJ" defer></script>-->
+<script src="https://cdn.usefathom.com/script.js" data-site="VPKMAXJJ" defer></script>
 <!-- / Fathom -->
 </body>
 </html>

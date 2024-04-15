@@ -1,0 +1,23 @@
+# Ignore everything
+*
+# But descend into directories
+!*/
+
+# # Recursively allow files under:
+# "mu-plugins", "plugins", "themes" directory
+!/wp-content/themes/**
+
+# ignore this file
+wp-content/themes/index.php
+
+# ignore specific themes
+wp-content/themes/hellotechnology/
+
+# ignore log files and databases
+*.log
+*.sql
+*.sqlite
+*.DS_Store
+
+# don't ignore this file
+!.gitignore

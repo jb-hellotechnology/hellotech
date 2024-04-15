@@ -9,7 +9,6 @@
 
 if ( is_singular() ) {
 ?>
-<?php echo get_the_post_thumbnail( get_the_ID(), 'large' ); ?>
 <img src="/wp-content/themes/hellotechnology/images/blog.jpg" alt="Blog" class="attachment-large" />
 <article id="post post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header>
