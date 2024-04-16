@@ -18,9 +18,9 @@
 				Company Number 15512176<br />
 				Registered in England and Wales</p>
 				<p>
-					<a href="https://linkedin.com/company/hellotechnology/"><i class="fa fa-linkedin"></i></a> 
-					<a href="https://instagram.com/_hellotechnology"><i class="fa fa-instagram"></i></a> 
-					<a href="https://twitter.com/hellotechnology"><i class="fab fa-x-twitter"></i></a>
+					<a href="https://linkedin.com/company/hellotechnology/"><i class="fa fa-linkedin"></i><span>LinkedIn</span></a> 
+					<a href="https://instagram.com/_hellotechnology"><i class="fa fa-instagram"></i><span>Instagram</span></a> 
+					<a href="https://twitter.com/hellotechnology"><i class="fab fa-x-twitter"></i><span>Twitter/X</span></a>
 				</p>
 				<p>&copy; Hello Technology 2024</p>
 			</div><!-- .site-info -->
