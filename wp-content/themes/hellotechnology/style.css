@@ -123,6 +123,10 @@ h3 {
   font-size: var(--size-step-2);
 }
 
+p {
+  font-size: var(--size-step-1);
+}
+
 ul,
 ol {
   -webkit-padding-start: 1em;
