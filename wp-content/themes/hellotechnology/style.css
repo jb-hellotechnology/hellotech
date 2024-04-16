@@ -1025,7 +1025,7 @@ ul.posts li:hover{
 }
 
 a.button.posts{
-	max-width:160px;
+	max-width:200px;
 	margin:0 auto 4rem;
 	display:inherit;
 	background:var(--color-orange);
