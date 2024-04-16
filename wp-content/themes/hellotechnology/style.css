@@ -393,6 +393,14 @@ header .icons a span{
 	margin-bottom:-5px;
 }
 
+header .icons a span.alt{
+	width:0px;
+	height:0px;
+	overflow:hidden;
+	margin:0;
+	padding:0;
+}
+
 @media screen and (max-width:1100px){
 	header .restrict{
 		grid-template-columns: 140px auto;
@@ -594,6 +602,13 @@ footer .quicklinks ul li a{
 
 footer .quicklinks ul{
 	list-style:disc;
+}
+
+footer p a span{
+	display:inline-block;
+	width:0px;
+	height:0px;
+	overflow:hidden;
 }
 
 footer form{

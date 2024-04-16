@@ -48,9 +48,9 @@
 			<div class="icons">
 				<a href="mailto:hi@hellotechnology.co.uk"><i class="fa fa-envelope"></i><span>hi@hellotechnology.co.uk</span></a>
 				<a href="tel:+44(0)1947878108"><i class="fa fa-phone"></i><span>01947 878 108</span></a>
-				<a href="https://linkedin.com/company/hellotechnology/"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
-				<a href="https://instagram.com/_hellotechnology"><i class="fa fa-instagram"></i><span>LinkedIn</span></a> 
-				<a href="https://twitter.com/hellotechnology"><i class="fab fa-x-twitter"></i><span>LinkedIn</span></a>
+				<a href="https://linkedin.com/company/hellotechnology/"><i class="fab fa-linkedin"></i><span class="alt">LinkedIn</span></a>
+				<a href="https://instagram.com/_hellotechnology"><i class="fa fa-instagram"></i><span class="alt">Instagram</span></a> 
+				<a href="https://twitter.com/hellotechnology"><i class="fab fa-x-twitter"></i><span class="alt">Twitter/X</span></a>
 			</div>
 		</div>
 	</header><!-- #masthead -->
