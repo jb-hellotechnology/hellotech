@@ -239,7 +239,7 @@
 					    wp_reset_postdata();
 					    echo '
 				    	</ul>
-				    	<a class="button posts" href="/articles/">Read more</a>
+				    	<a class="button posts" href="/articles/">More articles</a>
 			    	</div>
 			    </div>';
 		    endif;
