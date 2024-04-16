@@ -251,6 +251,10 @@ input[type=submit]:hover{
 }
 
 /* HEADER */
+a.skip-link{
+	display:none;
+}
+
 header.site-header{
 	border-top:10px solid var(--color-dark-green);
 	background:var(--color-sand);
