@@ -9,7 +9,7 @@
 
 if ( is_singular() ) {
 ?>
-<img src="/wp-content/themes/hellotechnology/images/blog.jpg" alt="Blog" class="attachment-large" />
+<img src="/wp-content/themes/hellotechnology/images/blog-1.webp" alt="Blog" class="attachment-large" />
 <article id="post post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header>
 		<div class="content hero">
@@ -55,9 +55,8 @@ if ( is_singular() ) {
 			?>
 			</div>
 			<footer class="entry-footer">
-				<?php echo get_the_post_thumbnail( get_the_ID(), 'medium' ); ?>
+				<img src="<?php the_post_thumbnail_url('medium') ?>" alt="<?php the_title() ?>" loading="lazy">
 				<?php hellotechnology_entry_footer(); ?>
-				<span>Search</span>
 				<?php echo get_search_form(); ?>
 			</footer><!-- .entry-footer -->
 		</div><!-- .entry-content -->
@@ -69,7 +68,7 @@ if ( is_singular() ) {
 }else{
 ?>
 
-<article class="bg-yellow">
+<article class="">
 	<a href="<?php echo esc_url( get_permalink() )?>" rel="bookmark">
 		<?php
 			the_title( '<h2 class="entry-title">', '</h2>' );

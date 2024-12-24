@@ -20,9 +20,10 @@
 				<p>
 					<a href="https://linkedin.com/company/hellotechnology/"><i class="fa fa-linkedin"></i><span>LinkedIn</span></a> 
 					<a href="https://instagram.com/_hellotechnology"><i class="fa fa-instagram"></i><span>Instagram</span></a> 
-					<a href="https://twitter.com/hellotechnology"><i class="fab fa-x-twitter"></i><span>Twitter/X</span></a>
+					<a href="https://bsky.app"><i class="fab fa-bluesky"></i><span>Bluesky</span></a>
 				</p>
-				<p>&copy; Hello Technology 2024</p>
+				<p><?php if(is_user_logged_in()){ echo '<a href="/dashboard">Dashboard</a> <a href="/wp-admin/profile.php">Profile</a> <a href="'.wp_logout_url().'">Log Out</a> '; }else{ echo '<a href="'.wp_login_url().'">Log In</a> <a href="/wp-login.php?action=register">Register</a> ';} ?></p>
+				<p>&copy; Hello Technology <?= date('Y') ?></p>
 			</div><!-- .site-info -->
 			<div class="quicklinks">
 				<p><strong>Quick Links</strong></p>
@@ -103,7 +104,7 @@
 				<!-- End Brevo Form -->
 			</div><!-- .signup -->
 			<div class="logo">
-				<img src="<?php bloginfo('stylesheet_directory');?>/images/hello_technology_logo_white.svg" alt="Hello Technology" />
+				<img src="<?php bloginfo('stylesheet_directory');?>/images/hello_technology_logo_white.svg" alt="Hello Technology" loading="lazy" />
 			</div><!-- .logo -->
 		</div>
 	</footer><!-- #colophon -->
@@ -128,6 +129,27 @@
 	})
 </script>
 
+<script src="/wp-content/themes/hellotechnology/jquery.fitvids.js"></script>
+<script>
+  $(document).ready(function(){
+    // Target your .container, .wrapper, .post, etc.
+    $("main").fitVids();
+    $.getScript("https://sibforms.com/forms/end-form/build/main.js");
+  });
+  $(document).ready(function() {
+    
+});
+
+$('.tab-headings li a').click(function(){
+	var tab = $(this).data('tab');
+	console.log(tab);
+	$('.tab-headings li').removeClass('active');
+	$(this).parent().addClass('active');
+	$('.tab-content').removeClass('active');
+	$('.tab-content.' + tab).addClass('active');
+})	
+</script>
+
 <script>
 window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
 window.LOCALE = 'en';
@@ -143,11 +165,11 @@ common: {
 var AUTOHIDE = Boolean(0);
 </script>
 
-<script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
-
 <!-- Fathom - beautiful, simple website analytics -->
 <script src="https://cdn.usefathom.com/script.js" data-site="VPKMAXJJ" defer></script>
 <!-- / Fathom -->
+
+<script src="/wp-content/themes/hellotechnology/app.js"></script>
 
 </body>
 </html>

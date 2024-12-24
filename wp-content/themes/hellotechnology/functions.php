@@ -9,7 +9,7 @@
 
 if ( ! defined( '_S_VERSION' ) ) {
 	// Replace the version number of the theme on each release.
-	define( '_S_VERSION', '1.0.0' );
+	define( '_S_VERSION', '1.0.0'.rand() );
 }
 
 /**
@@ -318,6 +318,12 @@ function ht_login_logo() { ?>
 <?php }
 add_action( 'login_enqueue_scripts', 'ht_login_logo' );
 
+/* CHANGE URL OF LOGIN LOGO LINK */
+add_filter( 'login_headerurl', 'my_custom_login_url' );
+function my_custom_login_url($url) {
+    return 'https://hellotechnology.co.uk';
+}
+
 //Remove Gutenberg Block Library CSS from loading on the frontend
 function smartwp_remove_wp_block_library_css(){
     wp_dequeue_style( 'wp-block-library' );
@@ -325,3 +331,91 @@ function smartwp_remove_wp_block_library_css(){
     wp_dequeue_style( 'wc-blocks-style' ); // Remove WooCommerce block CSS
 } 
 add_action( 'wp_enqueue_scripts', 'smartwp_remove_wp_block_library_css', 100 );
+
+function custom_search_form( $form ) {
+      $form = '<form role="search" method="get" id="searchform" class="searchform" action="' . home_url( '/' ) . '" >
+        <label class="screen-reader-text" for="s">' . __( 'Search' ) . '</label>
+        <input type="search" value="' . get_search_query() . '" name="s" id="s" placeholder="Website Design" />
+        <input type="submit" id="searchsubmit" value="'. esc_attr__( 'Search' ) .'" />
+      </form>';
+
+      return $form;
+    }
+    add_filter( 'get_search_form', 'custom_search_form', 40 );
+    
+    /**
+ * Filter Force Login to allow exceptions for specific URLs.
+ *
+ * @return array An array of URLs. Must be absolute.
+ **/
+function my_forcelogin_whitelist( $whitelist ) {
+  $whitelist[] = site_url( '/xmlrpc.php' );
+  return $whitelist;
+}
+add_filter('v_forcelogin_whitelist', 'my_forcelogin_whitelist', 10, 1);
+
+// Remove admin bar for subscriber accounts
+function remove_subscriber_admin_bar() {
+    $current_user = wp_get_current_user();
+
+    if (count($current_user->roles) == 1 && $current_user->roles[0] == 'subscriber') {
+        show_admin_bar(false);
+    }
+}
+
+add_action('wp_loaded', 'remove_subscriber_admin_bar');
+
+// Redirect subscriber accounts from dashboard to homepage
+/*
+function redirect_subscriber_to_frontend() {
+    $current_user = wp_get_current_user();
+
+    if (count($current_user->roles) == 1 && $current_user->roles[0] == 'subscriber') {
+        wp_redirect(site_url('/'));
+        exit;
+    }
+}
+
+add_action('admin_init', 'redirect_subscriber_to_frontend');
+*/
+
+function remove_dashboard_widgets() {
+    global $wp_meta_boxes;
+   
+    unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_quick_press']);
+    unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);
+    unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_right_now']);
+    unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_plugins']);
+    unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_recent_drafts']);
+    unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_recent_comments']);
+    unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_primary']);
+    unset($wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary']);
+    remove_meta_box('dashboard_activity', 'dashboard', 'normal');
+   
+}
+   
+add_action('wp_dashboard_setup', 'remove_dashboard_widgets' );
+
+function remove_screen_options_tab() 
+{
+    return current_user_can('manage_options' );
+}   
+add_filter('screen_options_show_screen', 'remove_screen_options_tab');
+
+
+
+					
+function wpturbo_remove_help_tab() {
+    $screen = get_current_screen();
+    $screen->remove_help_tabs();
+}
+add_action( 'admin_head', 'wpturbo_remove_help_tab' );
+
+				
+function custom_login_redirect() {
+
+return home_url();
+
+}
+
+add_filter('login_redirect', 'custom_login_redirect');

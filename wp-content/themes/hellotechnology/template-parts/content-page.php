@@ -73,6 +73,7 @@
 		            $subheading = get_sub_field('subheading');
 		            $url = get_sub_field('url');
 		            $button = get_sub_field('button_label');
+		            $image = get_sub_field('image');
 		            echo '
 		            <div class="content bg-'.$background.' margin-top">
 		            	<div class="restrict">
@@ -82,7 +83,7 @@
 			            		</div>
 			            		<div class="callout bg-'.$color.'">
 			            			<div>
-			            				<img src="'; echo bloginfo('stylesheet_directory').'/images/bubble_1.png'; echo '" class="bubble" alt="Laptop" />
+			            				<img src="'; echo bloginfo('stylesheet_directory').'/images/'.$image.'" class="bubble" alt="Hello Technology" />
 			            			</div>
 			            			<div>
 			            				<img src="'; echo bloginfo('stylesheet_directory').'/images/hello_technology_sand.svg'; echo '" alt="Hello" />
@@ -106,6 +107,7 @@
 			        }
 		            $background = get_sub_field('background');
 		            $color = get_sub_field('color');
+		            $image = get_sub_field('image');
 		            echo '
 		            <div class="content bg-'.$background.'">
 		            	<div class="restrict">
@@ -122,8 +124,31 @@
 				            		echo '</ul>
 			            		</div>
 			            		<div class="subheading">
-				            		<img src="'; echo bloginfo('stylesheet_directory').'/images/bubble_1.png'; echo '" class="bubble" alt="Laptop" />
+				            		<img src="'; echo bloginfo('stylesheet_directory').'/images/'.$image.'" class="bubble" alt="Hello Technology" />
 				            		<p>'.$subheading.'</p>
+				            	</div>
+			            	</div>
+			            </div>
+		            </div>';
+		            
+		        // Case: Project.
+		        elseif( get_row_layout() == 'project' ):
+		            $heading = get_sub_field('heading');
+		            $subheading = get_sub_field('sub_heading');
+		            $short_description = get_sub_field('short_description');
+		            $url = get_sub_field('url');
+		            $button_text = get_sub_field('button_text');
+		            $image = get_sub_field('image');
+		            echo '
+		            <div class="content">
+		            	<div class="restrict">
+			            	<div class="project">
+				            	<img src="'.$image['sizes']['medium_large'].'" alt="'.$heading.'"/>
+			            		<div class="flow">
+				            		<h2>'.$heading.'</h2>
+				            		<h3>'.$subheading.'</h3>
+				            		<p>'.$short_description.'</p>
+				            		<a class="button" href="'.$url.'">'.$button_text.'</a>
 				            	</div>
 			            	</div>
 			            </div>
@@ -227,7 +252,7 @@
 					    if ($query->have_posts()) :
 					        while ($query->have_posts()) : $query->the_post();
 					            ?>
-					            <li class="bg-yellow">
+					            <li class="">
 						            <a href="<?php the_permalink(); ?>" class="flow">
 						            	<h2><?php the_title(); ?></h2>
 										<p><?php the_excerpt(); ?></p>
@@ -264,7 +289,7 @@
 					    if ($query->have_posts()) :
 					        while ($query->have_posts()) : $query->the_post();
 					            ?>
-					            <li class="bg-yellow">
+					            <li class="">
 						            <a href="<?php the_permalink(); ?>" class="flow">
 						            	<h2><?php the_title(); ?></h2>
 										<p><?php the_excerpt(); ?></p>
