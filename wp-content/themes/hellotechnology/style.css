@@ -1527,3 +1527,49 @@ ul.learn-press-breadcrumb{
 h1.lp-content-area{
 	padding: 0 1rem
 }
+
+/* PROJECT */
+.project{
+	background:#f1f2f2;
+	border:1px solid #eee;
+	border-radius: 24px;
+	display:grid;
+	grid-template-columns: 3fr 2fr;
+	grid-column-gap: 1rem;
+}
+
+.project .flow{
+	grid-column: 2;
+	padding:2rem;
+}
+
+.project img{
+	border-radius:12px;
+	margin:1rem;
+	width:100%;
+	height:auto;
+	object-fit:cover;
+	display:block;
+}
+
+.project a.button{
+	background:var(--color-dark-green);
+	color:#fff;
+	float:left;
+}
+
+.project a.button:hover{
+	background:var(--color-yellow);
+}
+
+@media screen and (max-width:960px){
+	.project{
+		grid-template-columns: 1fr;
+	}
+	.project .flow{
+		grid-column: 1;
+	}
+	.project img{
+		width:calc(100% - 2rem);
+	}
+}

@@ -19,7 +19,7 @@ if ( $current_page_slug == 'articles' ) :
         <div class="content hero">
         	<div class="restrict">
             	<div class="textarea flow bg-no-background">
-            		<h1>Articles about design &amp; technology.</h1>
+            		<h1>Articles about design &amp; technology</h1>
             		<h2>From design inspiration to in-depth tips &amp; tricks for developers.</h2>
             	</div>
             </div>

@@ -18,7 +18,7 @@
 	            <div class="content hero">
 	            	<div class="restrict">
 		            	<div class="textarea flow bg-no-background">
-		            		<h1>Contact Hello Technology to discuss your project.</h1>
+		            		<h1>Contact Hello Technology to discuss your project</h1>
 		            		<h2>Want to talk about websites, IT systems, marketing, software, graphics or something else? Get in touch!</h2>
 		            	</div>
 		            </div>
@@ -238,7 +238,7 @@
 			    echo '
 			    <div class="content bg-white">
 			    	<div class="restrict">
-			    		<h2>Helpful Articles</h2>
+			    		<h2>From the Hello Technology Blog</h2>
 				    	<ul class="posts">';
 					    $args = array(
 					        'posts_per_page' => 2, /* how many post you need to display */
