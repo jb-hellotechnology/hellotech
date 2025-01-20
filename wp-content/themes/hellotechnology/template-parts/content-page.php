@@ -86,7 +86,7 @@
 			            				<img src="'; echo bloginfo('stylesheet_directory').'/images/'.$image.'" class="bubble" alt="Hello Technology" />
 			            			</div>
 			            			<div>
-			            				<img src="'; echo bloginfo('stylesheet_directory').'/images/hello_technology_sand.svg'; echo '" class="bubble" alt="Hello" />
+			            				<img src="'; echo bloginfo('stylesheet_directory').'/images/hello_technology_sand.svg'; echo '" alt="Hello" />
 			            			</div>
 				            		<p>'.$subheading.'</p>
 				            		<div>
