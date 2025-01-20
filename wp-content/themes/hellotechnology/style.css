@@ -184,7 +184,15 @@ em{
 	font-style: italic;
 }
 
-.flow li{
+.flow ul li{
+	list-style-type: disc;
+}
+
+.flow ol li{
+	list-style-type: decimal;
+}
+
+.flow ol li ul li{
 	list-style-type: disc;
 }
 
@@ -966,6 +974,8 @@ display:none;
 	margin-right:-4rem;
 	margin-left:2rem;
     transform: scaleX(-1);
+    width:220px;
+    height:auto;
 }
 
 @media screen and (max-width:1340px){
@@ -1336,6 +1346,7 @@ article.post .hero p.date{
 
 article ol{
 	list-style: decimal;
+	font-size:var(--size-step-1);
 }
 
 article ol li{

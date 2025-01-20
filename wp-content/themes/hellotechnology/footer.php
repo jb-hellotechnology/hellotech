@@ -19,7 +19,6 @@
 				Registered in England and Wales</p>
 				<p>
 					<a href="https://linkedin.com/company/hellotechnology/"><i class="fa fa-linkedin"></i><span>LinkedIn</span></a> 
-					<a href="https://instagram.com/_hellotechnology"><i class="fa fa-instagram"></i><span>Instagram</span></a> 
 					<a href="https://bsky.app"><i class="fab fa-bluesky"></i><span>Bluesky</span></a>
 				</p>
 				<p><?php if(is_user_logged_in()){ echo '<a href="/dashboard">Dashboard</a> <a href="/wp-admin/profile.php">Profile</a> <a href="'.wp_logout_url().'">Log Out</a> '; }else{ echo '<a href="'.wp_login_url().'">Log In</a> <a href="/wp-login.php?action=register">Register</a> ';} ?></p>
