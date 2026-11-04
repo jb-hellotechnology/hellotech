@@ -31,8 +31,8 @@
             <a href="https://instagram.com/_hellotechnology" target="_blank" rel="noopener">Instagram</a>
             <a href="https://www.linkedin.com/in/jack-barber-uk/" target="_blank" rel="noopener">LinkedIn</a>
             <span class="accent">Whitby &bull; North Yorkshire</span>
-            <div id="wcb" class="carbonbadge wcb-d"></div>
-            <script src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js" defer></script>
+            <!-- <div id="wcb" class="carbonbadge wcb-d"></div>
+            <script src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js" defer></script> -->
           </div>
         </div>
       </div>

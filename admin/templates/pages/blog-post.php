@@ -27,7 +27,8 @@
       $post_html = preg_replace_callback('/<img\b[^>]*>/i', function ($m) use (&$img_i) {
           $tag = $m[0];
           $img_i++;
-          if (!preg_match('/\swidth=/i', $tag) && preg_match('/\ssrc="([^"]+)"/i', $tag, $s)) {
+          // Skip the hero/banner (first image): fixed width/height breaks its aspect ratio
+          if ($img_i > 1 && !preg_match('/\swidth=/i', $tag) && preg_match('/\ssrc="([^"]+)"/i', $tag, $s)) {
               $file = $_SERVER['DOCUMENT_ROOT'] . parse_url($s[1], PHP_URL_PATH);
               if (is_file($file) && ($size = @getimagesize($file))) {
                   $tag = preg_replace('/<img\b/i', '<img width="' . $size[0] . '" height="' . $size[1] . '"', $tag, 1);
