@@ -207,7 +207,7 @@
 		<h2 class="h2 mb-4">Hi, I'm Jack, the founder of Hello Technology.</h2>
 		<div class="prose">
 		  <p>I've spent 20 years building websites and sorting out technology for businesses across Yorkshire. Today, Hello Technology looks after <strong>200+ local businesses</strong> from my base here in Whitby.</p>
-		  <p>I'm also on the organising committee of the <strong>Whitby Lit Fest</strong> and support several other community and not-for-profit organisations. I care about this place and the people who do business in it. <span class="c-teal"><strong>found</strong></span> is how I bring proper, big-agency search to small businesses, at a price that works.</p>
+		  <p>I'm also on the organising committee of the <strong>Whitby Lit Fest</strong> and support several other community and not-for-profit organisations. I care about this place and the people who do business in it. <span class="c-teal"><strong>found</strong></span> is how I bring proper, big-agency <a href="/services/ai-search-optimisation">AI search optimisation</a> to small businesses, at a price that works.</p>
 		  <a class="btn btn--primary" href="/about">About me <i data-lucide="arrow-right"></i></a>
 		</div>
 	  </div>
