@@ -15,6 +15,9 @@
 !/admin/templates/
 !/admin/templates/**
 
+# Never track config (credentials)
+/found/config.php
+
 # Allow this file
 !/.gitignore
 
