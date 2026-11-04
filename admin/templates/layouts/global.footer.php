@@ -39,7 +39,7 @@
     </div>
     <div class="site-footer__bar">
       <span>&copy; <?php echo date('Y'); ?> Hello Technology Ltd &bull; Church House, Flowergate, Whitby</span>
-      <span>Built by a human, made in Whitby.</span>
+      <span><a href="/privacy">Privacy policy</a> &bull; Built by a human, made in Whitby.</span>
     </div>
   </div>
 </footer>

@@ -11,7 +11,7 @@
 
   <?php perch_layout('global.header'); ?>
 
-  <main>
+  <main id="main" tabindex="-1">
     <?php
       // Case study body — build from blocks (Case-study hero, Banner, Meta bar,
       // Rich text, Pull quote, Results metrics, Gallery, More work, CTA).

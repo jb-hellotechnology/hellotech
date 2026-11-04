@@ -16,6 +16,7 @@
     'hide-extensions' => true,
   ];
 ?>
+<a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-header">
   <nav class="nav container" aria-label="Main">
     <a class="nav__logo" href="/"><img src="/assets/logo-primary.svg" alt="hellotechnology" width="105" height="44"></a>

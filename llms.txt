@@ -1,0 +1,42 @@
+# Hello Technology
+
+> Hello Technology Ltd is a small web and technology studio in Whitby, North Yorkshire, run by founder Jack Barber. It provides website design and development, SEO and AI search optimisation (AEO), AI integration, IT support, graphic design, email marketing and social media for small businesses and organisations in Whitby, North Yorkshire and across the UK.
+
+Contact: hi@hellotechnology.co.uk · 01947 878 108 · Church House, Flowergate, Whitby · Mon–Fri, 9am–5pm.
+
+## Services
+
+- [Website design](https://hellotechnology.co.uk/services/website-design): Fast, user-friendly websites for organisations, with hosting, training and ongoing support.
+- [Web development](https://hellotechnology.co.uk/services/web-development): WordPress, Shopify, WooCommerce, Perch Runway and bespoke PHP development.
+- [Search engine optimisation](https://hellotechnology.co.uk/services/search-engine-optimisation): On-page, technical and off-page SEO, from keyword research to ongoing reporting.
+- [AI search optimisation](https://hellotechnology.co.uk/services/ai-search-optimisation): Helping businesses be found and cited by AI search tools such as ChatGPT, Google AI Overviews and Perplexity.
+- [AI integration](https://hellotechnology.co.uk/services/ai-integration): Practical, measured use of AI to save time on repetitive tasks.
+- [IT support](https://hellotechnology.co.uk/services/it-support): Hosting, email, backups, networking, VoIP and cyber security training.
+- [IT system design](https://hellotechnology.co.uk/services/it-system-design): Independent advice on devices, software, networking and backups.
+- [Graphic design](https://hellotechnology.co.uk/services/graphic-design): Logos, print, social media graphics and infographics.
+- [Email marketing](https://hellotechnology.co.uk/services/email-marketing): Campaigns and automation with Brevo, Mailchimp and Shopify.
+- [Social media](https://hellotechnology.co.uk/services/social-media): Strategy, graphics, video and copywriting.
+
+## hello.found
+
+- [hello.found](https://hellotechnology.co.uk/found/): Done-for-you SEO and AI search optimisation for small businesses, £99 per month.
+
+## Guides
+
+- [How small businesses can optimise their websites for AI search](https://hellotechnology.co.uk/blog/how-small-businesses-can-optimise-their-websites-for-ai-search): What AEO and GEO are, how they differ from SEO, and what to do about them.
+- [What is AI search and how do I make sure my business appears in it?](https://hellotechnology.co.uk/blog/what-is-ai-search-and-how-do-i-make-sure-my-business-appears-in-it)
+- [How much does a website cost in 2026?](https://hellotechnology.co.uk/blog/how-much-does-a-website-cost-in-2026)
+- [How long does SEO take, and how do you know it's working?](https://hellotechnology.co.uk/blog/how-long-does-seo-take-and-how-do-you-know-its-working)
+- [10 SEO tips for your tourism business](https://hellotechnology.co.uk/blog/10-seo-tips-for-your-tourism-business)
+
+## About
+
+- [About Hello Technology and Jack Barber](https://hellotechnology.co.uk/about)
+- [Case studies](https://hellotechnology.co.uk/work)
+- [Blog](https://hellotechnology.co.uk/blog)
+- [Contact](https://hellotechnology.co.uk/contact)
+
+## Optional
+
+- [Privacy policy](https://hellotechnology.co.uk/privacy)
+- [Sitemap](https://hellotechnology.co.uk/sitemap.xml)

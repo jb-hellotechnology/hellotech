@@ -1136,3 +1136,20 @@ body.nav-open { overflow: hidden; }
 .prose a.btn--outline:hover { background: var(--teal); color: var(--paper); }
 .prose a.btn--dark { color: var(--cream); }
 .prose a.btn--dark:hover { background: var(--teal-deep); color: var(--cream); }
+
+
+/* --------------------------------------------------------------------------
+   Skip link (keyboard / screen-reader users) + footer legal link
+   -------------------------------------------------------------------------- */
+.skip-link {
+  position: absolute; left: 16px; top: -64px; z-index: 200;
+  background: var(--ink); color: var(--yellow);
+  font-weight: 600; font-size: 15px; padding: 12px 20px; border-radius: 999px;
+  transition: top .15s ease;
+}
+.skip-link:focus { top: 16px; }
+main:focus { outline: none; }
+
+.site-footer__bar a { text-decoration: underline; text-underline-offset: 3px; }
+.site-footer__bar a:hover { color: var(--yellow); }
+.nav__link[aria-current="page"] { color: var(--ink); }

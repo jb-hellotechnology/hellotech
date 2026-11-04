@@ -11,7 +11,7 @@
 
   <?php perch_layout('global.header'); ?>
 
-  <main>
+  <main id="main" tabindex="-1">
     <?php
       // Service landing page — build from blocks (Service hero, Trust strip,
       // Features, Process, Pricing, FAQ, CTA).

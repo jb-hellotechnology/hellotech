@@ -54,7 +54,7 @@
 
   <?php perch_layout('global.header'); ?>
 
-  <main>
+  <main id="main" tabindex="-1">
     <?php
       if(perch_get('s')){
     

@@ -11,7 +11,7 @@
 
   <?php perch_layout('global.header'); ?>
 
-  <main>
+  <main id="main" tabindex="-1">
     <section class="pt-48">
       <div class="container container--narrow">
         <?php

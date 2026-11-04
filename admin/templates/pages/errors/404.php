@@ -11,7 +11,7 @@
 
   <?php perch_layout('global.header'); ?>
 
-  <main>
+  <main id="main" tabindex="-1">
     <section class="section error-page">
       <div class="container container--text tc">
         <div class="error-page__code">404</div>

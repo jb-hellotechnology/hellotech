@@ -11,7 +11,7 @@
 
   <?php perch_layout('global.header'); ?>
 
-  <main>
+  <main id="main" tabindex="-1">
     <?php
       // Flexible page body — add/reorder section blocks in the Perch admin.
       perch_content_create('Page content', [

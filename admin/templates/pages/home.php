@@ -13,7 +13,7 @@
 
   <div id="top"></div>
 
-  <main>
+  <main id="main" tabindex="-1">
     <?php
       // Home page body — build it from the section blocks (start with a Hero).
       perch_content_create('Page content', [

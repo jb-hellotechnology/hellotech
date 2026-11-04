@@ -123,7 +123,7 @@
 
   <?php perch_layout('global.header'); ?>
 
-  <main>
+  <main id="main" tabindex="-1">
     <?php if ($post_html): ?>
       <?php echo $post_html; ?>
 
