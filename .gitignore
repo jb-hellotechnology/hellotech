@@ -20,6 +20,7 @@
 
 # Allow this file
 !/.gitignore
+!/.cpanel.yml
 
 # Never track OS junk, even inside allowed folders
 .DS_Store

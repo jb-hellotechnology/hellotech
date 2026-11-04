@@ -1078,3 +1078,4 @@ body.nav-open { overflow: hidden; }
 .author-bio__name { font-size: 20px; font-weight: 600; margin: 0 0 8px; }
 .author-bio__text { font-size: 15.5px; line-height: 1.6; color: var(--muted); margin: 0 0 12px; max-width: 60ch; }
 @media (max-width: 560px) { .author-bio { flex-direction: column; } }
+
