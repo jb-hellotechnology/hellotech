@@ -208,7 +208,7 @@
 		<div class="prose">
 		  <p>I've spent 20 years building websites and sorting out technology for businesses across Yorkshire. Today, Hello Technology looks after <strong>200+ local businesses</strong> from my base here in Whitby.</p>
 		  <p>I'm also on the organising committee of the <strong>Whitby Lit Fest</strong> and support several other commnunity and not-for-profit organisations. I care about this place and the people who do business in it. <span class="c-teal"><strong>found</strong></span> is how I bring proper, big-agency search to small businesses, at a price that works.</p>
-		  <a class="btn btn--primary" href="/about">About me <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true" class="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+		  <a class="btn btn--primary" href="/about">About me <i data-lucide="arrow-right"></i></a>
 		</div>
 	  </div>
 	</div>

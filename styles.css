@@ -1126,3 +1126,13 @@ body.nav-open { overflow: hidden; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
   .work-card:hover { transform: none; }
 }
+
+/* Buttons inside long-form prose keep their own button styling
+   (otherwise `.prose a` colour / underline / weight overrides them) */
+.prose a.btn { text-decoration: none; font-weight: 600; margin-top: 8px; }
+.prose a.btn--primary { color: var(--ink); }
+.prose a.btn--primary:hover { background: var(--ink); color: var(--yellow); }
+.prose a.btn--outline { color: var(--teal); }
+.prose a.btn--outline:hover { background: var(--teal); color: var(--paper); }
+.prose a.btn--dark { color: var(--cream); }
+.prose a.btn--dark:hover { background: var(--teal-deep); color: var(--cream); }
