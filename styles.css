@@ -1153,3 +1153,14 @@ main:focus { outline: none; }
 .site-footer__bar a { text-decoration: underline; text-underline-offset: 3px; }
 .site-footer__bar a:hover { color: var(--yellow); }
 .nav__link[aria-current="page"] { color: var(--ink); }
+
+
+/* hello.found promo band (service pages) */
+.found-promo__inner { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: space-between; }
+.found-promo__copy { max-width: 600px; }
+.found-promo__copy .h2 { color: var(--cream); margin: 12px 0; }
+.found-promo__copy p { font-size: 18px; line-height: 1.6; color: var(--on-dark); margin: 0; }
+.found-promo__actions { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.found-promo__price { font-size: 52px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--yellow); }
+.found-promo__price small { font-size: 19px; font-weight: 500; color: var(--on-dark); letter-spacing: 0; }
+.found-promo__fine { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: var(--on-dark); margin-bottom: 8px; }
