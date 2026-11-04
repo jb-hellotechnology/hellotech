@@ -17,8 +17,8 @@
   ];
 ?>
 <header class="site-header">
-  <nav class="nav container">
-    <a class="nav__logo" href="/"><img src="/assets/logo-primary.svg" alt="hellotechnology"></a>
+  <nav class="nav container" aria-label="Main">
+    <a class="nav__logo" href="/" aria-label="hellotechnology — home"><img src="/assets/logo-primary.svg" alt="" width="105" height="44"></a>
 
     <div class="nav__right">
       <div class="nav__menu">
@@ -34,7 +34,7 @@
 </header>
 
 <!-- Mobile pull-out menu -->
-<nav class="mobile-nav" id="mobile-nav" aria-label="Menu" aria-hidden="true">
+<nav class="mobile-nav" id="mobile-nav" aria-label="Menu" inert>
   <div class="mobile-nav__panel">
     <?php perch_pages_navigation($nav_opts); ?>
     <a class="btn btn--primary mobile-nav__cta" href="<?php echo $cta_url; ?>"><?php echo $cta_label; ?></a>

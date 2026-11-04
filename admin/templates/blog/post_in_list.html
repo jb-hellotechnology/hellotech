@@ -1,7 +1,7 @@
 <perch:before><div class="grid grid--3"></perch:before>
   <a class="work-card" href="<perch:blog id="postURL" encode="false" />">
     <div class="work-card__thumb stripe t-teal">
-      <perch:if exists="image"><img src="<perch:blog id="image" type="image" width="700" height="460" crop="true" />" alt="<perch:blog id="postTitle" />"><perch:else /><i data-lucide="image"></i></perch:if>
+      <perch:if exists="image"><img src="<perch:blog id="image" type="image" width="700" height="460" crop="true" />" alt="" width="700" height="460" loading="lazy" decoding="async"><perch:else /><i data-lucide="image"></i></perch:if>
     </div>
     <div class="work-card__body">
       <h3 class="h3"><perch:blog id="postTitle" /></h3>

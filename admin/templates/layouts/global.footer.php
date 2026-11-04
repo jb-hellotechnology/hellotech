@@ -5,13 +5,13 @@
   <div class="container site-footer__inner">
     <div class="site-footer__top">
       <div class="site-footer__brand">
-        <img src="/assets/logo-reversed.svg" alt="hellotechnology">
+        <img src="/assets/logo-reversed.svg" alt="hellotechnology" width="81" height="34" loading="lazy">
         <p>Friendly, expert technology for small businesses across Whitby and North Yorkshire.</p>
         <br />
         <!-- static button start -->
         <link href="https://meetings.brevo.com/assets/styles/popup.css" rel="stylesheet" />
         <script src="https://meetings.brevo.com/assets/libs/popup.min.js" type="text/javascript"></script>
-        <a href="" onclick="BrevoBookingPage.initStaticButton({ url: 'https://meet.brevo.com/hellotechnology/borderless' });return false;" style="cursor: pointer; font-family: 'Work Sans', Inter; font-weight: 500; background-color: #f5b82a; color: #2b2b2b; padding: 0.5rem 1rem; border: 0px; box-shadow: rgba(0, 0, 0, 0.15) 0px -2px 0px inset; border-radius: 16px; text-decoration: none; display: inline-block;">Book a meeting</a>
+        <a href="https://meet.brevo.com/hellotechnology/borderless" onclick="BrevoBookingPage.initStaticButton({ url: 'https://meet.brevo.com/hellotechnology/borderless' });return false;" style="cursor: pointer; font-family: 'Work Sans', Inter; font-weight: 500; background-color: #f5b82a; color: #2b2b2b; padding: 0.5rem 1rem; border: 0px; box-shadow: rgba(0, 0, 0, 0.15) 0px -2px 0px inset; border-radius: 16px; text-decoration: none; display: inline-block;">Book a meeting</a>
         <!-- static button end -->
       </div>
       <div class="site-footer__cols">
@@ -28,8 +28,8 @@
           <div class="foot-col__links">
             <a href="mailto:hello@hellotechnology.co.uk">hi@hellotechnology.co.uk</a>
             <a href="tel:+441947878108">01947 878 108</a>
-            <a href="https://instagram.com/_hellotechnology" target="_blank">Instagram</a>
-            <a href="https://www.linkedin.com/in/jack-barber-uk/" target="_blank">LinkedIn</a>
+            <a href="https://instagram.com/_hellotechnology" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://www.linkedin.com/in/jack-barber-uk/" target="_blank" rel="noopener">LinkedIn</a>
             <span class="accent">Whitby &bull; North Yorkshire</span>
             <div id="wcb" class="carbonbadge wcb-d"></div>
             <script src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js" defer></script>
@@ -96,7 +96,7 @@
       document.body.classList.toggle('nav-open', open);
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (open) panel.removeAttribute('inert'); else panel.setAttribute('inert', '');
     }
 
     toggle.addEventListener('click', function () {
