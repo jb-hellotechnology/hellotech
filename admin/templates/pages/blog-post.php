@@ -59,39 +59,60 @@
         if (mb_strlen($desc) > 300) $desc = mb_substr($desc, 0, 297) . '…';
 
         // Meta description (previously missing)
-        $meta_desc = trim(preg_replace('/\s+/', ' ', strip_tags($post['postDescHTML'] ?? '')));
-        $meta_desc = trim(strip_tags($post['postExcerpt'] ?? '')) ?: $meta_desc;
+        // Priority: "Social description" field -> excerpt -> first real paragraph of the post
+        // (skips tables of contents / short lead-ins, which previously produced "Contents What is...").
+        $meta_desc = trim(strip_tags($post['og_description'] ?? '')) ?: trim(strip_tags($post['postExcerpt'] ?? ''));
+        if ($meta_desc === '' && preg_match_all('/<p\b[^>]*>(.*?)<\/p>/is', $post['postDescHTML'] ?? '', $pm)) {
+            foreach ($pm[1] as $para) {
+                $t = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags($para), ENT_QUOTES, 'UTF-8')));
+                if (mb_strlen($t) >= 80) { $meta_desc = $t; break; }
+            }
+        }
         if (mb_strlen($meta_desc) > 160) $meta_desc = rtrim(mb_substr($meta_desc, 0, 157)) . '…';
       ?>
       <?php if ($meta_desc !== ''): ?><meta name="description" content="<?php echo htmlspecialchars($meta_desc, ENT_QUOTES, 'UTF-8'); ?>"><?php endif; ?>
       <?php
-        $author = trim(($post['authorGivenName'] ?? '') . ' ' . ($post['authorFamilyName'] ?? ''));
-        if ($author === '') $author = 'Jack Barber';
+        // Structured data is rendered in the footer as one @graph (see layouts/schema-lib.php).
+        require_once __DIR__ . '/../layouts/schema-lib.php';
 
-        $schema = [
-            '@context'         => 'https://schema.org',
+        $author = trim(($post['authorGivenName'] ?? '') . ' ' . ($post['authorFamilyName'] ?? ''));
+        $author_node = ($author === '' || $author === 'Jack Barber')
+            ? ['@id' => HT_SITE . '/#jack']
+            : ['@type' => 'Person', 'name' => $author];
+
+        $title    = ht_text($post['postTitle'] ?? '');
+        $body_txt = ht_text($post['postDescHTML'] ?? '');
+        $iso_pub  = !empty($post['postDateTime']) ? date('c', strtotime($post['postDateTime'])) : '';
+        $upd      = $post['postUpdated'] ?? $post['postModified'] ?? $post['postDateTime'] ?? '';
+        $iso_mod  = $upd ? date('c', strtotime($upd)) : $iso_pub;
+        $img_abs  = $post_image !== '' ? ((strpos($post_image, 'http') === 0) ? $post_image : $site . '/' . ltrim($post_image, '/')) : '';
+
+        ht_schema_page([
+            'name'          => $title,
+            'description'   => $meta_desc !== '' ? $meta_desc : $desc,
+            'crumb'         => $title,
+            'image'         => $img_abs,
+            'datePublished' => $iso_pub,
+            'dateModified'  => $iso_mod,
+        ]);
+
+        $article = [
             '@type'            => 'BlogPosting',
-            'headline'         => $post['postTitle'] ?? '',
-            'description'      => $desc,
+            '@id'              => $url . '#article',
+            'headline'         => mb_substr($title, 0, 110),
+            'description'      => $meta_desc !== '' ? $meta_desc : $desc,
             'url'              => $url,
-            'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $url],
-            'author'           => ['@type' => 'Person', 'name' => $author, 'url' => $site . '/about'],
-            'publisher'        => [
-                '@type' => 'Organization',
-                'name'  => 'Hello Technology',
-                'logo'  => ['@type' => 'ImageObject', 'url' => $site . '/assets/logo-primary.svg'],
-            ],
+            'mainEntityOfPage' => ['@id' => $url . '#webpage'],
+            'isPartOf'         => ['@id' => $url . '#webpage'],
+            'author'           => $author_node,
+            'publisher'        => ['@id' => HT_SITE . '/#organization'],
+            'inLanguage'       => 'en-GB',
+            'wordCount'        => preg_match_all('/\w+/u', $body_txt),
         ];
-        if (!empty($post['postDateTime'])) {
-            $iso = date('c', strtotime($post['postDateTime']));
-            $schema['datePublished'] = $iso;
-            $schema['dateModified']  = $iso;
-        }
-        if ($post_image !== '') {
-            $schema['image'] = (strpos($post_image, 'http') === 0) ? $post_image : $site . '/' . ltrim($post_image, '/');
-        }
+        if ($iso_pub !== '') { $article['datePublished'] = $iso_pub; $article['dateModified'] = $iso_mod; }
+        if ($img_abs !== '') $article['image'] = ['@type' => 'ImageObject', 'url' => $img_abs];
+        ht_schema_add($article);
       ?>
-      <script type="application/ld+json"><?php echo json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?></script>
     <?php endif; ?>
   <?php else: ?>
     <title>Post not found — hellotechnology</title>

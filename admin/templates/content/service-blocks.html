@@ -5,44 +5,6 @@
       <div class="container breadcrumb">
         <a href="/">Home</a><span class="sep">/</span><a href="<perch:content id="crumb_url" type="text" label="Breadcrumb parent URL" default="/#services" />"><perch:content id="crumb_parent" type="text" label="Breadcrumb parent" default="Services" /></a><span class="sep">/</span><span class="current"><perch:content id="crumb_label" type="text" label="Breadcrumb current" /></span>
       </div>
-      <script>
-        // Builds BreadcrumbList structured data from this rendered trail
-        (function () {
-          var container = document.currentScript.previousElementSibling;
-          if (!container) return;
-
-          var items = [];
-          var position = 1;
-          Array.prototype.forEach.call(container.querySelectorAll('a'), function (a) {
-            items.push({
-              "@type": "ListItem",
-              "position": position++,
-              "name": a.textContent.trim(),
-              "item": new URL(a.getAttribute('href'), window.location.origin).href
-            });
-          });
-          var current = container.querySelector('.current');
-          if (current) {
-            items.push({
-              "@type": "ListItem",
-              "position": position++,
-              "name": current.textContent.trim(),
-              "item": window.location.href
-            });
-          }
-
-          var data = {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": items
-          };
-
-          var ld = document.createElement('script');
-          ld.type = 'application/ld+json';
-          ld.textContent = JSON.stringify(data);
-          document.head.appendChild(ld);
-        })();
-      </script>
     </perch:if>
     <section class="hero hero--service container">
       <div>
@@ -78,34 +40,6 @@
         </div>
       </div>
     </section>
-    <script>
-      // Builds Service structured data from this hero's rendered heading/lead
-      (function () {
-        var section = document.currentScript.previousElementSibling;
-        if (!section) return;
-        var heading = section.querySelector('h1');
-        var lead = section.querySelector('.lead');
-
-        var data = {
-          "@context": "https://schema.org",
-          "@type": "Service",
-          "name": heading ? heading.textContent.trim() : document.title,
-          "description": lead ? lead.textContent.trim() : "",
-          "url": window.location.href,
-          "areaServed": "Whitby and North Yorkshire",
-          "provider": {
-            "@type": "Organization",
-            "name": "Hello Technology Ltd",
-            "url": "https://hellotechnology.co.uk"
-          }
-        };
-
-        var ld = document.createElement('script');
-        ld.type = 'application/ld+json';
-        ld.textContent = JSON.stringify(data);
-        document.head.appendChild(ld);
-      })();
-    </script>
   </perch:block>
 
 
@@ -114,44 +48,6 @@
       <div class="container breadcrumb">
         <a href="/">Home</a><span class="sep">/</span><a href="<perch:content id="crumb_url" type="text" label="Breadcrumb parent URL" default="/#services" />"><perch:content id="crumb_parent" type="text" label="Breadcrumb parent" default="Services" /></a><span class="sep">/</span><span class="current"><perch:content id="crumb_label" type="text" label="Breadcrumb current" /></span>
       </div>
-      <script>
-        // Builds BreadcrumbList structured data from this rendered trail
-        (function () {
-          var container = document.currentScript.previousElementSibling;
-          if (!container) return;
-
-          var items = [];
-          var position = 1;
-          Array.prototype.forEach.call(container.querySelectorAll('a'), function (a) {
-            items.push({
-              "@type": "ListItem",
-              "position": position++,
-              "name": a.textContent.trim(),
-              "item": new URL(a.getAttribute('href'), window.location.origin).href
-            });
-          });
-          var current = container.querySelector('.current');
-          if (current) {
-            items.push({
-              "@type": "ListItem",
-              "position": position++,
-              "name": current.textContent.trim(),
-              "item": window.location.href
-            });
-          }
-
-          var data = {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": items
-          };
-
-          var ld = document.createElement('script');
-          ld.type = 'application/ld+json';
-          ld.textContent = JSON.stringify(data);
-          document.head.appendChild(ld);
-        })();
-      </script>
     </perch:if>
     <section class="hero hero--service container">
       <div>
@@ -175,34 +71,6 @@
         </div>
       </div>
     </section>
-    <script>
-      // Builds Service structured data from this hero's rendered heading/lead
-      (function () {
-        var section = document.currentScript.previousElementSibling;
-        if (!section) return;
-        var heading = section.querySelector('h1');
-        var lead = section.querySelector('.lead');
-
-        var data = {
-          "@context": "https://schema.org",
-          "@type": "Service",
-          "name": heading ? heading.textContent.trim() : document.title,
-          "description": lead ? lead.textContent.trim() : "",
-          "url": window.location.href,
-          "areaServed": "Whitby and North Yorkshire",
-          "provider": {
-            "@type": "Organization",
-            "name": "Hello Technology Ltd",
-            "url": "https://hellotechnology.co.uk"
-          }
-        };
-
-        var ld = document.createElement('script');
-        ld.type = 'application/ld+json';
-        ld.textContent = JSON.stringify(data);
-        document.head.appendChild(ld);
-      })();
-    </script>
   </perch:block>
 
   <perch:block type="text" label="Textarea">
@@ -311,37 +179,6 @@
             </div>
           </perch:repeater>
         </div>
-        <script>
-          // Builds FAQPage structured data from this block's rendered Q&As
-          (function () {
-            var container = document.currentScript.previousElementSibling;
-            if (!container) return;
-            var items = container.querySelectorAll('.faq__item');
-            if (!items.length) return;
-  
-            var data = {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": Array.prototype.map.call(items, function (item) {
-                var q = item.querySelector('.faq__q');
-                var a = item.querySelector('.faq__a');
-                return {
-                  "@type": "Question",
-                  "name": q ? q.textContent.trim() : "",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": a ? a.textContent.trim() : ""
-                  }
-                };
-              })
-            };
-  
-            var ld = document.createElement('script');
-            ld.type = 'application/ld+json';
-            ld.textContent = JSON.stringify(data);
-            document.head.appendChild(ld);
-          })();
-        </script>
       </div>
     </section>
   </perch:block>

@@ -262,37 +262,6 @@
             </div>
           </perch:repeater>
         </div>
-        <script>
-          // Builds FAQPage structured data from this block's rendered Q&As
-          (function () {
-            var container = document.currentScript.previousElementSibling;
-            if (!container) return;
-            var items = container.querySelectorAll('.faq__item');
-            if (!items.length) return;
-  
-            var data = {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": Array.prototype.map.call(items, function (item) {
-                var q = item.querySelector('.faq__q');
-                var a = item.querySelector('.faq__a');
-                return {
-                  "@type": "Question",
-                  "name": q ? q.textContent.trim() : "",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": a ? a.textContent.trim() : ""
-                  }
-                };
-              })
-            };
-  
-            var ld = document.createElement('script');
-            ld.type = 'application/ld+json';
-            ld.textContent = JSON.stringify(data);
-            document.head.appendChild(ld);
-          })();
-        </script>
       </div>
     </section>
   </perch:block>

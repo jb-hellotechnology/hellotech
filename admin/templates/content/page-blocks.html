@@ -5,44 +5,6 @@
       <div class="container breadcrumb">
         <a href="/">Home</a><span class="sep">/</span><span class="current"><perch:content id="crumb_label" type="text" label="Breadcrumb current" /></span>
       </div>
-      <script>
-        // Builds BreadcrumbList structured data from this rendered trail
-        (function () {
-          var container = document.currentScript.previousElementSibling;
-          if (!container) return;
-
-          var items = [];
-          var position = 1;
-          Array.prototype.forEach.call(container.querySelectorAll('a'), function (a) {
-            items.push({
-              "@type": "ListItem",
-              "position": position++,
-              "name": a.textContent.trim(),
-              "item": new URL(a.getAttribute('href'), window.location.origin).href
-            });
-          });
-          var current = container.querySelector('.current');
-          if (current) {
-            items.push({
-              "@type": "ListItem",
-              "position": position++,
-              "name": current.textContent.trim(),
-              "item": window.location.href
-            });
-          }
-
-          var data = {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": items
-          };
-
-          var ld = document.createElement('script');
-          ld.type = 'application/ld+json';
-          ld.textContent = JSON.stringify(data);
-          document.head.appendChild(ld);
-        })();
-      </script>
     </perch:if>
     <section class="section <perch:content id="bg" type="select" label="Background" options="Light (default)|, White|section--white, White tint|section--white-t" default="" />">
       <div class="container">
@@ -158,37 +120,6 @@
             </div>
           </perch:repeater>
         </div>
-        <script>
-          // Builds FAQPage structured data from this block's rendered Q&As
-          (function () {
-            var container = document.currentScript.previousElementSibling;
-            if (!container) return;
-            var items = container.querySelectorAll('.faq__item');
-            if (!items.length) return;
-
-            var data = {
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": Array.prototype.map.call(items, function (item) {
-                var q = item.querySelector('.faq__q');
-                var a = item.querySelector('.faq__a');
-                return {
-                  "@type": "Question",
-                  "name": q ? q.textContent.trim() : "",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": a ? a.textContent.trim() : ""
-                  }
-                };
-              })
-            };
-
-            var ld = document.createElement('script');
-            ld.type = 'application/ld+json';
-            ld.textContent = JSON.stringify(data);
-            document.head.appendChild(ld);
-          })();
-        </script>
       </div>
     </section>
   </perch:block>

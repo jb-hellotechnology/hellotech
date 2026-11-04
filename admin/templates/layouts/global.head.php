@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/schema-lib.php'; ?>
 <?php /* Shared <head> assets — fonts, stylesheet, icon library.
    Included from inside the <head> of each master page template. */ ?>
 <?php

@@ -26,7 +26,7 @@
         <div>
           <div class="foot-col__head">Get in touch</div>
           <div class="foot-col__links">
-            <a href="mailto:hello@hellotechnology.co.uk">hi@hellotechnology.co.uk</a>
+            <a href="mailto:hi@hellotechnology.co.uk">hi@hellotechnology.co.uk</a>
             <a href="tel:+441947878108">01947 878 108</a>
             <a href="https://instagram.com/_hellotechnology" target="_blank" rel="noopener">Instagram</a>
             <a href="https://www.linkedin.com/in/jack-barber-uk/" target="_blank" rel="noopener">LinkedIn</a>
@@ -45,34 +45,11 @@
 </footer>
 
 <?php
-  // LocalBusiness structured data — shared site-wide (every page includes this footer).
-  // ProfessionalService extends LocalBusiness/Organization, so this is a strict
-  // superset of a plain Organization entry — better fit for local search/Maps.
-  $business_ld = [
-    '@context'      => 'https://schema.org',
-    '@type'         => 'ProfessionalService',
-    'name'          => 'Hello Technology Ltd',
-    'alternateName' => 'hellotechnology',
-    'url'           => 'https://hellotechnology.co.uk',
-    'logo'          => 'https://hellotechnology.co.uk/assets/logo-primary.svg',
-    'image'         => 'https://hellotechnology.co.uk/assets/logo-primary.svg',
-    'email'         => 'hi@hellotechnology.co.uk',
-    'telephone'     => '+441947878108',
-    'areaServed'    => 'Whitby and North Yorkshire',
-    'address'       => [
-      '@type'           => 'PostalAddress',
-      'streetAddress'   => 'Church House, Flowergate',
-      'addressLocality' => 'Whitby',
-      'addressRegion'   => 'North Yorkshire',
-      'addressCountry'  => 'GB',
-    ],
-    'sameAs' => [
-      'https://instagram.com/_hellotechnology',
-      'https://www.linkedin.com/in/jack-barber-uk/',
-    ],
-  ];
+  // Structured data: one server-rendered @graph per page (Organization, Person, WebSite,
+  // WebPage, BreadcrumbList + whatever the page template added). See schema-lib.php.
+  require_once __DIR__ . '/schema-lib.php';
+  ht_schema_render();
 ?>
-<script type="application/ld+json"><?php echo json_encode($business_ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?></script>
 
 <script src="https://cdn.usefathom.com/script.js" data-site="VPKMAXJJ" defer></script>
 
