@@ -222,12 +222,21 @@ if (!function_exists('ht_schema_render')) {
                 'addressRegion'   => 'North Yorkshire',
                 'addressCountry'  => 'GB',
             ],
+            'geo'           => ['@type' => 'GeoCoordinates', 'latitude' => 54.486209, 'longitude' => -0.617198],
+            'hasMap'        => 'https://www.google.com/maps?q=54.486209,-0.617198',
+            'priceRange'    => '££', // mid-range
+            'openingHoursSpecification' => [[
+                '@type'     => 'OpeningHoursSpecification',
+                'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                'opens'     => '09:00',
+                'closes'    => '17:00',
+            ]],
             'areaServed'    => [
                 ['@type' => 'City', 'name' => 'Whitby'],
                 ['@type' => 'AdministrativeArea', 'name' => 'North Yorkshire'],
                 ['@type' => 'Country', 'name' => 'United Kingdom'],
             ],
-            'founder'       => ['@id' => HT_SITE . '/#jack'],
+            'founder'      => ['@id' => HT_SITE . '/#jack'],
             'knowsAbout'    => ['Website design', 'Web development', 'Search engine optimisation', 'Answer engine optimisation (AEO)', 'AI search optimisation', 'AI integration', 'IT support', 'Email marketing'],
             'sameAs'        => ['https://instagram.com/_hellotechnology', 'https://www.linkedin.com/in/jack-barber-uk/'],
             'hasOfferCatalog' => ['@type' => 'OfferCatalog', 'name' => 'Services', 'itemListElement' => $offers],
