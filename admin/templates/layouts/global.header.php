@@ -18,7 +18,7 @@
 ?>
 <header class="site-header">
   <nav class="nav container" aria-label="Main">
-    <a class="nav__logo" href="/" aria-label="hellotechnology — home"><img src="/assets/logo-primary.svg" alt="" width="105" height="44"></a>
+    <a class="nav__logo" href="/"><img src="/assets/logo-primary.svg" alt="hellotechnology" width="105" height="44"></a>
 
     <div class="nav__right">
       <div class="nav__menu">
