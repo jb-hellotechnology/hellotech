@@ -200,7 +200,7 @@
   <section class="section">
 	<div class="container split split--media-left">
 	  <div class="hero__media">
-		<div class="portrait"><img src="/admin/resources/jb3a-copy-w900.jpg" alt="Jack Barber, Hello Technology"></div>
+		<div class="portrait"><img src="/admin/resources/jb3a-copy-w900h1125.jpg" alt="Jack Barber, Hello Technology"></div>
 	  </div>
 	  <div>
 		<span class="eyebrow mb-4">Who's behind it</span>
