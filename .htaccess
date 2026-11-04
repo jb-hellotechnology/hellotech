@@ -1,6 +1,11 @@
 # Perch Runway
 RewriteEngine On
 
+# Canonical host: send www.hellotechnology.co.uk to the non-www HTTPS site (permanent).
+# Must come before every other rule so /found/ and Perch URLs are covered too.
+RewriteCond %{HTTP_HOST} ^www\.hellotechnology\.co\.uk$ [NC]
+RewriteRule ^(.*)$ https://hellotechnology.co.uk/$1 [R=301,L]
+
 # Serve the standalone /found/ landing page directly — bypass Perch Runway
 DirectoryIndex index.php index.html
 <IfModule mod_rewrite.c>
@@ -44,3 +49,22 @@ RewriteRule .* /admin/core/runway/start.php [L]
   AddOutputFilterByType DEFLATE text/html text/css text/javascript \
     application/javascript application/json image/svg+xml application/xml
 </IfModule> 
+
+
+# ----------------------------------------------------------------------
+# Security headers
+# ----------------------------------------------------------------------
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+  # CSP in REPORT-ONLY mode first: nothing is blocked, but violations show in the
+  # browser console. Once the console is clean on key pages, rename the header to
+  # Content-Security-Policy to enforce. Not applied to /admin (Perch needs inline/eval).
+  <If "%{REQUEST_URI} !~ m#^/admin#">
+    Header always set Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.usefathom.com https://meetings.brevo.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://meetings.brevo.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://cdn.usefathom.com https://meetings.brevo.com https://meet.brevo.com https://api.websitecarbon.com; frame-src https://meet.brevo.com https://meetings.brevo.com; form-action 'self'; base-uri 'self'; frame-ancestors 'self'"
+  </If>
+</IfModule>

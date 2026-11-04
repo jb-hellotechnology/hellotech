@@ -42,7 +42,7 @@
       }, $post_html);
   }
 
-  $site = 'https://www.hellotechnology.co.uk';
+  $site = 'https://hellotechnology.co.uk';
 ?>
 <!doctype html>
 <html lang="en">
@@ -58,13 +58,12 @@
         $desc = trim(strip_tags($post['postExcerpt'] ?? $post['postDescHTML'] ?? ''));
         if (mb_strlen($desc) > 300) $desc = mb_substr($desc, 0, 297) . '…';
 
-        // Meta description (previously missing) + canonical URL
+        // Meta description (previously missing)
         $meta_desc = trim(preg_replace('/\s+/', ' ', strip_tags($post['postDescHTML'] ?? '')));
         $meta_desc = trim(strip_tags($post['postExcerpt'] ?? '')) ?: $meta_desc;
         if (mb_strlen($meta_desc) > 160) $meta_desc = rtrim(mb_substr($meta_desc, 0, 157)) . '…';
       ?>
       <?php if ($meta_desc !== ''): ?><meta name="description" content="<?php echo htmlspecialchars($meta_desc, ENT_QUOTES, 'UTF-8'); ?>"><?php endif; ?>
-      <link rel="canonical" href="<?php echo htmlspecialchars($url, ENT_QUOTES, 'UTF-8'); ?>">
       <?php
         $author = trim(($post['authorGivenName'] ?? '') . ' ' . ($post['authorFamilyName'] ?? ''));
         if ($author === '') $author = 'Jack Barber';

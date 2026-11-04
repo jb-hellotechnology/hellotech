@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>hello.found — SEO &amp; AI search, managed for you · £99/month</title>
 <meta name="description" content="Done-for-you SEO and AI search for small businesses — £99/month, 20 founding member places. From Hello Technology in Whitby.">
-<link rel="canonical" href="https://www.hellotechnology.co.uk/found/">
+<link rel="canonical" href="https://hellotechnology.co.uk/found/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Hello Technology">
 <meta property="og:title" content="hello.found — SEO &amp; AI search, managed for you · £99/month">
 <meta property="og:description" content="Done-for-you SEO and AI search for small businesses — £99/month, 20 founding member places. From Hello Technology in Whitby.">
-<meta property="og:url" content="https://www.hellotechnology.co.uk/found/">
-<meta property="og:image" content="https://www.hellotechnology.co.uk/assets/logo-primary.svg">
+<meta property="og:url" content="https://hellotechnology.co.uk/found/">
+<meta property="og:image" content="https://hellotechnology.co.uk/assets/logo-primary.svg">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="/assets/logo-primary.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,11 +25,11 @@
 	"name": "hello.found — managed SEO & AI search",
 	"serviceType": "Search engine optimisation",
 	"description": "Done-for-you SEO and AI search (answer engine) optimisation for small businesses, managed every month.",
-	"url": "https://www.hellotechnology.co.uk/found/",
+	"url": "https://hellotechnology.co.uk/found/",
 	"provider": {
 		"@type": "ProfessionalService",
 		"name": "Hello Technology",
-		"url": "https://www.hellotechnology.co.uk/"
+		"url": "https://hellotechnology.co.uk/"
 	},
 	"areaServed": [
 		"Whitby",
@@ -40,7 +40,7 @@
 		"@type": "Offer",
 		"price": "99.00",
 		"priceCurrency": "GBP",
-		"url": "https://www.hellotechnology.co.uk/found/",
+		"url": "https://hellotechnology.co.uk/found/",
 		"availability": "https://schema.org/LimitedAvailability",
 		"priceSpecification": {
 			"@type": "UnitPriceSpecification",
