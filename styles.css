@@ -28,6 +28,7 @@
   --yellow-tint:  #FCEFCB;
   --yellow-ink:   #8A6A02;
   --orange:       #C8643C;
+  --orange-text:  #A24A24;   /* orange for small text (AA on cream & orange-tint) */
   --orange-tint:  #F6E2D7;
   --orange-soft:  #E08B6E;
 
@@ -157,7 +158,7 @@ ul { list-style: none; padding: 0; margin: 0; }
   color: var(--label);
 }
 .eyebrow--teal   { color: var(--teal); }
-.eyebrow--orange { color: var(--orange); }
+.eyebrow--orange { color: var(--orange-text); }
 .eyebrow--yellow { color: var(--yellow); }
 .eyebrow--center { text-align: center; }
 
@@ -216,7 +217,7 @@ ul { list-style: none; padding: 0; margin: 0; }
   background: var(--teal-tint); color: var(--teal-deep);
 }
 .tag--teal   { background: var(--teal-tint);   color: var(--teal-deep); }
-.tag--orange { background: var(--orange-tint);  color: var(--orange); }
+.tag--orange { background: var(--orange-tint);  color: var(--orange-text); }
 .tag--yellow { background: var(--yellow-tint);  color: var(--yellow-ink); }
 
 /* --------------------------------------------------------------------------
@@ -440,7 +441,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 /* Numbered step cards (home "How it works") */
 .step-card { background: var(--paper); border: 1px solid var(--line-2); border-radius: 18px; padding: 28px; }
 .step-card--dark { background: var(--ink); color: var(--cream); border: 0; }
-.step-card__num { font-family: var(--font-mono); font-size: 13px; color: var(--orange); margin-bottom: 16px; }
+.step-card__num { font-family: var(--font-mono); font-size: 13px; color: var(--orange-text); margin-bottom: 16px; }
 .step-card--dark .step-card__num { color: var(--yellow); }
 .step-card .h3 { font-size: 18px; margin-bottom: 8px; }
 .step-card p { font-size: 15px; line-height: 1.55; color: var(--muted); margin: 0; }
@@ -694,9 +695,9 @@ ul { list-style: none; padding: 0; margin: 0; }
 .tc { text-align: center; }
 
 .c-teal       { color: var(--teal); }
-.c-orange     { color: var(--orange); }
+.c-orange     { color: var(--orange-text); }
 .c-yellow-ink { color: var(--yellow-ink); }
-.link--orange { color: var(--orange); }
+.link--orange { color: var(--orange-text); }
 .fs-21 { font-size: 21px; }
 
 .mw-480 { max-width: 480px; }

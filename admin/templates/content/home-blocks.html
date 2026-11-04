@@ -24,7 +24,7 @@
       </div>
       <div class="hero__media">
         <div class="portrait">
-          <img src="<perch:content type="image" id="portrait" label="Portrait" width="900" />" alt="<perch:content id="portrait_alt" type="text" label="Portrait description" default="" />">
+          <img src="<perch:content type="image" id="portrait" label="Portrait" width="900" height="1125" crop />" alt="<perch:content id="portrait_alt" type="text" label="Portrait description" default="" />" width="900" height="1125" fetchpriority="high" decoding="async">
         </div>
         <perch:if exists="card_title">
           <div class="float-card">
@@ -86,7 +86,7 @@
           <perch:repeater id="items" label="Projects">
             <a class="work-card" href="<perch:content id="url" type="text" label="Project URL" default="/case-study" />">
               <div class="work-card__thumb stripe t-<perch:content id="colour" type="select" label="Colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />">
-                <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Thumbnail" width="700" height="460" crop />" alt=""><perch:else /><i data-lucide="image"></i></perch:if>
+                <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Thumbnail" width="700" height="460" crop />" alt="" width="700" height="460" loading="lazy" decoding="async"><perch:else /><i data-lucide="image"></i></perch:if>
                 <span class="work-card__tag tag tag--<perch:content id="colour" type="select" />"><perch:content id="tag" type="text" label="Tag" /></span>
               </div>
               <div class="work-card__body">
@@ -112,7 +112,7 @@
       <div class="container split split--media-left">
         <div>
           <perch:if exists="image">
-            <div class="square"><img src="<perch:content type="image" id="image" label="Image" width="900" height="900" crop />" alt="<perch:content id="image_alt" type="text" label="Image description" />"></div>
+            <div class="square"><img src="<perch:content type="image" id="image" label="Image" width="900" height="900" crop />" alt="<perch:content id="image_alt" type="text" label="Image description" />" width="900" height="900" loading="lazy" decoding="async"></div>
           <perch:else />
             <div class="square stripe t-neutral">
               <div class="ph-label"><i data-lucide="user"></i><perch:content id="placeholder" type="text" label="Placeholder label" html default="Portrait of you<br>at work" /></div>
@@ -241,7 +241,7 @@
         <div class="gallery-row gallery-row--trio">
           <perch:repeater id="tiles" label="Tiles">
             <div class="gallery-tile gallery-tile--43 stripe">
-              <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Image" width="800" />" alt="<perch:content id="alt" type="text" label="Description" />"><perch:else /><i data-lucide="<perch:content id="icon" type="text" label="Placeholder icon" default="image" />"></i></perch:if>
+              <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Image" width="800" />" alt="<perch:content id="alt" type="text" label="Description" />" loading="lazy" decoding="async"><perch:else /><i data-lucide="<perch:content id="icon" type="text" label="Placeholder icon" default="image" />"></i></perch:if>
             </div>
           </perch:repeater>
         </div>
