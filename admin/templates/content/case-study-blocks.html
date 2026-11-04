@@ -1,0 +1,150 @@
+<perch:blocks>
+
+  <perch:block type="case-hero" label="Hero (case study)">
+    <section class="pt-48 pb-40">
+      <div class="container container--narrow">
+        <perch:if exists="back_url">
+          <a class="back-link" href="<perch:content id="back_url" type="text" label="Back link URL" default="/#work" />"><i data-lucide="arrow-left"></i> <perch:content id="back_label" type="text" label="Back link label" default="All work" /></a>
+        </perch:if>
+        <div class="tags mb-6">
+          <perch:repeater id="tags" label="Tags">
+            <span class="tag tag--<perch:content id="colour" type="select" label="Colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />"><perch:content id="label" type="text" label="Tag" /></span>
+          </perch:repeater>
+        </div>
+        <h1 class="h1 h1--sm"><perch:content id="heading" type="text" label="Heading" required html /></h1>
+        <p class="lead lead--lg mt-5"><perch:content id="lead" type="textarea" label="Lead" textile /></p>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="banner" label="Banner image">
+    <section class="pt-20">
+      <div class="container">
+        <div class="banner stripe stripe--wide t-<perch:content id="colour" type="select" label="Tint" options="Teal|teal, Orange|orange, Yellow|yellow, Neutral|neutral" default="teal" />">
+          <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Image" width="1600" />" alt="<perch:content id="alt" type="text" label="Description" />"><perch:else /><div class="ph-label ph-label--13"><i data-lucide="image"></i><perch:content id="placeholder" type="text" label="Placeholder label" default="Hero shot" /></div></perch:if>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="metabar" label="Meta bar (case study facts)">
+    <section class="py-40">
+      <div class="container">
+        <div class="metabar">
+          <perch:repeater id="items" label="Facts">
+            <div>
+              <div class="metabar__label"><perch:content id="label" type="text" label="Label" /></div>
+              <div class="metabar__value"><perch:content id="value" type="text" label="Value" /></div>
+              <perch:if exists="note"><div class="metabar__note"><perch:content id="note" type="text" label="Note" /></div></perch:if>
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="prose" label="Rich text block">
+    <section class="<perch:content id="spacing" type="select" label="Spacing" options="Standard|section, Narrow top|pt-40, Tight|pt-20 pb-40" default="section" />">
+      <div class="container container--narrow story">
+        <div class="block">
+          <perch:if exists="eyebrow"><span class="eyebrow eyebrow--<perch:content id="eyebrow_colour" type="select" label="Eyebrow colour" options="Orange|orange, Teal|teal, Yellow|yellow" default="orange" />"><perch:content id="eyebrow" type="text" label="Eyebrow" /></span></perch:if>
+          <perch:if exists="heading"><h2 class="h2 h2--30"><perch:content id="heading" type="text" label="Heading" /></h2></perch:if>
+          <div class="prose"><perch:content id="body" type="textarea" label="Body" textile markdown editor="markitup" /></div>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="pullquote" label="Pull quote">
+    <section class="pt-20 pb-40">
+      <div class="container container--narrow">
+        <div class="pullquote">
+          <div class="pullquote__mark">&ldquo;</div>
+          <p class="pullquote__text"><perch:content id="text" type="textarea" label="Quote" textile /></p>
+          <div class="pullquote__who">
+            <div class="pullquote__avatar"><i data-lucide="user"></i></div>
+            <div>
+              <div class="pullquote__name"><perch:content id="name" type="text" label="Name" /></div>
+              <div class="pullquote__role"><perch:content id="role" type="text" label="Role" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="metrics" label="Results metrics">
+    <section class="section section--sm section--white">
+      <div class="container">
+        <div class="section-head">
+          <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" default="The results" /></span></perch:if>
+          <h2 class="h2 h2--32 mw-520"><perch:content id="heading" type="text" label="Heading" /></h2>
+        </div>
+        <div class="grid grid--3">
+          <perch:repeater id="items" label="Metrics">
+            <div class="metric card">
+              <div class="metric__num c-<perch:content id="colour" type="select" label="Colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />"><perch:content id="num" type="text" label="Figure" /></div>
+              <div class="metric__text"><perch:content id="text" type="text" label="Text" /></div>
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="gallery" label="Image gallery">
+    <section class="section section--sm">
+      <div class="container">
+        <perch:if exists="eyebrow"><span class="eyebrow mb-7"><perch:content id="eyebrow" type="text" label="Eyebrow" default="A look at the site" /></span></perch:if>
+        <div class="gallery-row gallery-row--trio">
+          <perch:repeater id="tiles" label="Tiles">
+            <div class="gallery-tile gallery-tile--43 stripe">
+              <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Image" width="800" />" alt="<perch:content id="alt" type="text" label="Description" />"><perch:else /><i data-lucide="<perch:content id="icon" type="text" label="Placeholder icon" default="image" />"></i></perch:if>
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="minicards" label="More work — 2-up cards">
+    <section class="section section--xs section--white-t">
+      <div class="container">
+        <div class="section-head--row mb-8">
+          <h2 class="h2 h2--28"><perch:content id="heading" type="text" label="Heading" default="More recent work" /></h2>
+          <perch:if exists="link_label"><a class="link" href="<perch:content id="link_url" type="text" label="Link URL" default="/#work" />"><perch:content id="link_label" type="text" label="Link label" default="See all" /> <i data-lucide="arrow-right"></i></a></perch:if>
+        </div>
+        <div class="grid grid--2">
+          <perch:repeater id="items" label="Cards">
+            <a class="minicard" href="<perch:content id="url" type="text" label="URL" default="/case-study" />">
+              <div class="minicard__thumb stripe t-<perch:content id="colour" type="select" label="Colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="orange" />">
+                <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Thumbnail" width="700" height="460" crop />" alt=""><perch:else /><i data-lucide="image"></i></perch:if>
+              </div>
+              <div>
+                <span class="minicard__cat c-<perch:content id="colour" type="select" />"><perch:content id="cat" type="text" label="Category" /></span>
+                <h3 class="h3"><perch:content id="title" type="text" label="Title" /></h3>
+                <p><perch:content id="text" type="text" label="Summary" /></p>
+              </div>
+            </a>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="cta" label="Call to action band">
+    <section id="contact" class="section section--md section--accent scroll-anchor">
+      <div class="container cta">
+        <div class="cta__copy">
+          <h2 class="h2 h2--lg"><perch:content id="heading" type="text" label="Heading" default="Fancy results like these for your business?" /></h2>
+          <p><perch:content id="text" type="textarea" label="Text" textile /></p>
+        </div>
+        <div class="cta__actions">
+          <a class="btn btn--dark" href="mailto:<perch:content id="email" type="text" label="Email" default="hello@hellotechnology.co.uk" />"><i data-lucide="mail"></i> <perch:content id="email" type="text" /></a>
+          <a class="cta__tel" href="tel:<perch:content id="tel" type="text" label="Phone" default="01947 000 000" />"><i data-lucide="phone"></i> <perch:content id="tel" type="text" /></a>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+</perch:blocks>

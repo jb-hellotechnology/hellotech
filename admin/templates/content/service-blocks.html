@@ -1,0 +1,376 @@
+<perch:blocks>
+
+  <perch:block type="hero-service" label="Hero (service / with browser mock)">
+    <perch:if exists="crumb_label">
+      <div class="container breadcrumb">
+        <a href="/">Home</a><span class="sep">/</span><a href="<perch:content id="crumb_url" type="text" label="Breadcrumb parent URL" default="/#services" />"><perch:content id="crumb_parent" type="text" label="Breadcrumb parent" default="Services" /></a><span class="sep">/</span><span class="current"><perch:content id="crumb_label" type="text" label="Breadcrumb current" /></span>
+      </div>
+      <script>
+        // Builds BreadcrumbList structured data from this rendered trail
+        (function () {
+          var container = document.currentScript.previousElementSibling;
+          if (!container) return;
+
+          var items = [];
+          var position = 1;
+          Array.prototype.forEach.call(container.querySelectorAll('a'), function (a) {
+            items.push({
+              "@type": "ListItem",
+              "position": position++,
+              "name": a.textContent.trim(),
+              "item": new URL(a.getAttribute('href'), window.location.origin).href
+            });
+          });
+          var current = container.querySelector('.current');
+          if (current) {
+            items.push({
+              "@type": "ListItem",
+              "position": position++,
+              "name": current.textContent.trim(),
+              "item": window.location.href
+            });
+          }
+
+          var data = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": items
+          };
+
+          var ld = document.createElement('script');
+          ld.type = 'application/ld+json';
+          ld.textContent = JSON.stringify(data);
+          document.head.appendChild(ld);
+        })();
+      </script>
+    </perch:if>
+    <section class="hero hero--service container">
+      <div>
+        <span class="pill"><i data-lucide="<perch:content id="pill_icon" type="text" label="Pill icon" default="monitor-smartphone" />"></i> <perch:content id="pill" type="text" label="Pill text" default="Web design &amp; build" /></span>
+        <h1 class="h1 h1--md hero__title"><perch:content id="heading" type="text" label="Heading" required html /></h1>
+        <p class="lead"><perch:content id="lead" type="text" label="Lead paragraph" /></p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="<perch:content id="btn1_url" type="text" label="Primary button URL" default="/contact" />"><perch:content id="btn1_label" type="text" label="Primary button label" default="Start your project" /></a>
+          <perch:if exists="btn2_label">
+            <a class="btn btn--outline" href="<perch:content id="btn2_url" type="text" label="Secondary button URL" default="#pricing" />"><perch:content id="btn2_label" type="text" label="Secondary button label" /></a>
+          </perch:if>
+        </div>
+      </div>
+      <div class="browser">
+        <div class="browser__bar">
+          <span class="browser__dot browser__dot--r"></span>
+          <span class="browser__dot browser__dot--y"></span>
+          <span class="browser__dot browser__dot--g"></span>
+          <span class="browser__url"><perch:content id="browser_url" type="text" label="Mock browser URL" default="yourbusiness.co.uk" /></span>
+        </div>
+        <div class="browser__view stripe t-neutral">
+          <div class="browser__top">
+            <div class="browser__logo"></div>
+            <div class="browser__navbits"><span></span><span></span><span class="cta"></span></div>
+          </div>
+          <div class="browser__hero">
+            <div class="browser__line browser__line--1"></div>
+            <div class="browser__line browser__line--2"></div>
+            <div class="browser__line browser__line--3"></div>
+            <div class="browser__btn"></div>
+          </div>
+          <div class="browser__cards"><div></div><div></div><div></div></div>
+        </div>
+      </div>
+    </section>
+    <script>
+      // Builds Service structured data from this hero's rendered heading/lead
+      (function () {
+        var section = document.currentScript.previousElementSibling;
+        if (!section) return;
+        var heading = section.querySelector('h1');
+        var lead = section.querySelector('.lead');
+
+        var data = {
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": heading ? heading.textContent.trim() : document.title,
+          "description": lead ? lead.textContent.trim() : "",
+          "url": window.location.href,
+          "areaServed": "Whitby and North Yorkshire",
+          "provider": {
+            "@type": "Organization",
+            "name": "Hello Technology Ltd",
+            "url": "https://hellotechnology.co.uk"
+          }
+        };
+
+        var ld = document.createElement('script');
+        ld.type = 'application/ld+json';
+        ld.textContent = JSON.stringify(data);
+        document.head.appendChild(ld);
+      })();
+    </script>
+  </perch:block>
+
+
+  <perch:block type="hero-service-standard" label="Service Hero">
+    <perch:if exists="crumb_label">
+      <div class="container breadcrumb">
+        <a href="/">Home</a><span class="sep">/</span><a href="<perch:content id="crumb_url" type="text" label="Breadcrumb parent URL" default="/#services" />"><perch:content id="crumb_parent" type="text" label="Breadcrumb parent" default="Services" /></a><span class="sep">/</span><span class="current"><perch:content id="crumb_label" type="text" label="Breadcrumb current" /></span>
+      </div>
+      <script>
+        // Builds BreadcrumbList structured data from this rendered trail
+        (function () {
+          var container = document.currentScript.previousElementSibling;
+          if (!container) return;
+
+          var items = [];
+          var position = 1;
+          Array.prototype.forEach.call(container.querySelectorAll('a'), function (a) {
+            items.push({
+              "@type": "ListItem",
+              "position": position++,
+              "name": a.textContent.trim(),
+              "item": new URL(a.getAttribute('href'), window.location.origin).href
+            });
+          });
+          var current = container.querySelector('.current');
+          if (current) {
+            items.push({
+              "@type": "ListItem",
+              "position": position++,
+              "name": current.textContent.trim(),
+              "item": window.location.href
+            });
+          }
+
+          var data = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": items
+          };
+
+          var ld = document.createElement('script');
+          ld.type = 'application/ld+json';
+          ld.textContent = JSON.stringify(data);
+          document.head.appendChild(ld);
+        })();
+      </script>
+    </perch:if>
+    <section class="hero hero--service container">
+      <div>
+        <span class="pill"><i data-lucide="<perch:content type="text" label="Pill Icon" id="pill-icon" />"></i> <perch:content type="text" id="pill" label="Pill" /></span>
+        <h1 class="h1 h1--md hero__title"><perch:content type="text" id="heading" label="Heading" /></h1>
+        <p class="lead"><perch:content type="text" id="intro" label="Intro" /></p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="/contact/">Start your project</a>
+          <a class="btn btn--outline" href="/services">All Services</a>
+        </div>
+      </div>
+      <div class="hero__media">
+        <div class="card card--soft">
+          <div class="icon-box icon-box--lg icon-box--orange"><i data-lucide="<perch:content type="text" id="icon" label="Icon" />"></i></div>
+          <span class="eyebrow mb-4">What this covers</span>
+          <ul class="checklist checklist--lg">
+            <perch:repeater id="checklist" label="Checklist" />
+              <li><i data-lucide="check"></i> <perch:content type="text" id="item" label="Item" /></li>
+            </perch:repeater>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <script>
+      // Builds Service structured data from this hero's rendered heading/lead
+      (function () {
+        var section = document.currentScript.previousElementSibling;
+        if (!section) return;
+        var heading = section.querySelector('h1');
+        var lead = section.querySelector('.lead');
+
+        var data = {
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": heading ? heading.textContent.trim() : document.title,
+          "description": lead ? lead.textContent.trim() : "",
+          "url": window.location.href,
+          "areaServed": "Whitby and North Yorkshire",
+          "provider": {
+            "@type": "Organization",
+            "name": "Hello Technology Ltd",
+            "url": "https://hellotechnology.co.uk"
+          }
+        };
+
+        var ld = document.createElement('script');
+        ld.type = 'application/ld+json';
+        ld.textContent = JSON.stringify(data);
+        document.head.appendChild(ld);
+      })();
+    </script>
+  </perch:block>
+
+  <perch:block type="text" label="Textarea">
+    <section class="section section--white-t">
+      <div class="container container--text">
+        <div class="prose">
+          <perch:content type="textarea" label="Textarea" id="textarea" editor="redactor" html />
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="trust" label="Trust strip">
+    <section class="section--white">
+      <div class="container trust">
+        <perch:repeater id="items" label="Items">
+          <div class="trust__item"><i data-lucide="<perch:content id="icon" type="text" label="Icon" default="search" />"></i> <perch:content id="label" type="text" label="Label" /></div>
+        </perch:repeater>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="features" label="Features — small card grid">
+    <section class="section <perch:content id="bg" type="select" label="Background" options="Light (default)|, White|section--white" default="" />">
+      <div class="container">
+        <perch:if exists="heading">
+          <div class="section-head">
+            <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" default="What's included" /></span></perch:if>
+            <h2 class="h2 mw-600"><perch:content id="heading" type="text" label="Heading" /></h2>
+          </div>
+        </perch:if>
+        <div class="grid grid--3">
+          <perch:repeater id="cards" label="Cards">
+            <div class="card card--sm">
+              <div class="icon-box icon-box--<perch:content id="colour" type="select" label="Icon colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />"><i data-lucide="<perch:content id="icon" type="text" label="Icon" default="palette" />"></i></div>
+              <h3 class="h3 mb-2"><perch:content id="title" type="text" label="Title" /></h3>
+              <p class="card__text"><perch:content id="text" type="text" label="Text" /></p>
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="process" label="Process — numbered steps (dark)">
+    <section class="section section--dark">
+      <div class="container">
+        <div class="section-head">
+          <perch:if exists="eyebrow"><span class="eyebrow eyebrow--yellow"><perch:content id="eyebrow" type="text" label="Eyebrow" default="How a project runs" /></span></perch:if>
+          <h2 class="h2 mw-560"><perch:content id="heading" type="text" label="Heading" /></h2>
+        </div>
+        <div class="steps">
+          <perch:repeater id="steps" label="Steps">
+            <div class="steps__col">
+              <div class="steps__num<perch:if exists="lead"> steps__num--lead</perch:if>"><perch:content id="num" type="text" label="Number" /></div>
+              <h3 class="h3"><perch:content id="title" type="text" label="Title" /></h3>
+              <p><perch:content id="text" type="text" label="Text" /></p>
+              <perch:content id="lead" type="checkbox" label="Highlight number" value="1" suppress />
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="pricing" label="Pricing — tiers">
+    <section class="section scroll-anchor" id="<perch:content id="anchor" type="text" label="Anchor id (optional)" default="pricing" />">
+      <div class="container">
+        <div class="section-head">
+          <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" default="Honest pricing" /></span></perch:if>
+          <h2 class="h2 mb-3 mw-600"><perch:content id="heading" type="text" label="Heading" /></h2>
+          <perch:if exists="lead"><p class="lead mw-560"><perch:content id="lead" type="text" label="Lead" /></p></perch:if>
+        </div>
+        <div class="grid grid--3 grid--top">
+          <perch:repeater id="tiers" label="Tiers">
+            <div class="price card<perch:if exists="featured"> price--featured</perch:if>">
+              <perch:if exists="ribbon"><span class="ribbon"><perch:content id="ribbon" type="text" label="Ribbon" /></span></perch:if>
+              <h3 class="price__name"><perch:content id="name" type="text" label="Name" /></h3>
+              <p class="price__sub"><perch:content id="sub" type="text" label="Subtitle" /></p>
+              <div class="price__amt"><perch:content id="amount" type="text" label="Amount" /></div>
+              <div class="price__rule"></div>
+              <ul class="checklist checklist--lg<perch:if exists="featured"> checklist--orange</perch:if>">
+                  <li><i data-lucide="check"></i> <perch:content id="point_1" type="text" label="Feature #1" /></li>
+                  <li><i data-lucide="check"></i> <perch:content id="point_2" type="text" label="Feature #2" /></li>
+                  <li><i data-lucide="check"></i> <perch:content id="point_3" type="text" label="Feature #3" /></li>
+                  <li><i data-lucide="check"></i> <perch:content id="point_4" type="text" label="Feature #4" /></li>
+              </ul>
+              <perch:content id="featured" type="checkbox" label="Featured tier" value="1" suppress />
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="faq" label="FAQ">
+    <section class="section section--white-t">
+      <div class="container container--text">
+        <perch:if exists="eyebrow"><span class="eyebrow eyebrow--center mb-4"><perch:content id="eyebrow" type="text" label="Eyebrow" default="Common questions" /></span></perch:if>
+        <h2 class="h2 tc mb-8"><perch:content id="heading" type="text" label="Heading" default="Good to know." /></h2>
+        <div class="faq">
+          <perch:repeater id="items" label="Questions">
+            <div class="faq__item">
+              <h3 class="faq__q"><i data-lucide="help-circle"></i> <perch:content id="q" type="text" label="Question" /></h3>
+              <p class="faq__a"><perch:content id="a" type="text" label="Answer" /></p>
+            </div>
+          </perch:repeater>
+        </div>
+        <script>
+          // Builds FAQPage structured data from this block's rendered Q&As
+          (function () {
+            var container = document.currentScript.previousElementSibling;
+            if (!container) return;
+            var items = container.querySelectorAll('.faq__item');
+            if (!items.length) return;
+  
+            var data = {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": Array.prototype.map.call(items, function (item) {
+                var q = item.querySelector('.faq__q');
+                var a = item.querySelector('.faq__a');
+                return {
+                  "@type": "Question",
+                  "name": q ? q.textContent.trim() : "",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": a ? a.textContent.trim() : ""
+                  }
+                };
+              })
+            };
+  
+            var ld = document.createElement('script');
+            ld.type = 'application/ld+json';
+            ld.textContent = JSON.stringify(data);
+            document.head.appendChild(ld);
+          })();
+        </script>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="section-head" label="Section heading">
+    <section class="section <perch:content id="bg" type="select" label="Background" options="Light (default)|, White|section--white, White tint|section--white-t" default="" />">
+      <div class="container">
+        <div class="section-head">
+          <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" /></span></perch:if>
+          <h2 class="h2 mw-640"><perch:content id="heading" type="text" label="Heading" required /></h2>
+          <perch:if exists="lead"><p class="lead mw-560"><perch:content id="lead" type="textarea" label="Lead" textile /></p></perch:if>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="cta" label="Call to action band">
+    <section id="contact" class="section section--md section--accent scroll-anchor">
+      <div class="container cta">
+        <div class="cta__copy">
+          <h2 class="h2 h2--lg"><perch:content id="heading" type="text" label="Heading" default="Ready for a website that works as hard as you do?" /></h2>
+          <p><perch:content id="text" type="textarea" label="Text" textile /></p>
+        </div>
+        <div class="cta__actions">
+          <a class="btn btn--dark" href="mailto:<perch:content id="email" type="text" label="Email" default="hello@hellotechnology.co.uk" />"><i data-lucide="mail"></i> <perch:content id="email" type="text" /></a>
+          <a class="cta__tel" href="tel:<perch:content id="tel" type="text" label="Phone" default="01947 000 000" />"><i data-lucide="phone"></i> <perch:content id="tel" type="text" /></a>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+</perch:blocks>

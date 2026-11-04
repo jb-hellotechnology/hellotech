@@ -1,0 +1,15 @@
+<a class="minicard" href="/work/<perch:content id="slug" />">
+	<div class="minicard__thumb stripe t-orange">
+		<perch:if exists="image_thumbnail">
+			<img src="<perch:content type="image" id="image_thumbnail" width="400" />" alt="<perch:content id="alt_thumbnail" type="text" />"><perch:else /><i data-lucide="monitor"></i>
+		</perch:if>
+	</div>
+	<div>
+		<perch:repeater id="tags" label="Tags" order="3" max="1">
+		  <span class="minicard__cat c-orange"><perch:content type="text" id="tag" label="Tag" /></span>
+		</perch:repeater>
+		
+		<h3 class="h3"><perch:content id="client" /></h3>
+		<p><perch:content type="text" id="intro" /></p>
+	</div>
+</a>

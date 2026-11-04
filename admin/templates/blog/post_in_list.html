@@ -1,0 +1,23 @@
+<perch:before><div class="grid grid--3"></perch:before>
+  <a class="work-card" href="<perch:blog id="postURL" encode="false" />">
+    <div class="work-card__thumb stripe t-teal">
+      <perch:if exists="image"><img src="<perch:blog id="image" type="image" width="700" height="460" crop="true" />" alt="<perch:blog id="postTitle" />"><perch:else /><i data-lucide="image"></i></perch:if>
+    </div>
+    <div class="work-card__body">
+      <h3 class="h3"><perch:blog id="postTitle" /></h3>
+      <div class="work-card__foot">
+        <div class="stat-inline__label"><perch:blog id="postDateTime" format="%d %B %Y" /></div>
+        <span class="link link--sm work-card__view">Read <i data-lucide="arrow-right"></i></span>
+      </div>
+    </div>
+  </a>
+<perch:after>
+  </div>
+  <perch:if exists="paging">
+    <nav class="pagination mt-8">
+      <perch:if exists="not_first_page"><a class="btn btn--outline btn--sm" href="<perch:blog id="prev_url" encode="false" />"><i data-lucide="arrow-left"></i> Newer</a></perch:if>
+      <span class="pagination__status">Page <perch:blog id="current_page" /> of <perch:blog id="number_of_pages" /></span>
+      <perch:if exists="not_last_page"><a class="btn btn--outline btn--sm" href="<perch:blog id="next_url" encode="false" />">Older <i data-lucide="arrow-right"></i></a></perch:if>
+    </nav>
+  </perch:if>
+</perch:after>

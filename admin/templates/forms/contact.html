@@ -1,0 +1,49 @@
+<section class="section section--white-t">
+  <div class="container">
+	<div class="contact-grid">
+	  <div>
+		  <perch:form id="contact" class="form" method="post" app="perch_forms">
+			<div class="field">
+			  <perch:label for="name">Name</perch:label>
+			  <perch:input type="text" id="name" required label="Name">
+			  <perch:error for="name" type="required">Please add your name</perch:error>
+			</div>
+			<div class="field">
+			  <perch:label for="email">Email address</perch:label>
+			  <perch:input type="email" id="email" required label="Email">
+			  <perch:error for="email" type="required">Please add your email address</perch:error>
+			</div>
+			<div class="field">
+			  <perch:label for="enquiry">How can I help?</perch:label>
+			  <perch:input type="textarea" id="enquiry" required label="Enquiry">
+			  <perch:error for="enquiry" type="required">Please add your enquiry</perch:error>
+			</div>
+			<perch:input class="btn btn--primary" type="submit" id="submit" value="Send message">
+			<perch:success>
+				<div class="success">
+					<p><strong>Thank you.</strong> I&rsquo;ll get back to you as soon as I can.</p>
+				</div>
+			</perch:success>
+		  </perch:form>
+	  </div>
+	  <div class="contact-panel">
+		<div class="contact-detail">
+		  <div class="contact-detail__icon"><i data-lucide="mail"></i></div>
+		  <div><div class="contact-detail__label">Email</div><div class="contact-detail__value"><a href="mailto:hi@hellotechnology.co.uk">hi@hellotechnology.co.uk</a></div></div>
+		</div>
+		<div class="contact-detail">
+		  <div class="contact-detail__icon"><i data-lucide="phone"></i></div>
+		  <div><div class="contact-detail__label">Phone</div><div class="contact-detail__value"><a href="tel:+441947878108">01947 878 108</a></div></div>
+		</div>
+		<div class="contact-detail">
+		  <div class="contact-detail__icon"><i data-lucide="map-pin"></i></div>
+		  <div><div class="contact-detail__label">Based in</div><div class="contact-detail__value">Whitby, North Yorkshire</div></div>
+		</div>
+		<div class="contact-detail">
+		  <div class="contact-detail__icon"><i data-lucide="clock"></i></div>
+		  <div><div class="contact-detail__label">Hours</div><div class="contact-detail__value">Mon–Fri, 9–5</div></div>
+		</div>
+	  </div>
+	</div>
+  </div>
+</section>

@@ -1,0 +1,6 @@
+<perch:before><ul class="nav__list"></perch:before>
+  <li class="nav__item<perch:if exists="subitems"> nav__item--has-children</perch:if><perch:if exists="current_page"> is-current</perch:if><perch:if exists="ancestor_page"> is-ancestor</perch:if>">
+    <a class="nav__link" href="<perch:pages id="pagePath" encode="false" />"><perch:pages id="pageNavText" /><perch:if exists="subitems"><span class="nav__caret" aria-hidden="true"><i data-lucide="chevron-down"></i></span></perch:if></a>
+    <perch:if exists="subitems"><perch:pages id="subitems" encode="false" /></perch:if>
+  </li>
+<perch:after></ul></perch:after>

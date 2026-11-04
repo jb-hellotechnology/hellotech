@@ -1,0 +1,135 @@
+<!-- HERO -->
+  <section class="pt-48 pb-40">
+	<div class="container container--narrow">
+	  <a class="back-link" href="/work"><i data-lucide="arrow-left"></i> All work</a>
+	  <div class="tags mb-6">
+		<perch:repeater id="tags" label="Tags" order="3">
+		  <span class="tag tag--<perch:content id="colour" type="select" label="Icon colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />"><perch:content type="text" id="tag" label="Tag" /></span>
+		</perch:repeater>
+	  </div>
+	  <h1 class="h1 h1--sm"><perch:content type="text" id="title" label="Title" title="true" order="1" /></h1>
+	  <p class="lead lead--lg mt-5"><perch:content type="text" id="intro" label="Intro" order="2" /></p>
+	  <perch:if exists="url">
+	  <p><a href="<perch:content type="text" id="url" label="Website URL" />" class="btn btn--primary btn--sm" target="_blank">View site</a></p>
+	  </perch:if>
+	</div>
+  </section>
+
+  <!-- HERO IMAGE -->
+  <section class="pt-20">
+	<div class="container">
+	  <div class="banner stripe stripe--wide t-<perch:content id="colour" type="select" label="Tint" options="Teal|teal, Orange|orange, Yellow|yellow, Neutral|neutral" default="teal" />">
+		<perch:if exists="image"><img src="<perch:content type="image" id="image" label="Image Hero" width="1600" />" alt="<perch:content id="alt" type="text" label="Description" />"><perch:else /><div class="ph-label ph-label--13"><i data-lucide="image"></i><perch:content id="placeholder" type="text" label="Placeholder label" default="Hero shot" /></div></perch:if>
+	  </div>
+	</div>
+  </section>
+
+  <!-- META BAR -->
+  <section class="py-40">
+	<div class="container">
+	  <div class="metabar">
+		<perch:repeater id="items" label="Facts">
+		  <div>
+			<div class="metabar__label"><perch:content id="label" type="text" label="Label" /></div>
+			<div class="metabar__value"><perch:content id="value" type="text" label="Value" /></div>
+			<perch:if exists="note"><div class="metabar__note"><perch:content id="note" type="text" label="Note" /></div></perch:if>
+		  </div>
+		</perch:repeater>
+	  </div>
+	</div>
+  </section>
+
+  <!-- STORY -->
+  <section class="<perch:content id="spacing" type="select" label="Spacing" options="Standard|section, Narrow top|pt-40, Tight|pt-20 pb-40" default="section" />">
+	<div class="container container--narrow story">
+	  <div class="block">
+		<perch:if exists="eyebrow"><span class="eyebrow eyebrow--<perch:content id="eyebrow_colour" type="select" label="Eyebrow colour" options="Orange|orange, Teal|teal, Yellow|yellow" default="orange" />"><perch:content id="eyebrow" type="text" label="Eyebrow" /></span></perch:if>
+		<perch:if exists="heading"><h2 class="h2 h2--30"><perch:content id="heading" type="text" label="Heading" /></h2></perch:if>
+		<div class="prose"><perch:content id="body" type="textarea" label="Body" html editor="redactor" /></div>
+	  </div>
+	</div>
+  </section>
+
+  <!-- PULL QUOTE -->
+  <perch:if exists="text">
+  <section class="pt-20 pb-40">
+	<div class="container container--narrow">
+	  <div class="pullquote">
+		<div class="pullquote__mark">&ldquo;</div>
+		<p class="pullquote__text"><perch:content id="text" type="text" label="Quote" /></p>
+		<div class="pullquote__who">
+		  <div class="pullquote__avatar"><i data-lucide="user"></i></div>
+		  <div>
+			<div class="pullquote__name"><perch:content id="name" type="text" label="Name" /></div>
+			<div class="pullquote__role"><perch:content id="role" type="text" label="Role" /></div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </section>
+  </perch:if>
+
+  <!-- RESULTS -->
+  <section class="section section--sm section--white">
+	<div class="container">
+	  <div class="section-head">
+		<perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="metrics-eyebrow" type="text" label="Eyebrow" default="The results" /></span></perch:if>
+		<h2 class="h2 h2--32 mw-520"><perch:content id="metrics-heading" type="text" label="Heading" /></h2>
+	  </div>
+	  <div class="grid grid--3">
+		<perch:repeater id="metrics" label="Metrics">
+		  <div class="metric card">
+			<div class="metric__num c-<perch:content id="colour" type="select" label="Colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />"><perch:content id="num" type="text" label="Figure" /></div>
+			<div class="metric__text"><perch:content id="text" type="text" label="Text" /></div>
+		  </div>
+		</perch:repeater>
+	  </div>
+	</div>
+  </section>
+
+  <!-- GALLERY -->
+  <!--
+  <section class="section section--sm">
+	<div class="container">
+	  <span class="eyebrow mb-7">A look at the site</span>
+	  <div class="gallery-row gallery-row--feature">
+		<div class="gallery-tile gallery-tile--1610 stripe">
+			<perch:if exists="image_desktop">
+				<img src="<perch:content type="image" id="image_desktop" label="Image Desktop" width="1600" />" alt="<perch:content id="alt_mobile" type="text" label="Description" />"><perch:else /><i data-lucide="monitor"></i>
+			</perch:if>
+		</div>
+		<div class="gallery-tile stripe">
+			<perch:if exists="image_mobile">
+				<img src="<perch:content type="image" id="image_mobile" label="Image Mobile" width="800" />" alt="<perch:content id="alt_mobile" type="text" label="Description" />"><perch:else /><i data-lucide="monitor"></i>
+			</perch:if>
+		</div>
+	  </div>
+	  <div class="gallery-row gallery-row--trio">
+		<div class="gallery-tile gallery-tile--43 stripe">
+			<perch:if exists="image_lifestyle_1">
+				<img src="<perch:content type="image" id="image_lifestyle_1" label="Image Lifestyle 1" width="800" />" alt="<perch:content id="alt_lifestyle_1" type="text" label="Description" />"><perch:else /><i data-lucide="monitor"></i>
+			</perch:if>
+		</div>
+		<div class="gallery-tile gallery-tile--43 stripe">
+			<perch:if exists="image_lifestyle_2">
+				<img src="<perch:content type="image" id="image_lifestyle_2" label="Image Lifestyle 3" width="800" />" alt="<perch:content id="alt_lifestyle_2" type="text" label="Description" />"><perch:else /><i data-lucide="monitor"></i>
+			</perch:if>
+		</div>
+		<div class="gallery-tile gallery-tile--43 stripe">
+			<perch:if exists="image_lifestyle_3">
+				<img src="<perch:content type="image" id="image_lifestyle_3" label="Image Lifestyle 3" width="800" />" alt="<perch:content id="alt_lifestyle_3" type="text" label="Description" />"><perch:else /><i data-lucide="monitor"></i>
+			</perch:if>
+		</div>
+	  </div>
+	</div>
+  </section>
+  -->
+  
+  <perch:content id="slug" type="slug" for="title" suppress="true" />
+  <perch:content type="text" id="client" label="Client" suppress="true" />
+  <perch:content type="text" id="sector" label="Sector" suppress="true" />
+  <perch:content type="text" id="services" label="Services" suppress="true" />
+  <perch:content type="text" id="outcome" label="Outcome" suppress="true" />
+  
+  <perch:content type="image" id="image_thumbnail" label="Image Thumbnail" width="800" suppress="true" />
+  <perch:content id="alt_thumbnail" type="text" label="Description" suppress="true" />

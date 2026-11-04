@@ -1,26 +1,22 @@
-# Ignore everything
+# Ignore everything by default
 *
-# But descend into directories
+
+# Allow directories to be traversed so the rules below can match
 !*/
 
-# # Recursively allow files under:
-# "mu-plugins", "plugins", "themes" directory
-!/wp-content/themes/**
+# Allow only these:
+!/assets/
+!/assets/**
+!/found/
+!/found/**
+!/styles.css
+!/sitemap.php
+!/admin/
+!/admin/templates/
+!/admin/templates/**
 
-# ignore this file
-wp-content/themes/index.php
+# Allow this file
+!/.gitignore
 
-# ignore specific themes
-wp-content/themes/hellotechnology/
-
-# ignore log files and databases
-*.log
-*.sql
-*.sqlite
-*.DS_Store
-
-# Include cPanel GitHub config
-!.cpanel.yml
-
-# don't ignore this file
-!.gitignore
+# Never track OS junk, even inside allowed folders
+.DS_Store

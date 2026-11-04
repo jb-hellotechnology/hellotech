@@ -1,0 +1,17 @@
+
+	<article class="case-card">
+	  <perch:repeater id="tags" label="Tags" order="3">
+		<span class="tag tag--<perch:content id="colour" type="select" label="Icon colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />"><perch:content type="text" id="tag" label="Tag" /></span>
+	  </perch:repeater>
+	  <h3 class="case-card__title"><perch:content type="text" id="title" label="Title" title="true" order="1" /></h3>
+	  <p class="card__text"><perch:content type="text" id="intro" label="Intro" order="2" /></p>
+	  <div class="case-card__defs">
+		<div><div class="def__label">Client</div><div class="def__value"><perch:content type="text" id="client" label="Client" /></div></div>
+		<div><div class="def__label">Sector</div><div class="def__value"><perch:content type="text" id="sector" label="Sector" /></div></div>
+		<div><div class="def__label">Services</div><div class="def__value"><perch:content type="text" id="services" label="Services" /></div></div>
+		<div><div class="def__label">Outcome</div><div class="def__value def__value--accent"><perch:content type="text" id="outcome" label="Outcome" /></div></div>
+	  </div>
+	  <div class="mt-5">
+		  <a class="link" href="/work/<perch:content type="text" id="slug" label="Slug" />/">Read the case study <i data-lucide="arrow-right"></i></a>
+	  </div>
+	</article>

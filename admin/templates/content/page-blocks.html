@@ -1,0 +1,257 @@
+<perch:blocks>
+
+  <perch:block type="section-head" label="Section heading">
+    <perch:if exists="crumb_label">
+      <div class="container breadcrumb">
+        <a href="/">Home</a><span class="sep">/</span><span class="current"><perch:content id="crumb_label" type="text" label="Breadcrumb current" /></span>
+      </div>
+      <script>
+        // Builds BreadcrumbList structured data from this rendered trail
+        (function () {
+          var container = document.currentScript.previousElementSibling;
+          if (!container) return;
+
+          var items = [];
+          var position = 1;
+          Array.prototype.forEach.call(container.querySelectorAll('a'), function (a) {
+            items.push({
+              "@type": "ListItem",
+              "position": position++,
+              "name": a.textContent.trim(),
+              "item": new URL(a.getAttribute('href'), window.location.origin).href
+            });
+          });
+          var current = container.querySelector('.current');
+          if (current) {
+            items.push({
+              "@type": "ListItem",
+              "position": position++,
+              "name": current.textContent.trim(),
+              "item": window.location.href
+            });
+          }
+
+          var data = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": items
+          };
+
+          var ld = document.createElement('script');
+          ld.type = 'application/ld+json';
+          ld.textContent = JSON.stringify(data);
+          document.head.appendChild(ld);
+        })();
+      </script>
+    </perch:if>
+    <section class="section <perch:content id="bg" type="select" label="Background" options="Light (default)|, White|section--white, White tint|section--white-t" default="" />">
+      <div class="container">
+        <div class="section-head">
+          <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" /></span></perch:if>
+          <h1 class="h1 mw-640"><perch:content id="heading" type="text" label="Heading" required /></h1>
+          <perch:if exists="lead"><p class="lead mw-560"><perch:content id="lead" type="text" label="Lead" /></p></perch:if>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="prose" label="Rich text block">
+    <section class="<perch:content id="spacing" type="select" label="Spacing" options="Standard|section, Narrow top|pt-40, Tight|pt-20 pb-40" default="section" />">
+      <div class="container container--narrow story">
+        <div class="block">
+          <perch:if exists="eyebrow"><span class="eyebrow eyebrow--<perch:content id="eyebrow_colour" type="select" label="Eyebrow colour" options="Orange|orange, Teal|teal, Yellow|yellow" default="orange" />"><perch:content id="eyebrow" type="text" label="Eyebrow" /></span></perch:if>
+          <perch:if exists="heading"><h2 class="h2 h2--30"><perch:content id="heading" type="text" label="Heading" /></h2></perch:if>
+          <div class="prose"><perch:content id="body" type="textarea" label="Body" html editor="redactor" /></div>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="services" label="Services — 3 feature cards">
+    <section class="section <perch:content id="bg" type="select" label="Background" options="White|section--white, Light|, Large|section section--lg" default="section--white" />">
+      <div class="container">
+        <perch:if exists="heading">
+          <div class="section-head">
+            <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" default="What I do" /></span></perch:if>
+            <h2 class="h2 mw-640"><perch:content id="heading" type="text" label="Heading" /></h2>
+            <perch:if exists="lead"><p class="lead mw-560"><perch:content id="lead" type="textarea" label="Lead" textile /></p></perch:if>
+          </div>
+        </perch:if>
+        <div class="grid grid--3">
+          <perch:repeater id="cards" label="Cards">
+            <div class="card card--soft">
+              <div class="icon-box icon-box--lg icon-box--<perch:content id="colour" type="select" label="Icon colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />"><i data-lucide="<perch:content id="icon" type="text" label="Icon" default="monitor-smartphone" />"></i></div>
+              <h3 class="h3 fs-21"><perch:content id="title" type="text" label="Title" /></h3>
+              <perch:content id="text" type="textarea" label="Text" textile />
+              <perch:if exists="link_label_1">
+              <div class="hub-card__links">
+                <perch:if exists="link_label_1">
+                <a href="<perch:content type="text" id="link_url_1" label="Link URL #1" />"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true" class="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg> <perch:content type="text" id="link_label_1" label="Link URL #1" /></a>
+                </perch:if>
+                <perch:if exists="link_label_2">
+                <a href="<perch:content type="text" id="link_url_2" label="Link URL #2" />"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true" class="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg> <perch:content type="text" id="link_label_2" label="Link URL #2" /></a>
+                </perch:if>
+                <perch:if exists="link_label_3">
+                <a href="<perch:content type="text" id="link_url_3" label="Link URL #3" />"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" aria-hidden="true" class="lucide lucide-arrow-right"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg> <perch:content type="text" id="link_label_3" label="Link URL #3" /></a>
+                </perch:if>
+              </div>
+              </perch:if>
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="features" label="Features — small card grid">
+    <section class="section <perch:content id="bg" type="select" label="Background" options="Light (default)|, White|section--white" default="" />">
+      <div class="container">
+        <perch:if exists="heading">
+          <div class="section-head">
+            <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" default="What's included" /></span></perch:if>
+            <h2 class="h2 mw-600"><perch:content id="heading" type="text" label="Heading" /></h2>
+          </div>
+        </perch:if>
+        <div class="grid grid--3">
+          <perch:repeater id="cards" label="Cards">
+            <div class="card card--sm">
+              <div class="icon-box icon-box--<perch:content id="colour" type="select" label="Icon colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />"><i data-lucide="<perch:content id="icon" type="text" label="Icon" default="palette" />"></i></div>
+              <h3 class="h3 mb-2"><perch:content id="title" type="text" label="Title" /></h3>
+              <p class="card__text"><perch:content id="text" type="textarea" label="Text" textile /></p>
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="testimonials" label="Testimonials">
+    <section class="section section--white">
+      <div class="container">
+        <div class="section-head">
+          <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" default="Kind words" /></span></perch:if>
+          <h2 class="h2 mw-560"><perch:content id="heading" type="text" label="Heading" /></h2>
+        </div>
+        <div class="grid grid--3">
+          <perch:repeater id="quotes" label="Quotes">
+            <div class="quote-card">
+              <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+              <p class="quote-card__text">&ldquo;<perch:content id="text" type="textarea" label="Quote" />&rdquo;</p>
+              <div class="quote-card__by">&mdash; <perch:content id="by" type="text" label="Attribution" /></div>
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="faq" label="FAQ">
+    <section class="section section--white-t">
+      <div class="container container--text">
+        <perch:if exists="eyebrow"><span class="eyebrow eyebrow--center mb-4"><perch:content id="eyebrow" type="text" label="Eyebrow" default="Common questions" /></span></perch:if>
+        <h2 class="h2 tc mb-8"><perch:content id="heading" type="text" label="Heading" default="Good to know." /></h2>
+        <div class="faq">
+          <perch:repeater id="items" label="Questions">
+            <div class="faq__item">
+              <h3 class="faq__q"><i data-lucide="help-circle"></i> <perch:content id="q" type="text" label="Question" /></h3>
+              <p class="faq__a"><perch:content id="a" type="textarea" label="Answer" textile /></p>
+            </div>
+          </perch:repeater>
+        </div>
+        <script>
+          // Builds FAQPage structured data from this block's rendered Q&As
+          (function () {
+            var container = document.currentScript.previousElementSibling;
+            if (!container) return;
+            var items = container.querySelectorAll('.faq__item');
+            if (!items.length) return;
+
+            var data = {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": Array.prototype.map.call(items, function (item) {
+                var q = item.querySelector('.faq__q');
+                var a = item.querySelector('.faq__a');
+                return {
+                  "@type": "Question",
+                  "name": q ? q.textContent.trim() : "",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": a ? a.textContent.trim() : ""
+                  }
+                };
+              })
+            };
+
+            var ld = document.createElement('script');
+            ld.type = 'application/ld+json';
+            ld.textContent = JSON.stringify(data);
+            document.head.appendChild(ld);
+          })();
+        </script>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="banner" label="Banner image">
+    <section class="pt-20">
+      <div class="container">
+        <div class="banner stripe stripe--wide t-<perch:content id="colour" type="select" label="Tint" options="Teal|teal, Orange|orange, Yellow|yellow, Neutral|neutral" default="teal" />">
+          <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Image" width="1600" />" alt="<perch:content id="alt" type="text" label="Description" />"><perch:else /><div class="ph-label ph-label--13"><i data-lucide="image"></i><perch:content id="placeholder" type="text" label="Placeholder label" default="Hero shot" /></div></perch:if>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="gallery" label="Image gallery">
+    <section class="section section--sm">
+      <div class="container">
+        <perch:if exists="eyebrow"><span class="eyebrow mb-7"><perch:content id="eyebrow" type="text" label="Eyebrow" default="A look at the site" /></span></perch:if>
+        <div class="gallery-row gallery-row--trio">
+          <perch:repeater id="tiles" label="Tiles">
+            <div class="gallery-tile gallery-tile--43 stripe">
+              <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Image" width="800" />" alt="<perch:content id="alt" type="text" label="Description" />"><perch:else /><i data-lucide="<perch:content id="icon" type="text" label="Placeholder icon" default="image" />"></i></perch:if>
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+
+  <perch:block type="cta" label="Call to action band">
+    <section id="contact" class="section section--md section--accent scroll-anchor">
+      <div class="container cta">
+        <div class="cta__copy">
+          <h2 class="h2 h2--lg"><perch:content id="heading" type="text" label="Heading" default="Got a project, or just a question?" /></h2>
+          <p><perch:content id="text" type="textarea" label="Text" textile /></p>
+        </div>
+        <div class="cta__actions">
+          <a class="btn btn--dark" href="mailto:<perch:content id="email" type="text" label="Email" default="hello@hellotechnology.co.uk" />"><i data-lucide="mail"></i> <perch:content id="email" type="text" /></a>
+          <a class="cta__tel" href="tel:<perch:content id="tel" type="text" label="Phone" default="01947 000 000" />"><i data-lucide="phone"></i> <perch:content id="tel" type="text" /></a>
+        </div>
+      </div>
+    </section>
+  </perch:block>
+  
+  <perch:block type="case-study" label="Case Study">
+    <section class="section section--white-t">
+      <div class="container">
+        <article class="case-card">
+          <span class="tag tag--<perch:content id="eyebrow_colour" type="select" label="Eyebrow colour" options="Orange|orange, Teal|teal, Yellow|yellow" default="orange" />"><perch:content type="text" id="tag" label="Tag" /></span>
+          <h3 class="case-card__title"><perch:content type="text" id="title" label="Title" /></h3>
+          <p class="card__text"><perch:content type="text" id="intro" label="Intro" /></p>
+          <div class="case-card__defs">
+            <div><div class="def__label">Client</div><div class="def__value"><perch:content type="text" id="client" label="Client" /></div></div>
+            <div><div class="def__label">Sector</div><div class="def__value"><perch:content type="text" id="sector" label="Sector" /></div></div>
+            <div><div class="def__label">Services</div><div class="def__value"><perch:content type="text" id="tag" label="Services" /></div></div>
+            <div><div class="def__label">Outcome</div><div class="def__value def__value--accent"><perch:content type="text" id="outcome" label="Outcome" /></div></div>
+          </div>
+          <div class="mt-5">
+              <a class="link" href="/work/<perch:content type="text" id="link" label="Link" />/">Read the case study <i data-lucide="arrow-right"></i></a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </perch:block>
+
+</perch:blocks>

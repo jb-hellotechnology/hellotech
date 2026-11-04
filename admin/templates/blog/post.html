@@ -1,0 +1,34 @@
+<article class="h-entry">
+  <section class="pt-48 pb-40">
+    <div class="container container--text">
+      <a class="back-link" href="/blog"><i data-lucide="arrow-left"></i> All posts</a>
+      <perch:categories id="categories" set="blog" label="Categories" display-as="checkboxes">
+        <perch:before><div class="tags mb-6"></perch:before>
+        <span class="tag tag--teal p-category"><perch:category id="catTitle" type="text" /></span>
+        <perch:after></div></perch:after>
+      </perch:categories>
+      <h1 class="h1 h1--sm p-name"><perch:blog id="postTitle" type="text" label="Title" required="true" size="xl autowidth" order="1" /></h1>
+      <p class="post-meta lead mt-3">
+        <i data-lucide="calendar"></i>
+        <time class="dt-published" datetime="<perch:blog id="postDateTime" type="date" label="Date" time="true" format="Y-m-d H:i:s" divider-before="Publishing" />"><perch:blog id="postDateTime" type="date" time="true" format="%d %B %Y" /></time>
+        <perch:if exists="authorGivenName"> &middot; <span class="p-author h-card"><perch:blog id="authorGivenName" type="hidden" /> <perch:blog id="authorFamilyName" type="hidden" /></span></perch:if>
+      </p>
+    </div>
+  </section>
+
+  <perch:if exists="image">
+    <section class="pt-20">
+      <div class="container">
+        <div class="banner stripe stripe--wide t-teal">
+          <img src="<perch:blog id="image" type="image" width="1600" label="Hero image" order="4" />" alt="<perch:blog id="postTitle" />">
+        </div>
+      </div>
+    </section>
+  </perch:if>
+
+  <section class="section pt-48">
+    <div class="container container--text prose e-content">
+      <perch:blog id="postDescHTML" type="textarea" label="Post" order="2" editor="redactor" html="true" size="xxl autowidth" required="true" />
+    </div>
+  </section>
+</article>
