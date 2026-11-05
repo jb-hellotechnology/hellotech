@@ -1,5 +1,16 @@
-
-	<article class="case-card">
+	<article class="case-card<perch:if exists="image"> case-card--visual<perch:else /><perch:if exists="image_thumbnail"> case-card--visual</perch:if></perch:if>">
+	  <perch:if exists="image">
+		<a class="case-card__media stripe" href="/work/<perch:content type="text" id="slug" label="Slug" />" tabindex="-1">
+		  <img src="<perch:content type="image" id="image" label="Image Hero" width="900" />" alt="<perch:if exists="alt"><perch:content id="alt" type="text" label="Description" /><perch:else /><perch:content type="text" id="title" label="Title" title="true" order="1" /></perch:if>" loading="<perch:if exists="perch_item_first">eager" fetchpriority="high<perch:else />lazy</perch:if>" decoding="async">
+		</a>
+	  <perch:else />
+		<perch:if exists="image_thumbnail">
+		  <a class="case-card__media stripe" href="/work/<perch:content type="text" id="slug" label="Slug" />" tabindex="-1">
+			<img src="<perch:content type="image" id="image_thumbnail" width="900" />" alt="<perch:if exists="alt_thumbnail"><perch:content id="alt_thumbnail" type="text" /><perch:else /><perch:content type="text" id="title" label="Title" title="true" order="1" /></perch:if>" loading="<perch:if exists="perch_item_first">eager" fetchpriority="high<perch:else />lazy</perch:if>" decoding="async">
+		  </a>
+		</perch:if>
+	  </perch:if>
+	  <div class="case-card__body">
 	  <perch:repeater id="tags" label="Tags" order="3">
 		<span class="tag tag--<perch:content id="colour" type="select" label="Icon colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />"><perch:content type="text" id="tag" label="Tag" /></span>
 	  </perch:repeater>
@@ -13,5 +24,6 @@
 	  </div>
 	  <div class="mt-5">
 		  <a class="link" href="/work/<perch:content type="text" id="slug" label="Slug" />">Read the case study <i data-lucide="arrow-right"></i></a>
+	  </div>
 	  </div>
 	</article>

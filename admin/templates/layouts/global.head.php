@@ -19,5 +19,5 @@
 <?php /* Load fonts without blocking first paint (swap to rel=stylesheet once loaded) */ ?>
 <link rel="stylesheet" href="<?php echo $fonts_url; ?>" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="<?php echo $fonts_url; ?>"></noscript>
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?v=<?= rand() ?>">
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>

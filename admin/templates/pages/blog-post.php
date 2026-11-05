@@ -121,6 +121,8 @@
 </head>
 <body>
 
+  <?php if ($post_html): ?><div class="read-progress" aria-hidden="true"></div><?php endif; ?>
+
   <?php perch_layout('global.header'); ?>
 
   <main id="main" tabindex="-1">

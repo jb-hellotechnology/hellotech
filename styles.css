@@ -1164,3 +1164,150 @@ main:focus { outline: none; }
 .found-promo__price { font-size: 52px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--yellow); }
 .found-promo__price small { font-size: 19px; font-weight: 500; color: var(--on-dark); letter-spacing: 0; }
 .found-promo__fine { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: var(--on-dark); margin-bottom: 8px; }
+
+
+/* --------------------------------------------------------------------------
+   Case-study cards with a primary image (/work)
+   -------------------------------------------------------------------------- */
+.case-card--visual {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  padding: 0; overflow: hidden;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.case-card--visual:hover { box-shadow: 0 14px 36px rgba(43,43,43,0.10); transform: translateY(-2px); }
+.case-card__media { position: relative; display: block; min-height: 300px; overflow: hidden; }
+.case-card__media img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  transition: transform .5s ease;
+}
+.case-card--visual:hover .case-card__media img { transform: scale(1.03); }
+.case-card__body { min-width: 0; }
+.case-card--visual .case-card__body { padding: 36px; align-self: center; }
+.case-card--visual .case-card__defs { grid-template-columns: 1fr 1fr; }
+/* alternate the image side for rhythm */
+.case-card--visual:nth-child(even) .case-card__media { order: 2; }
+
+@media (max-width: 860px) {
+  .case-card--visual { grid-template-columns: 1fr; }
+  .case-card--visual:nth-child(even) .case-card__media { order: 0; }
+  .case-card__media { min-height: 0; aspect-ratio: 16 / 10; }
+  .case-card--visual .case-card__body { padding: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-card--visual:hover { transform: none; }
+  .case-card--visual:hover .case-card__media img { transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Scroll-driven reveal animations — CSS only, via animation-timeline: view()
+   Progressive enhancement: browsers without support (or visitors who prefer
+   reduced motion) simply see the normal, fully-visible page. Only `opacity`
+   and the individual `translate` / `scale` / `rotate` properties are animated,
+   so nothing causes layout shift, and the `transform` property stays free for
+   the hover effects on cards.
+   -------------------------------------------------------------------------- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+
+    @keyframes ht-rise     { from { opacity: 0; translate: 0 80px; } to { opacity: 1; translate: 0 0; } }
+    @keyframes ht-from-left { from { opacity: 0; translate: -32px 0; } to { opacity: 1; translate: 0 0; } }
+    @keyframes ht-icon-pop { from { opacity: 0; scale: .3; rotate: -90deg; } to { opacity: 1; scale: 1; rotate: 0deg; } }
+    @keyframes ht-parallax { from { translate: 0 -5%; } to { translate: 0 5%; } }
+
+    /* Position in a row of cards -> small stagger via the animation range */
+    :where(.grid, .steps) > :nth-child(3n + 1) { --i: 0; }
+    :where(.grid, .steps) > :nth-child(3n + 2) { --i: 1; }
+    :where(.grid, .steps) > :nth-child(3n + 3) { --i: 2; }
+
+    /* Cards, pricing tiers, quotes, metrics, process steps, section intros.
+       Anything inside a .hero is excluded so above-the-fold content never waits. */
+    :where(.card, .price, .work-card, .minicard, .case-card, .quote-card, .metric, .step-card, .steps__col, .author-bio, .section-head):not(.hero *) {
+      animation: ht-rise linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i, 0) * 7%) entry calc(32% + var(--i, 0) * 7%);
+    }
+
+    /* FAQ: each question slides in from the left once it has been on screen a little
+       while (35%–85% of its entry), and its help icon spins in a beat later. */
+    .faq__item {
+      animation: ht-from-left linear both;
+      animation-timeline: view();
+      animation-range: entry 50% entry 85%;   /* starts once ~a third of the item is on screen */
+    }
+    .faq__q svg, .faq__q [data-lucide] {
+      animation: ht-icon-pop linear both;
+      animation-timeline: view();
+      animation-range: entry 60% entry 100%;
+    }
+
+    /* Case-study images drift slightly against the card as you scroll */
+    .case-card__media img {
+      top: -7%; bottom: auto; height: 114%;
+      animation: ht-parallax linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   More scroll-driven effects (same progressive-enhancement rules as above:
+   only where animation-timeline is supported, and never with reduced motion)
+   -------------------------------------------------------------------------- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+
+    @keyframes ht-hero-drift  { from { translate: 0 0; } to { translate: 0 5%; } }
+    @keyframes ht-hero-badge  { from { translate: 0 0; } to { translate: 0 -44px; } }
+    @keyframes ht-scale-up    { from { opacity: 0; scale: .88; translate: 0 32px; } to { opacity: 1; scale: 1; translate: 0 0; } }
+    @keyframes ht-pop-in      { from { opacity: 0; scale: .8; } to { opacity: 1; scale: 1; } }
+    @keyframes ht-read-progress { from { scale: 0 1; } to { scale: 1 1; } }
+
+    /* 1. Hero portrait: the photo drifts down inside its frame while the page scrolls up,
+          and the floating badge rises a little faster for depth. */
+    .hero .hero__media { view-timeline: --hero-media block; }
+    .hero .portrait img {
+      scale: 1.12;                       /* headroom so the drift never shows an edge */
+      animation: ht-hero-drift linear both;
+      animation-timeline: --hero-media;
+      animation-range: exit 0% exit 100%;
+    }
+    .hero .float-card {
+      animation: ht-hero-badge linear both;
+      animation-timeline: --hero-media;
+      animation-range: exit 0% exit 100%;
+    }
+
+    /* 3. hello.found promo band: the content scales up into place, then the price/button pops. */
+    .found-promo__inner {
+      animation: ht-scale-up linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 65%;
+    }
+    .found-promo__actions {
+      animation: ht-pop-in linear both;
+      animation-timeline: view();
+      animation-range: entry 45% entry 95%;
+    }
+  }
+
+  /* 2. Reading progress bar along the bottom of blog posts (needs named-timeline scoping support).
+        The article's own scroll progress drives the bar: 0% when the article reaches the
+        top of the screen, 100% when its end reaches the bottom. */
+  @supports (animation-timeline: view()) and (timeline-scope: --post) {
+    body:has(.read-progress) { timeline-scope: --post; }
+    .h-entry { view-timeline: --post block; }
+    .read-progress {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 5px; z-index: 90;
+      background: var(--yellow);
+      transform-origin: 0 50%;
+      scale: 0 1;
+      animation: ht-read-progress linear both;
+      animation-timeline: --post;
+      animation-range: contain 0% contain 100%;
+      pointer-events: none;
+    }
+  }
+}
