@@ -1293,11 +1293,11 @@ main:focus { outline: none; }
     }
   }
 
-  /* 2. Reading progress bar along the bottom of blog posts (needs named-timeline scoping support).
-        The article's own scroll progress drives the bar: 0% when the article reaches the
-        top of the screen, 100% when its end reaches the bottom. */
-  @supports (animation-timeline: view()) and (timeline-scope: --post) {
-    body:has(.read-progress) { timeline-scope: --post; }
+  /* 2. Reading progress bar along the bottom of blog posts.
+        The bar sits inside the <article class="h-entry">, so it can use that article's named
+        view timeline: 0% when the article reaches the top of the screen, 100% when its end
+        reaches the bottom. */
+  @supports (animation-timeline: view()) {
     .h-entry { view-timeline: --post block; }
     .read-progress {
       position: fixed; bottom: 0; left: 0; right: 0; height: 5px; z-index: 90;

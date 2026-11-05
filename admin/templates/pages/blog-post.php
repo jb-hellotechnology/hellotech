@@ -121,8 +121,6 @@
 </head>
 <body>
 
-  <?php if ($post_html): ?><div class="read-progress" aria-hidden="true"></div><?php endif; ?>
-
   <?php perch_layout('global.header'); ?>
 
   <main id="main" tabindex="-1">
@@ -132,7 +130,7 @@
       <section class="section section--sm">
         <div class="container container--text">
           <aside class="author-bio">
-            <img class="author-bio__avatar" src="/admin/resources/jb3a-copy-w900.jpg" alt="Jack Barber" width="72" height="72">
+            <img class="author-bio__avatar" src="/admin/resources/jb3a-copy-w900h1125.jpg" alt="Jack Barber" width="72" height="72">
             <div class="author-bio__body">
               <div class="author-bio__kicker">Written by</div>
               <h2 class="author-bio__name">Jack Barber</h2>
