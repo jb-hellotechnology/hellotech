@@ -16,8 +16,12 @@
 !/admin/templates/
 !/admin/templates/**
 
+!/admin/addons/apps/hello_found/
+!/admin/addons/apps/hello_found/**
+
 # Never track config (credentials)
 /found/config.php
+/admin/addons/apps/hello_found/config.php
 
 # Allow this file
 !/.gitignore
