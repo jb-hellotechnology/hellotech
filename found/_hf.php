@@ -34,7 +34,7 @@ function hf_page_start($title)
 .hf-table{width:100%;border-collapse:collapse}
 .hf-table th,.hf-table td{text-align:left;padding:.55rem .5rem;border-bottom:1px solid #eee}
 .hf-notice{padding:.8rem 1rem;border-radius:8px;background:#fdebc8;margin-bottom:1.5rem}
-.hf-form input[type=text]{width:100%;padding:.7rem;border:1px solid #bbb;border-radius:8px;font:inherit;margin:.4rem 0 1rem}
+.hf-form input[type=text],.hf-form input[type=password]{width:100%;padding:.7rem;border:1px solid #bbb;border-radius:8px;font:inherit;margin:.4rem 0 1rem}
 .hf-err{color:#b3261e}
 </style>
 </head>

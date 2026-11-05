@@ -36,7 +36,7 @@ if (($_GET['status'] ?? '') === 'inactive'): ?>
   <?php if ($account['stripe_customer_id']): ?>
     <form method="post" action=""><?= hf_csrf_field() ?><button class="btn btn--primary" type="submit">Manage subscription</button></form>
   <?php else: ?>
-    <a class="btn btn--primary" href="<?= hf_e(hf_url('signup/')) ?>">Start subscription</a>
+    <a class="btn btn--primary" href="<?= hf_e(hf_url('subscribe/')) ?>">Start subscription</a>
   <?php endif; ?>
   </div>
 </div>

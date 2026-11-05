@@ -40,7 +40,7 @@ class HF_Members
 	}
 
 	/** Create a member with a random password and tag them into the customers group. @return int|null */
-	public static function create($email, $name)
+	public static function create($email, $name, $password = null)
 	{
 		if (!self::available()) throw new RuntimeException('Perch Members is not installed.');
 		$API = new PerchAPI(1.0, 'perch_members');
@@ -49,12 +49,12 @@ class HF_Members
 		$parts = explode(' ', trim($name), 2);
 		$props = ['first_name' => $parts[0] ?? '', 'last_name' => $parts[1] ?? ''];
 
-		// Members hashes with phpass, not password_hash(). The customer sets a real one via /members/reset.
+		// Members hashes with phpass, not password_hash(). No password given = random (customer uses /members/reset).
 		$Hasher = PerchUtil::get_password_hasher();
 		$Member = $Members->create([
 			'memberAuthType'   => 'native',
 			'memberEmail'      => $email,
-			'memberPassword'   => $Hasher->HashPassword(bin2hex(random_bytes(16))),
+			'memberPassword'   => $Hasher->HashPassword($password !== null ? $password : bin2hex(random_bytes(16))),
 			'memberStatus'     => 'active',
 			'memberCreated'    => HF_Db::now(),
 			'memberProperties' => PerchUtil::json_safe_encode($props),

@@ -20,15 +20,16 @@ class HF_Stripe
 	}
 
 	/** @return string|null Checkout URL */
-	public static function checkout_url($email, $account_id = null)
+	public static function checkout_url($email, $account_id = null, $customer_id = null)
 	{
 		$params = [
 			'mode' => 'subscription',
 			'line_items' => [['price' => HELLOFOUND_STRIPE_PRICE_ID, 'quantity' => 1]],
 			'success_url' => hf_abs_url('welcome/') . '?session_id={CHECKOUT_SESSION_ID}',
-			'cancel_url' => hf_abs_url('signup/'),
+			'cancel_url' => hf_abs_url('subscribe/'),
 		];
-		if ($email) $params['customer_email'] = $email;
+		if ($customer_id) $params['customer'] = $customer_id;
+		elseif ($email) $params['customer_email'] = $email;
 		if ($account_id) {
 			$params['client_reference_id'] = (string)$account_id;
 			$params['subscription_data'] = ['metadata' => ['account_id' => (string)$account_id]];
