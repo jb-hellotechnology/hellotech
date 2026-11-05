@@ -1,0 +1,32 @@
+<perch:member logged-in="true">
+
+	<p>Hi <perch:member id="first_name" />, you are logged in.</p>
+
+<perch:else:member />
+
+	<perch:form id="login" method="post" app="perch_members">
+
+		<perch:error for="all" type="login">
+			<p class="error" role="alert" style="color:#b3261e">Those details don't match our records.</p>
+		</perch:error>
+
+		<div style="margin-bottom:1rem">
+			<perch:label for="email">Email</perch:label>
+			<perch:input type="email" id="email" required="true" label="Email" autocomplete="username" />
+			<perch:error for="email" type="required"><small class="error">Required</small></perch:error>
+			<perch:error for="email" type="format"><small class="error">Check the format of the address</small></perch:error>
+		</div>
+		<div style="margin-bottom:1rem">
+			<perch:label for="password">Password</perch:label>
+			<perch:input type="password" id="password" required="true" label="Password" autocomplete="current-password" />
+			<perch:error for="password" type="required"><small class="error">Required</small></perch:error>
+		</div>
+		<div>
+			<perch:input type="submit" id="submit" value="Log in" class="btn btn--primary" />
+			<perch:input type="hidden" id="r" />
+			<p>Forgotten your password? <a href="/members/reset">Reset it</a>.</p>
+		</div>
+
+	</perch:form>
+
+</perch:member>

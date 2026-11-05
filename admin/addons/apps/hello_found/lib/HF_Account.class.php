@@ -34,7 +34,7 @@ class HF_Account
 	 */
 	public static function require_active($allow_inactive = false)
 	{
-		if (!HF_Members::logged_in()) hf_redirect(HELLOFOUND_LOGIN_URL . '?return=' . rawurlencode($_SERVER['REQUEST_URI'] ?? hf_url('dashboard/')));
+		if (!HF_Members::logged_in()) hf_redirect(HELLOFOUND_LOGIN_URL . '?r=' . rawurlencode($_SERVER['REQUEST_URI'] ?? hf_url('dashboard/')));
 		$account = self::by_member(HF_Members::current_id());
 		if (!$account) hf_redirect(hf_url('signup/'));
 		if (!$allow_inactive && !self::is_active($account)) hf_redirect(hf_url('account/') . '?status=inactive');
@@ -101,7 +101,7 @@ class HF_Account
 		if ($created && $email !== '') {
 			HF_Mail::send($email, 'Welcome to hello.found',
 				"Hi " . ($name ?: 'there') . ",\n\nThanks for joining hello.found. Your account is ready.\n\n"
-				. "Set your password here: " . rtrim(HELLOFOUND_SITE_URL, '/') . HELLOFOUND_RESET_URL . "\n"
+				. "To choose a password, request one here (we'll email it to you): " . rtrim(HELLOFOUND_SITE_URL, '/') . HELLOFOUND_RESET_URL . "\n"
 				. "Then log in: " . rtrim(HELLOFOUND_SITE_URL, '/') . HELLOFOUND_LOGIN_URL . "\n\n"
 				. "First step: tell us your website domain at " . hf_abs_url('onboarding/') . "\n\nJack\nHello Technology");
 		}

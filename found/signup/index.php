@@ -35,7 +35,7 @@ hf_page_start('Start your subscription');
     <button class="btn btn--primary" type="submit">Start subscription</button>
   </form>
   <?php if (!HF_Members::logged_in()): ?>
-    <p style="margin-top:1rem">Already a Hello Technology client? <a href="<?= hf_e(HELLOFOUND_LOGIN_URL . '?return=' . rawurlencode(hf_url('signup/'))) ?>">Log in first</a>.</p>
+    <p style="margin-top:1rem">Already a Hello Technology client? <a href="<?= hf_e(HELLOFOUND_LOGIN_URL . '?r=' . rawurlencode(hf_url('signup/'))) ?>">Log in first</a>.</p>
   <?php endif; ?>
 </div>
 <?php hf_page_end();

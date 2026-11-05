@@ -49,32 +49,40 @@ class HF_Members
 		$parts = explode(' ', trim($name), 2);
 		$props = ['first_name' => $parts[0] ?? '', 'last_name' => $parts[1] ?? ''];
 
+		// Members hashes with phpass, not password_hash(). The customer sets a real one via /members/reset.
+		$Hasher = PerchUtil::get_password_hasher();
 		$Member = $Members->create([
 			'memberAuthType'   => 'native',
-			'memberAuthID'     => '',
 			'memberEmail'      => $email,
-			'memberPassword'   => password_hash(bin2hex(random_bytes(16)), PASSWORD_DEFAULT),
+			'memberPassword'   => $Hasher->HashPassword(bin2hex(random_bytes(16))),
 			'memberStatus'     => 'active',
 			'memberCreated'    => HF_Db::now(),
-			'memberProperties' => json_encode($props),
+			'memberProperties' => PerchUtil::json_safe_encode($props),
 		]);
 		if (!$Member) return null;
 
-		$id = (int)$Member->id();
-		if (method_exists($Member, 'add_tag')) $Member->add_tag(HELLOFOUND_MEMBER_TAG);
-		return $id;
+		$Member->update(['memberAuthID' => $Member->memberID()]);
+		$Member->add_tag(HELLOFOUND_MEMBER_TAG, 'hello.found customers');
+		return (int)$Member->memberID();
 	}
 
-	/** Start a Members session for the given member ID. */
+	/** Start a Members session for the given member ID (same session Members' own login creates). */
 	public static function log_in($member_id)
 	{
 		if (!self::available()) return false;
-		$API = new PerchAPI(1.0, 'perch_members');
-		$Members = new PerchMembers_Members($API);
-		$Member  = $Members->find($member_id);
-		if (!$Member) return false;
-		$Session = PerchMembers_Session::fetch();
-		$Session->create_session($Member);
+		$row = HF_Db::row('SELECT * FROM ' . PERCH_DB_PREFIX . 'members WHERE memberID=' . (int)$member_id . " AND memberStatus='active' LIMIT 1");
+		if (!$row) return false;
+		unset($row['memberPassword']);
+		$Auth = new HF_MembersAuth(new PerchAPI(1.0, 'perch_members'));
+		$Auth->start_for($row);
 		return true;
+	}
+}
+
+/** Exposes Members' protected session creation (declared only when Members is present). */
+if (class_exists('PerchMembers_Auth')) {
+	class HF_MembersAuth extends PerchMembers_Auth
+	{
+		public function start_for(array $row) { $this->_generate_session($row); $this->recover_session(); }
 	}
 }
