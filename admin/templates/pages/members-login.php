@@ -1,5 +1,6 @@
 <?php
-  if (isset($_GET['logout']) && perch_member_logged_in()) { perch_member_log_out(); header('Location: /members/login'); exit; }
+  if (isset($_GET['logout']) && perch_member_logged_in()) { perch_member_log_out(); header('Location: /sign-in/'); exit; }
+  if (perch_member_logged_in()){ header('Location: /found/dashboard/'); }
 ?>
 <!doctype html>
 <html lang="en">
