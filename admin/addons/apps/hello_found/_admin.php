@@ -2,6 +2,8 @@
 /** Shared helpers for hello.found control-panel pages. Included after core/inc/api.php. */
 require_once __DIR__ . '/bootstrap.php';
 
+HF_Schema::ensure();   // create any newly added tables
+
 if (!$CurrentUser->logged_in() || !$CurrentUser->has_priv('hello_found')) { PerchUtil::redirect(PERCH_LOGINPATH); }
 
 function hf_admin_name() { global $CurrentUser; return (string)($CurrentUser->userUsername() ?: 'admin'); }

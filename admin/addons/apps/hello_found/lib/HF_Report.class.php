@@ -30,6 +30,7 @@ class HF_Report
 				'window_end' => $site['current']['date_end'],
 			] : null,
 			'keywords' => HF_GscData::keyword_table($account_id),
+			'ai' => array_values(HF_Ai::summary($account_id)),
 		];
 	}
 

@@ -32,18 +32,38 @@ class HF_GscData
 		return [$cur, $prev];
 	}
 
-	/** One row per active keyword: current + prior position. Lower position = better. */
+	/**
+	 * One row per active keyword. Position comes from the weekly DataForSEO UK rank check when there is
+	 * one ('source' => 'rank'; null position = outside the top N); otherwise from Search Console's average
+	 * position ('source' => 'gsc'). Clicks/impressions always come from Search Console.
+	 * 'change' > 0 means the keyword moved UP (better).
+	 */
 	public static function keyword_table($account_id)
 	{
 		$out = [];
 		foreach (HF_Keyword::for_account($account_id, true) as $kw) {
 			[$cur, $prev] = self::latest_pair($account_id, (int)$kw['id']);
-			$pos  = ($cur && $cur['impressions'] > 0) ? (float)$cur['avg_position'] : null;
-			$ppos = ($prev && $prev['impressions'] > 0) ? (float)$prev['avg_position'] : null;
+			[$rc, $rp] = HF_Rank::latest_pair((int)$kw['id']);
+
+			if ($rc) {
+				$source = 'rank';
+				$pos  = $rc['position'] !== null ? (float)$rc['position'] : null;
+				$ppos = $rp && $rp['position'] !== null ? (float)$rp['position'] : null;
+				$ranked_before = $rp !== null;
+				$change = ($pos !== null && $ppos !== null) ? round($ppos - $pos, 1) : null;
+				$url = $rc['url'];
+			} else {
+				$source = 'gsc';
+				$pos  = ($cur && $cur['impressions'] > 0) ? (float)$cur['avg_position'] : null;
+				$ppos = ($prev && $prev['impressions'] > 0) ? (float)$prev['avg_position'] : null;
+				$change = ($pos !== null && $ppos !== null) ? round($ppos - $pos, 1) : null;
+				$url = null;
+			}
 			$out[] = [
 				'keyword' => $kw['keyword'], 'category' => $kw['category'], 'target_url' => $kw['target_url'],
-				'position' => $pos, 'prior_position' => $ppos,
-				'change' => ($pos !== null && $ppos !== null) ? round($ppos - $pos, 1) : null, // + = improved
+				'source' => $source, 'position' => $pos, 'prior_position' => $ppos, 'change' => $change, 'ranking_url' => $url,
+				'checked_on' => $rc['checked_on'] ?? null,
+				'ai_overview' => $rc ? ['present' => (int)$rc['ai_overview_present'], 'cited' => (int)$rc['ai_overview_cited']] : null,
 				'clicks' => $cur ? (int)$cur['clicks'] : 0, 'impressions' => $cur ? (int)$cur['impressions'] : 0,
 			];
 		}

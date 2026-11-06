@@ -10,3 +10,8 @@ include(__DIR__ . '/../../../../runtime.php');
 require_once __DIR__ . '/../bootstrap.php';
 
 foreach (HF_Gsc::pull_all() as $id => $msg) echo date('c') . " account $id: $msg\n";
+
+// Also run any due DataForSEO rank / AI-citation checks.
+HF_Schema::ensure();
+$r = HF_Dfs_Runner::run_all();
+echo date('c') . ' ' . $r['message'] . "\n";

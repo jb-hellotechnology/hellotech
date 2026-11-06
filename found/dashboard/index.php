@@ -7,8 +7,9 @@ if (!$account['onboarding_complete']) hf_redirect(hf_url('onboarding/'));
 $domain   = HF_Account::domain($account['id']);
 $gsc_on   = (bool)HF_Gsc::token_row($account['id']);
 $overview = $gsc_on ? HF_GscData::site_overview($account['id']) : null;
-$keywords = $gsc_on ? HF_GscData::keyword_table($account['id']) : [];
+$keywords = HF_GscData::keyword_table($account['id']);
 $report   = HF_Report::latest_published($account['id']);
+$ai       = HF_Ai::summary($account['id']);
 $fathom   = ($domain && $domain['fathom_site_id']) ? HF_Fathom::stats($domain['fathom_site_id']) : null;
 
 hf_page_start('Dashboard');
@@ -43,24 +44,47 @@ hf_page_start('Dashboard');
 <?php endif; ?>
 </div>
 
-<?php if ($gsc_on && $keywords): ?>
+<?php if ($keywords): ?>
 <div class="hf-card">
-  <h2 class="h3">Keyword rankings</h2>
+  <h2 class="h3">Google rankings <small>(UK)</small></h2>
   <div style="overflow-x:auto"><table class="hf-table">
-    <thead><tr><th>Keyword</th><th>Position</th><th>Change</th><th>Clicks</th></tr></thead>
+    <thead><tr><th>Keyword</th><th>Position</th><th>Change</th><th>Clicks <small>(28 days)</small></th></tr></thead>
     <tbody>
     <?php foreach ($keywords as $k):
       $ch = $k['change'];
       $cls = $ch === null ? 'hf-flat' : ($ch > 0 ? 'hf-up' : ($ch < 0 ? 'hf-down' : 'hf-flat')); ?>
       <tr>
         <td><?= hf_e($k['keyword']) ?></td>
-        <td><?= $k['position'] !== null ? number_format($k['position'], 1) : '<span class="hf-flat">not yet ranking</span>' ?></td>
+        <td>
+          <?php if ($k['position'] !== null): ?>
+            <?= $k['source'] === 'rank' ? '#' . (int)$k['position'] : number_format($k['position'], 1) ?>
+          <?php elseif ($k['source'] === 'rank'): ?>
+            <span class="hf-flat">Not in top <?= (int)HF_Rank::depth() ?></span>
+          <?php else: ?>
+            <span class="hf-flat">not yet ranking</span>
+          <?php endif; ?>
+          <?php if ($k['ai_overview'] && $k['ai_overview']['cited']): ?><br><small class="hf-up">Cited in Google's AI Overview</small><?php endif; ?>
+        </td>
         <td class="<?= $cls ?>"><?= $ch === null ? '–' : ($ch > 0 ? '▲ ' . $ch : ($ch < 0 ? '▼ ' . abs($ch) : '=')) ?></td>
         <td><?= hf_n($k['clicks']) ?></td>
       </tr>
     <?php endforeach; ?>
     </tbody>
   </table></div>
+  <p><small>Positions are checked weekly from Google UK desktop results.</small></p>
+</div>
+<?php endif; ?>
+
+<?php if ($ai): ?>
+<div class="hf-card">
+  <h2 class="h3">AI search visibility</h2>
+  <p>We ask AI assistants the questions your customers might ask and check whether your website is cited as a source.</p>
+  <div class="hf-grid">
+  <?php foreach ($ai as $a): ?>
+    <div class="hf-stat"><b><?= (int)$a['cited'] ?> / <?= (int)$a['prompts'] ?></b><small><?= hf_e($a['label']) ?>: questions where you were cited</small></div>
+  <?php endforeach; ?>
+  </div>
+  <p style="margin-top:1rem"><small>Based on the latest weekly check. AI answers vary from one ask to the next, so treat this as a trend, not an exact count.</small></p>
 </div>
 <?php endif; ?>
 

@@ -10,7 +10,7 @@
 	$account = HF_Account::find($id);
 	if (!$account) { PerchUtil::redirect(hf_admin_url('index.php')); }
 
-	$tabs = ['account' => 'Account', 'gsc' => 'Search Console', 'keywords' => 'Keywords', 'fathom' => 'Fathom', 'reports' => 'Reports'];
+	$tabs = ['account' => 'Account', 'gsc' => 'Search Console', 'keywords' => 'Keywords', 'prompts' => 'AI prompts', 'fathom' => 'Fathom', 'reports' => 'Reports'];
 	$tab  = isset($tabs[$_GET['tab'] ?? '']) ? $_GET['tab'] : 'account';
 	$self = fn(array $q = []) => hf_admin_url('client.php', ['id' => $id] + $q);
 
@@ -40,6 +40,16 @@
 			case 'toggle_keyword':
 				$err = HF_Keyword::set_active((int)($_POST['keyword_id'] ?? 0), $id, !empty($_POST['active']));
 				$go_tab = 'keywords'; hf_flash($err ?: 'Keyword updated.', $err ? 'error' : 'success');
+				break;
+
+			case 'add_prompt':
+				$err = HF_Ai::add_prompt($id, (string)($_POST['prompt'] ?? ''), hf_admin_name());
+				$go_tab = 'prompts'; hf_flash($err ?: 'Prompt added.', $err ? 'error' : 'success');
+				break;
+
+			case 'toggle_prompt':
+				$err = HF_Ai::set_prompt_active((int)($_POST['prompt_id'] ?? 0), $id, !empty($_POST['active']));
+				$go_tab = 'prompts'; hf_flash($err ?: 'Prompt updated.', $err ? 'error' : 'success');
 				break;
 
 			case 'disconnect_gsc':
@@ -154,14 +164,19 @@
 	<?php endif; ?>
 
 <?php elseif ($tab === 'keywords'):
-	$kws = HF_Keyword::for_account($id); ?>
+	$kws = HF_Keyword::for_account($id);
+	$ranks = []; foreach (HF_GscData::keyword_table($id) as $r) $ranks[$r['keyword']] = $r; ?>
 	<p><?= HF_Keyword::active_count($id) ?> of <?= (int)HELLOFOUND_MAX_KEYWORDS ?> active keywords.</p>
 	<table class="d">
-		<thead><tr><th>Keyword</th><th>Category</th><th>Target URL</th><th></th></tr></thead>
+		<thead><tr><th>Keyword</th><th>UK rank</th><th>Change</th><th>Checked</th><th>Category</th><th>Target URL</th><th></th></tr></thead>
 		<tbody>
 		<?php foreach ($kws as $k): ?>
 			<tr<?= $k['is_active'] ? '' : ' style="opacity:.55"' ?>>
 				<td><?= hf_e($k['keyword']) ?></td>
+				<?php $rk = $ranks[$k['keyword']] ?? null; ?>
+				<td><?php if (!$rk || !$k['is_active']): ?>–<?php elseif ($rk['source'] === 'rank'): ?><?= $rk['position'] !== null ? '#' . (int)$rk['position'] : 'outside top ' . HF_Rank::depth() ?><?= $rk['ai_overview'] && $rk['ai_overview']['cited'] ? ' <small>(cited in AI Overview)</small>' : '' ?><?php else: ?><small>GSC avg <?= $rk['position'] !== null ? number_format($rk['position'], 1) : '–' ?></small><?php endif; ?></td>
+				<td><?= ($rk && $rk['change'] !== null) ? ($rk['change'] > 0 ? '▲ ' . $rk['change'] : ($rk['change'] < 0 ? '▼ ' . abs($rk['change']) : '=')) : '–' ?></td>
+				<td><?= ($rk && $rk['checked_on']) ? hf_e(date('j M', strtotime($rk['checked_on']))) : '–' ?></td>
 				<td><input form="kwf<?= (int)$k['id'] ?>" type="text" name="category" value="<?= hf_e($k['category']) ?>" size="10" list="hf-cats"></td>
 				<td><input form="kwf<?= (int)$k['id'] ?>" type="text" name="target_url" value="<?= hf_e($k['target_url']) ?>" size="30"></td>
 				<td>
@@ -172,9 +187,19 @@
 					<?= $btn('toggle_keyword', $k['is_active'] ? 'Pause' : 'Resume', ['keyword_id' => $k['id'], 'active' => $k['is_active'] ? '' : '1']) ?>
 				</td>
 			</tr>
-		<?php endforeach; if (!$kws): ?><tr><td colspan="4">No keywords yet.</td></tr><?php endif; ?>
+		<?php endforeach; if (!$kws): ?><tr><td colspan="7">No keywords yet.</td></tr><?php endif; ?>
 		</tbody>
 	</table>
+	<p>
+		<?php $n_kw = HF_Keyword::active_count($id); ?>
+		<?php if (!HF_Dfs::configured()): ?><em>DataForSEO credentials aren't set, so ranks can't be checked (see Settings).</em>
+		<?php else: ?>
+		<form method="post" action="<?= hf_e(hf_admin_url('_get/run-checks.php')) ?>" style="display:inline" onsubmit="return confirm('Check UK Google rankings for <?= (int)$n_kw ?> keyword(s) now? Each costs about <?= (int)ceil(HF_Rank::depth() / 10) ?> SERP credits (about $<?= number_format(ceil(HF_Rank::depth() / 10) * 0.002, 3) ?>).')">
+			<?= hf_csrf_field() ?><input type="hidden" name="account_id" value="<?= $id ?>"><input type="hidden" name="type" value="ranks">
+			<input type="submit" class="button button-simple" value="Check UK rankings now"> <small>Rankings also refresh automatically about weekly.</small>
+		</form>
+		<?php endif; ?>
+	</p>
 	<datalist id="hf-cats"><option>local</option><option>product</option><option>service</option><option>aeo</option></datalist>
 	<h2>Add keyword</h2>
 	<form method="post" action="<?= hf_e($self(['tab' => 'keywords'])) ?>">
@@ -184,6 +209,42 @@
 		<input type="text" name="target_url" placeholder="target URL (optional)">
 		<input type="submit" class="button button-simple" value="Add">
 	</form>
+
+<?php elseif ($tab === 'prompts'):
+	$prompts = HF_Ai::prompts($id); $matrix = HF_Ai::latest_matrix($id); $engines = HF_Ai::engines(); ?>
+	<p>Questions this client's customers might ask an AI assistant. Each is sent to <?= hf_e(implode(', ', array_column($engines, 'label'))) ?> about weekly, with web search on, and we record whether the client's website was cited. <?= HF_Ai::active_count($id) ?> of <?= HF_Ai::max_prompts() ?> active prompts.</p>
+	<p><small>API answers approximate the consumer apps but are not identical. Gemini can't be restricted to the UK; the others search as GB.</small></p>
+	<table class="d">
+		<thead><tr><th>Prompt</th><?php foreach ($engines as $e): ?><th><?= hf_e($e['label']) ?></th><?php endforeach; ?><th></th></tr></thead>
+		<tbody>
+		<?php foreach ($prompts as $p): ?>
+			<tr<?= $p['is_active'] ? '' : ' style="opacity:.55"' ?>>
+				<td><?= hf_e($p['prompt']) ?></td>
+				<?php foreach (array_keys($engines) as $ek): $c = $matrix[(int)$p['id']][$ek] ?? null; ?>
+					<td title="<?= $c ? hf_e('Checked ' . $c['checked_at'] . ($c['sources'] ? ' - sources: ' . implode(', ', array_slice(json_decode($c['sources'], true) ?: [], 0, 8)) : '')) : '' ?>">
+						<?= !$c ? '–' : ($c['cited'] ? '<b>Cited</b>' : ($c['mentioned'] ? 'Named' : 'No')) ?>
+					</td>
+				<?php endforeach; ?>
+				<td><?= $btn('toggle_prompt', $p['is_active'] ? 'Pause' : 'Resume', ['prompt_id' => $p['id'], 'active' => $p['is_active'] ? '' : '1']) ?></td>
+			</tr>
+		<?php endforeach; if (!$prompts): ?><tr><td colspan="<?= count($engines) + 2 ?>">No prompts yet.</td></tr><?php endif; ?>
+		</tbody>
+	</table>
+	<h2>Add prompt</h2>
+	<form method="post" action="<?= hf_e($self(['tab' => 'prompts'])) ?>">
+		<?= hf_csrf_field() ?><input type="hidden" name="action" value="add_prompt">
+		<input type="text" name="prompt" maxlength="500" size="70" placeholder="e.g. Who is the best accountant in Whitby?" required>
+		<input type="submit" class="button button-simple" value="Add">
+	</form>
+	<p>
+		<?php if (!HF_Dfs::configured()): ?><em>DataForSEO credentials aren't set (see Settings).</em>
+		<?php elseif (HF_Ai::planned_calls($id)): ?>
+		<form method="post" action="<?= hf_e(hf_admin_url('_get/run-checks.php')) ?>" style="display:inline" onsubmit="return confirm('Run <?= (int)HF_Ai::planned_calls($id) ?> AI checks now? This uses DataForSEO credit and can take a few minutes.')">
+			<?= hf_csrf_field() ?><input type="hidden" name="account_id" value="<?= $id ?>"><input type="hidden" name="type" value="ai">
+			<input type="submit" class="button button-simple" value="Run AI checks now (<?= (int)HF_Ai::planned_calls($id) ?> calls)">
+		</form>
+		<?php endif; ?>
+	</p>
 
 <?php elseif ($tab === 'fathom'): ?>
 	<?php if (!$domain): ?>
@@ -226,6 +287,9 @@
 		<h2><?= hf_e(date('F Y', strtotime($open['report_month']))) ?> report (<?= hf_e($open['status']) ?>)</h2>
 		<?php if ($s): ?><p>28 days to <?= hf_e($s['window_end']) ?>: <b><?= number_format($s['clicks']) ?></b> clicks, <b><?= number_format($s['impressions']) ?></b> impressions, avg position <b><?= number_format($s['avg_position'], 1) ?></b>.</p>
 		<?php else: ?><p><em>No Search Console data captured yet.</em></p><?php endif; ?>
+		<?php foreach ($snap['ai'] ?? [] as $ai): ?>
+			<p><?= hf_e($ai['label']) ?>: cited in <b><?= (int)$ai['cited'] ?></b> of <?= (int)$ai['prompts'] ?> prompts</p>
+		<?php endforeach; ?>
 		<?php if (!empty($snap['keywords'])): ?>
 		<table class="d"><thead><tr><th>Keyword</th><th>Position</th><th>Change</th><th>Clicks</th></tr></thead><tbody>
 			<?php foreach ($snap['keywords'] as $k): ?>

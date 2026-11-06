@@ -12,8 +12,17 @@
 		'HELLOFOUND_STRIPE_PRICE_ID' => 'Stripe price ID (£99/month)', 'HELLOFOUND_GSC_CLIENT_ID' => 'Google OAuth client ID',
 		'HELLOFOUND_GSC_CLIENT_SECRET' => 'Google OAuth client secret', 'HELLOFOUND_FATHOM_API_KEY' => 'Fathom API key',
 		'HELLOFOUND_ENCRYPTION_KEY' => 'Encryption key (64 hex chars)',
+		'HELLOFOUND_DFS_LOGIN' => 'DataForSEO API login', 'HELLOFOUND_DFS_PASSWORD' => 'DataForSEO API password',
 	];
 	$key_ok = defined('HELLOFOUND_ENCRYPTION_KEY') && preg_match('/^[0-9a-f]{64}$/i', HELLOFOUND_ENCRYPTION_KEY);
+
+	// Optional: list the models DataForSEO currently offers per engine (free call).
+	$models = null;
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		hf_require_post();
+		$models = [];
+		foreach (HF_Ai::engines_all() as $k => $e) $models[$k] = HF_Ai::list_models($k);
+	}
 
 	include(PERCH_CORE . '/inc/top.php');
 ?>
@@ -32,6 +41,21 @@
 		<tr><td>Perch Members</td><td></td><td><?= HF_Members::available() ? 'Installed' : '<b>Not detected</b>' ?></td></tr>
 	</tbody>
 </table>
+<h2>AI engines and models</h2>
+<table class="d">
+	<thead><tr><th>Engine</th><th>Model in use</th></tr></thead>
+	<tbody>
+	<?php foreach (HF_Ai::engines() as $k => $e): ?>
+		<tr><td><?= hf_e($e['label']) ?></td><td><code><?= hf_e(HF_Ai::model($k)) ?></code></td></tr>
+	<?php endforeach; ?>
+	</tbody>
+</table>
+<form method="post" action=""><?= hf_csrf_field() ?><input type="submit" class="button button-simple" value="List models available from DataForSEO"></form>
+<?php if ($models !== null): foreach ($models as $k => [$names, $merr]): ?>
+	<p><b><?= hf_e(HF_Ai::engines_all()[$k]['label']) ?>:</b> <?= $merr ? '<em>' . hf_e($merr) . '</em>' : hf_e(implode(', ', $names)) ?></p>
+<?php endforeach; ?>
+	<p><small>To change a model, add to config.php: <code>define('HELLOFOUND_AI_MODELS', ['chat_gpt' =&gt; '...', 'claude' =&gt; '...', 'gemini' =&gt; '...', 'perplexity' =&gt; '...']);</code></small></p>
+<?php endif; ?>
 <h2>URLs to register</h2>
 <table class="d">
 	<tr><td>Stripe webhook endpoint</td><td><code><?= hf_e(rtrim(HELLOFOUND_SITE_URL, '/') . hf_admin_url('webhook.php')) ?></code></td></tr>
