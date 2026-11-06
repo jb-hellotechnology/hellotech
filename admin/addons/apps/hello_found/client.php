@@ -1,6 +1,7 @@
 <?php
 	include('../../../core/inc/api.php');
 	$API  = new PerchAPI(1.0, 'hello_found');
+	$HTML = $API->get('HTML');   // required by Perch's sidebar layout
 	$Lang = $API->get('Lang');
 	require __DIR__ . '/_admin.php';
 	hf_admin_subnav($CurrentUser);
@@ -49,6 +50,16 @@
 			case 'detect_gsc':
 				$site = HF_Gsc::detect_property($id);
 				$go_tab = 'gsc'; hf_flash($site ? "Property found: $site" : 'No matching property found.', $site ? 'success' : 'error');
+				break;
+
+			case 'link_fathom':
+				$err = HF_Fathom::link_site($id, (string)($_POST['fathom_site_id'] ?? ''));
+				$go_tab = 'fathom'; hf_flash($err ?: 'Existing Fathom site linked.', $err ? 'error' : 'success');
+				break;
+
+			case 'unlink_fathom':
+				HF_Fathom::unlink_site($id);
+				$go_tab = 'fathom'; hf_flash('Fathom site unlinked (nothing was deleted in Fathom).');
 				break;
 
 			case 'create_report':
@@ -178,12 +189,21 @@
 	<?php if (!$domain): ?>
 		<p>The customer hasn't entered their domain yet.</p>
 	<?php elseif (!$domain['fathom_site_id']): ?>
-		<p>No Fathom site yet.</p>
+		<p>No Fathom site linked yet.</p>
+		<h2>Link an existing site</h2>
+		<p>If the client already has Fathom, paste their site ID (shown in Fathom under Sites, or in the tracking snippet as <code>data-site</code>).</p>
+		<form method="post" action="<?= hf_e($self(['tab' => 'fathom'])) ?>">
+			<?= hf_csrf_field() ?><input type="hidden" name="action" value="link_fathom">
+			<input type="text" name="fathom_site_id" placeholder="e.g. ABCDEFGH" maxlength="20" required>
+			<input type="submit" class="button button-simple" value="Link site">
+		</form>
+		<h2>Or create a new one</h2>
 		<?= $post_to('_get/create-fathom.php', 'Create Fathom site') ?>
 	<?php else: ?>
 		<p>Fathom site ID: <b><?= hf_e($domain['fathom_site_id']) ?></b></p>
 		<textarea readonly rows="3" style="width:100%;font-family:monospace" onclick="this.select()"><?= hf_e($domain['fathom_tracking_code']) ?></textarea>
-		<p><small>You need to add this script to the client's website <code>&lt;head&gt;</code> manually.</small></p>
+		<p><small>You need to add this script to the client's website <code>&lt;head&gt;</code> manually (skip if the client's site already has Fathom installed).</small></p>
+		<?= $btn('unlink_fathom', 'Unlink site', [], 'Unlink this Fathom site from the client? Nothing is deleted in Fathom.') ?>
 	<?php endif; ?>
 
 <?php elseif ($tab === 'reports'):

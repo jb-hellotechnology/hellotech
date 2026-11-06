@@ -24,7 +24,7 @@ class HF_Members
 	/** @return array|null ['id','email','name'] */
 	public static function details($member_id)
 	{
-		if (!self::available()) return null;
+		// Plain DB read: must work in the control panel, where Members' front-end functions aren't loaded.
 		$row = HF_Db::row('SELECT * FROM ' . PERCH_DB_PREFIX . 'members WHERE memberID=' . (int)$member_id . ' LIMIT 1');
 		if (!$row) return null;
 		$props = json_decode($row['memberProperties'] ?? '', true) ?: [];

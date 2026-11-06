@@ -1,6 +1,7 @@
 <?php
 	include('../../../core/inc/api.php');
 	$API  = new PerchAPI(1.0, 'hello_found');
+	$HTML = $API->get('HTML');   // required by Perch's sidebar layout
 	$Lang = $API->get('Lang');
 	require __DIR__ . '/_admin.php';
 	hf_admin_subnav($CurrentUser);

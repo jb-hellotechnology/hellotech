@@ -31,6 +31,30 @@ class HF_Fathom
 		return null;
 	}
 
+	/** Attach an EXISTING Fathom site by ID. @return string|null error */
+	public static function link_site($account_id, $site_id)
+	{
+		$site_id = strtoupper(trim($site_id));
+		if (!preg_match('/^[A-Z0-9]{3,20}$/', $site_id)) return 'That does not look like a Fathom site ID (letters and numbers only, e.g. ABCDEFGH).';
+		$domain = HF_Account::domain($account_id);
+		if (!$domain) return 'Customer has not entered a domain yet.';
+
+		// If the API key is configured, confirm the site exists and is reachable with it (needed for stats later).
+		if (defined('HELLOFOUND_FATHOM_API_KEY') && HELLOFOUND_FATHOM_API_KEY !== '') {
+			$j = self::call('GET', '/sites/' . $site_id);
+			if (!$j || empty($j['id'])) return "Fathom couldn't find site $site_id with the configured API key. Check the ID, and that the key can access that site.";
+		}
+		$snippet = '<script src="https://cdn.usefathom.com/script.js" data-site="' . $site_id . '" defer></script>';
+		HF_Db::update('domains', ['fathom_site_id' => $site_id, 'fathom_tracking_code' => $snippet], (int)$domain['id']);
+		return null;
+	}
+
+	public static function unlink_site($account_id)
+	{
+		$domain = HF_Account::domain($account_id);
+		if ($domain) HF_Db::update('domains', ['fathom_site_id' => null, 'fathom_tracking_code' => null], (int)$domain['id']);
+	}
+
 	/** Last-30-day aggregates, cached 1 hour on disk. @return array|null */
 	public static function stats($site_id)
 	{
