@@ -42,6 +42,12 @@
 				$go_tab = 'keywords'; hf_flash($err ?: 'Keyword updated.', $err ? 'error' : 'success');
 				break;
 
+			case 'set_location':
+				$loc = trim((string)($_POST['serp_location'] ?? ''));
+				if ($d = HF_Account::domain($id)) HF_Db::update('domains', ['serp_location' => $loc !== '' ? substr($loc, 0, 150) : null], (int)$d['id']);
+				$go_tab = 'keywords'; hf_flash($loc !== '' ? 'Search location set. Re-run rankings to use it.' : 'Search location reset to the default.');
+				break;
+
 			case 'add_prompt':
 				$err = HF_Ai::add_prompt($id, (string)($_POST['prompt'] ?? ''), hf_admin_name());
 				$go_tab = 'prompts'; hf_flash($err ?: 'Prompt added.', $err ? 'error' : 'success');
@@ -165,7 +171,9 @@
 
 <?php elseif ($tab === 'keywords'):
 	$kws = HF_Keyword::for_account($id);
-	$ranks = []; foreach (HF_GscData::keyword_table($id) as $r) $ranks[$r['keyword']] = $r; ?>
+	$ranks = []; foreach (HF_GscData::keyword_table($id) as $r) $ranks[$r['keyword']] = $r;
+	$rank_diag = []; foreach (HF_Db::rows('SELECT r.keyword_id, r.organic_count, r.top_domains FROM ' . HF_Db::t('rank_checks') . ' r JOIN (SELECT keyword_id, MAX(id) mid FROM ' . HF_Db::t('rank_checks') . ' WHERE account_id=' . (int)$id . ' GROUP BY keyword_id) l ON l.mid=r.id') as $r) $rank_diag[(int)$r['keyword_id']] = $r;
+	$loc_now = HF_Rank::location_for($domain ?: []); ?>
 	<p><?= HF_Keyword::active_count($id) ?> of <?= (int)HELLOFOUND_MAX_KEYWORDS ?> active keywords.</p>
 	<table class="d">
 		<thead><tr><th>Keyword</th><th>UK rank</th><th>Change</th><th>Checked</th><th>Category</th><th>Target URL</th><th></th></tr></thead>
@@ -174,7 +182,8 @@
 			<tr<?= $k['is_active'] ? '' : ' style="opacity:.55"' ?>>
 				<td><?= hf_e($k['keyword']) ?></td>
 				<?php $rk = $ranks[$k['keyword']] ?? null; ?>
-				<td><?php if (!$rk || !$k['is_active']): ?>–<?php elseif ($rk['source'] === 'rank'): ?><?= $rk['position'] !== null ? '#' . (int)$rk['position'] : 'outside top ' . HF_Rank::depth() ?><?= $rk['ai_overview'] && $rk['ai_overview']['cited'] ? ' <small>(cited in AI Overview)</small>' : '' ?><?php else: ?><small>GSC avg <?= $rk['position'] !== null ? number_format($rk['position'], 1) : '–' ?></small><?php endif; ?></td>
+				<?php $dg = $rank_diag[(int)$k['id']] ?? null; ?>
+				<td<?= $dg ? ' title="' . hf_e('Scanned ' . (int)$dg['organic_count'] . ' organic results. Top results: ' . $dg['top_domains']) . '"' : '' ?>><?php if (!$rk || !$k['is_active']): ?>–<?php elseif ($rk['source'] === 'rank'): ?><?= $rk['position'] !== null ? '#' . (int)$rk['position'] : 'outside top ' . HF_Rank::depth() ?><?= $rk['ai_overview'] && $rk['ai_overview']['cited'] ? ' <small>(cited in AI Overview)</small>' : '' ?><?php else: ?><small>GSC avg <?= $rk['position'] !== null ? number_format($rk['position'], 1) : '–' ?></small><?php endif; ?></td>
 				<td><?= ($rk && $rk['change'] !== null) ? ($rk['change'] > 0 ? '▲ ' . $rk['change'] : ($rk['change'] < 0 ? '▼ ' . abs($rk['change']) : '=')) : '–' ?></td>
 				<td><?= ($rk && $rk['checked_on']) ? hf_e(date('j M', strtotime($rk['checked_on']))) : '–' ?></td>
 				<td><input form="kwf<?= (int)$k['id'] ?>" type="text" name="category" value="<?= hf_e($k['category']) ?>" size="10" list="hf-cats"></td>
@@ -190,16 +199,23 @@
 		<?php endforeach; if (!$kws): ?><tr><td colspan="7">No keywords yet.</td></tr><?php endif; ?>
 		</tbody>
 	</table>
+	<?php $run_items = []; foreach ($kws as $k) if ($k['is_active']) $run_items[] = ['keyword_id' => (int)$k['id'], 'label' => $k['keyword']]; ?>
 	<p>
-		<?php $n_kw = HF_Keyword::active_count($id); ?>
 		<?php if (!HF_Dfs::configured()): ?><em>DataForSEO credentials aren't set, so ranks can't be checked (see Settings).</em>
-		<?php else: ?>
-		<form method="post" action="<?= hf_e(hf_admin_url('_get/run-checks.php')) ?>" style="display:inline" onsubmit="return confirm('Check UK Google rankings for <?= (int)$n_kw ?> keyword(s) now? Each costs about <?= (int)ceil(HF_Rank::depth() / 10) ?> SERP credits (about $<?= number_format(ceil(HF_Rank::depth() / 10) * 0.002, 3) ?>).')">
-			<?= hf_csrf_field() ?><input type="hidden" name="account_id" value="<?= $id ?>"><input type="hidden" name="type" value="ranks">
-			<input type="submit" class="button button-simple" value="Check UK rankings now"> <small>Rankings also refresh automatically about weekly.</small>
-		</form>
+		<?php elseif (!$domain): ?><em>The customer hasn't entered a domain yet.</em>
+		<?php elseif ($run_items): ?>
+		<button type="button" class="button button-simple" data-hf-run='<?= hf_e(json_encode(['type' => 'ranks', 'items' => $run_items])) ?>' data-hf-confirm="Check UK Google rankings for <?= count($run_items) ?> keyword(s) now? About $<?= number_format(count($run_items) * ceil(HF_Rank::depth() / 10) * 0.002, 2) ?>.">Check rankings now</button>
+		<span class="hf-run-status"></span> <small>Rankings also refresh automatically about weekly.</small>
 		<?php endif; ?>
 	</p>
+	<?php if ($domain): ?>
+	<form method="post" action="<?= hf_e($self(['tab' => 'keywords'])) ?>">
+		<?= hf_csrf_field() ?><input type="hidden" name="action" value="set_location">
+		Search location: <input type="text" name="serp_location" value="<?= hf_e($domain['serp_location'] ?? '') ?>" placeholder="<?= hf_e(HF_Rank::default_location()) ?>" size="40">
+		<input type="submit" class="button button-simple" value="Save">
+		<br><small>Currently checking from <b><?= hf_e($loc_now) ?></b>. For a local business, a town or city gives results closer to what local customers see, e.g. <code>Whitby,England,United Kingdom</code> (must match a DataForSEO location name).</small>
+	</form>
+	<?php endif; ?>
 	<datalist id="hf-cats"><option>local</option><option>product</option><option>service</option><option>aeo</option></datalist>
 	<h2>Add keyword</h2>
 	<form method="post" action="<?= hf_e($self(['tab' => 'keywords'])) ?>">
@@ -236,13 +252,13 @@
 		<input type="text" name="prompt" maxlength="500" size="70" placeholder="e.g. Who is the best accountant in Whitby?" required>
 		<input type="submit" class="button button-simple" value="Add">
 	</form>
+	<?php $run_items = []; foreach ($prompts as $p) if ($p['is_active']) foreach (array_keys($engines) as $ek) $run_items[] = ['prompt_id' => (int)$p['id'], 'engine' => $ek, 'label' => $engines[$ek]['label'] . ': ' . mb_strimwidth($p['prompt'], 0, 40, '…')]; ?>
 	<p>
 		<?php if (!HF_Dfs::configured()): ?><em>DataForSEO credentials aren't set (see Settings).</em>
-		<?php elseif (HF_Ai::planned_calls($id)): ?>
-		<form method="post" action="<?= hf_e(hf_admin_url('_get/run-checks.php')) ?>" style="display:inline" onsubmit="return confirm('Run <?= (int)HF_Ai::planned_calls($id) ?> AI checks now? This uses DataForSEO credit and can take a few minutes.')">
-			<?= hf_csrf_field() ?><input type="hidden" name="account_id" value="<?= $id ?>"><input type="hidden" name="type" value="ai">
-			<input type="submit" class="button button-simple" value="Run AI checks now (<?= (int)HF_Ai::planned_calls($id) ?> calls)">
-		</form>
+		<?php elseif (!$domain): ?><em>The customer hasn't entered a domain yet.</em>
+		<?php elseif ($run_items): ?>
+		<button type="button" class="button button-simple" data-hf-run='<?= hf_e(json_encode(['type' => 'ai', 'items' => $run_items])) ?>' data-hf-confirm="Run <?= count($run_items) ?> AI checks now? This uses DataForSEO credit and takes a few minutes. Keep this page open.">Run AI checks now (<?= count($run_items) ?> calls)</button>
+		<span class="hf-run-status"></span>
 		<?php endif; ?>
 	</p>
 
@@ -309,4 +325,34 @@
 		<?php endif; ?>
 	<?php endif; ?>
 <?php endif; ?>
+<script>
+(function () {
+	var token = <?= json_encode(hf_csrf_token()) ?>, endpoint = <?= json_encode(hf_admin_url('_get/run-checks.php')) ?>, account = <?= (int)$id ?>;
+	document.querySelectorAll('[data-hf-run]').forEach(function (btn) {
+		btn.addEventListener('click', async function () {
+			var cfg = JSON.parse(btn.getAttribute('data-hf-run')), status = btn.parentNode.querySelector('.hf-run-status');
+			if (!confirm(btn.getAttribute('data-hf-confirm'))) return;
+			btn.disabled = true; var errors = [], done = 0;
+			for (var i = 0; i < cfg.items.length; i++) {
+				var it = cfg.items[i];
+				status.textContent = ' Checking ' + (i + 1) + ' of ' + cfg.items.length + ': ' + it.label + '…';
+				var fd = new FormData();
+				fd.append('hf_token', token); fd.append('account_id', account); fd.append('type', cfg.type);
+				if (it.keyword_id) fd.append('keyword_id', it.keyword_id);
+				if (it.prompt_id) { fd.append('prompt_id', it.prompt_id); fd.append('engine', it.engine); }
+				try {
+					var r = await fetch(endpoint, { method: 'POST', body: fd, credentials: 'same-origin' });
+					var j = await r.json();
+					if (j.ok) done++; else errors.push(it.label + ' - ' + j.error);
+					if (!j.ok && /credentials|rejected|Session expired/.test(j.error || '')) break;
+				} catch (e) { errors.push(it.label + ' - request failed or timed out'); }
+			}
+			if (errors.length) {
+				status.innerHTML = ' ' + done + ' done, ' + errors.length + ' problem(s): ' + errors.map(function (m) { return m.replace(/</g, '&lt;'); }).join(' | ') + ' <a href="">Reload</a>';
+				btn.disabled = false;
+			} else { status.textContent = ' ' + done + ' done. Reloading…'; location.reload(); }
+		});
+	});
+})();
+</script>
 <?php include(PERCH_CORE . '/inc/btm.php');

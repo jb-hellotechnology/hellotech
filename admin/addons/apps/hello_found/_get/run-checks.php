@@ -1,26 +1,28 @@
 <?php
-	// Runs DataForSEO checks for one account right now (admin only, POST + CSRF).
+	// Runs ONE DataForSEO check and answers with JSON (admin only, POST + CSRF).
+	// The client page calls this once per keyword / prompt-engine so no single request nears a PHP time limit.
 	include('../../../../core/inc/api.php');
 	$API = new PerchAPI(1.0, 'hello_found');
 	require __DIR__ . '/../_admin.php';
-	hf_require_post();
+
+	header('Content-Type: application/json');
+	function hf_json($ok, $msg = '') { echo json_encode(['ok' => $ok, 'error' => $ok ? null : $msg]); exit; }
+
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !hf_csrf_ok()) { http_response_code(400); hf_json(false, 'Session expired - reload the page and try again.'); }
+	@set_time_limit(180);
 
 	$id = (int)($_POST['account_id'] ?? 0);
-	$type = ($_POST['type'] ?? '') === 'ai' ? 'ai' : 'ranks';
-	if (!HF_Account::find($id)) { http_response_code(404); exit; }
+	$domain = HF_Account::find($id) ? HF_Account::domain($id) : null;
+	if (!$domain) hf_json(false, 'Client or domain not found.');
 
-	@set_time_limit(290);
-	ignore_user_abort(true);
-
-	if ($type === 'ranks') {
-		[$n, $errors] = HF_Rank::run_account($id, true);
-		$what = "$n keyword" . ($n === 1 ? '' : 's') . ' checked';
-		$tab = 'keywords';
+	if (($_POST['type'] ?? '') === 'ai') {
+		$p = HF_Db::row('SELECT * FROM ' . HF_Db::t('prompts') . ' WHERE id=' . (int)($_POST['prompt_id'] ?? 0) . ' AND account_id=' . $id);
+		$engine = (string)($_POST['engine'] ?? '');
+		if (!$p || !isset(HF_Ai::engines()[$engine])) hf_json(false, 'Unknown prompt or engine.');
+		$err = HF_Ai::check($p, $engine, $domain['domain']);
 	} else {
-		[$n, $errors] = HF_Ai::run_account($id, true);
-		$what = "$n AI check" . ($n === 1 ? '' : 's') . ' completed';
-		$tab = 'prompts';
+		$kw = HF_Keyword::find((int)($_POST['keyword_id'] ?? 0), $id);
+		if (!$kw) hf_json(false, 'Keyword not found.');
+		$err = HF_Rank::check($kw, $domain);
 	}
-	$msg = $what . ($errors ? '. Problems: ' . implode(' | ', array_slice($errors, 0, 3)) . (count($errors) > 3 ? ' (+' . (count($errors) - 3) . ' more)' : '') : '.');
-	hf_flash($msg, $errors ? 'error' : 'success');
-	PerchUtil::redirect(hf_admin_url('client.php', ['id' => $id, 'tab' => $tab]));
+	$err ? hf_json(false, $err) : hf_json(true);

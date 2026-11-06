@@ -32,6 +32,7 @@ class HF_Schema
 	  `gsc_site_url` varchar(255) DEFAULT NULL,
 	  `fathom_site_id` varchar(20) DEFAULT NULL,
 	  `fathom_tracking_code` text,
+	  `serp_location` varchar(150) DEFAULT NULL,
 	  `created_at` datetime NOT NULL,
 	  PRIMARY KEY (`id`),
 	  UNIQUE KEY `uq_account` (`account_id`)
@@ -109,6 +110,8 @@ class HF_Schema
 	  `url` varchar(500) DEFAULT NULL,
 	  `ai_overview_present` tinyint(1) NOT NULL DEFAULT 0,
 	  `ai_overview_cited` tinyint(1) NOT NULL DEFAULT 0,
+	  `organic_count` smallint unsigned NOT NULL DEFAULT 0,
+	  `top_domains` varchar(500) DEFAULT NULL,
 	  `checked_at` datetime NOT NULL,
 	  PRIMARY KEY (`id`),
 	  KEY `idx_lookup` (`account_id`,`keyword_id`,`checked_on`)
@@ -155,7 +158,18 @@ SQL;
 		if (self::$done) return;
 		self::$done = true;
 		$sentinel = PERCH_DB_PREFIX . 'hellofound_ai_checks';
-		if (HF_Db::value('SHOW TABLES LIKE ' . HF_Db::q($sentinel))) return;
-		foreach (self::statements() as $s) HF_Db::exec($s);
+		if (!HF_Db::value('SHOW TABLES LIKE ' . HF_Db::q($sentinel))) {
+			foreach (self::statements() as $s) HF_Db::exec($s);
+		}
+		// Columns added after first release.
+		$add = [
+			['rank_checks', 'organic_count', 'ALTER TABLE `%s` ADD `organic_count` smallint unsigned NOT NULL DEFAULT 0 AFTER `ai_overview_cited`'],
+			['rank_checks', 'top_domains',   'ALTER TABLE `%s` ADD `top_domains` varchar(500) DEFAULT NULL AFTER `organic_count`'],
+			['domains',     'serp_location', 'ALTER TABLE `%s` ADD `serp_location` varchar(150) DEFAULT NULL AFTER `fathom_tracking_code`'],
+		];
+		foreach ($add as [$tbl, $col, $sql]) {
+			$full = PERCH_DB_PREFIX . 'hellofound_' . $tbl;
+			if (!HF_Db::row('SHOW COLUMNS FROM `' . $full . '` LIKE ' . HF_Db::q($col))) HF_Db::exec(sprintf($sql, $full));
+		}
 	}
 }
