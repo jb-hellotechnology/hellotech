@@ -76,7 +76,15 @@ class HF_Ai
 		if ($e['web_flag']) $body['web_search'] = true;
 		if ($e['country'])  $body['web_search_country_iso_code'] = 'GB';
 
+		// ChatGPT: ask the API to actually search (the plain flag is only a request; the model may skip it).
+		$forced = false;
+		if ($engine === 'chat_gpt' && (!defined('HELLOFOUND_AI_FORCE_WEB') || HELLOFOUND_AI_FORCE_WEB)) { $body['force_web_search'] = true; $forced = true; }
+
 		[$task, $err] = HF_Dfs::post('/v3/ai_optimization/' . $e['path'] . '/llm_responses/live', $body);
+		if ($err && $forced && stripos($err, 'force') !== false) {   // model doesn't support forcing (e.g. reasoning models): retry plain
+			unset($body['force_web_search']);
+			[$task, $err] = HF_Dfs::post('/v3/ai_optimization/' . $e['path'] . '/llm_responses/live', $body);
+		}
 		if ($err) return $e['label'] . ': ' . $err;
 		$result = $task['result'][0] ?? [];
 

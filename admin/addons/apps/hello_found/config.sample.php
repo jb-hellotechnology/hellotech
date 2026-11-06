@@ -29,3 +29,4 @@ define('HELLOFOUND_DFS_PASSWORD',          '...');
 // define('HELLOFOUND_MAX_PROMPTS', 10);                                 // active AI prompts per client
 // define('HELLOFOUND_AI_ENGINES',  ['chat_gpt', 'gemini', 'perplexity']);
 // define('HELLOFOUND_AI_MODELS',   ['chat_gpt' => 'gpt-4.1', 'gemini' => 'gemini-2.5-flash', 'perplexity' => 'sonar']);
+// define('HELLOFOUND_AI_FORCE_WEB', true);   // ChatGPT: require a web search (set false if your chosen model rejects it)

@@ -184,7 +184,7 @@
 				<td><?= hf_e($k['keyword']) ?></td>
 				<?php $rk = $ranks[$k['keyword']] ?? null; ?>
 				<?php $dg = $rank_diag[(int)$k['id']] ?? null; ?>
-				<td<?= $dg ? ' title="' . hf_e('Scanned ' . (int)$dg['organic_count'] . ' organic results. Top results: ' . $dg['top_domains']) . '"' : '' ?>><?php if (!$rk || !$k['is_active']): ?>–<?php elseif ($rk['source'] === 'rank'): ?><?= $rk['position'] !== null ? '#' . (int)$rk['position'] : 'outside top ' . HF_Rank::depth() ?><?= $rk['ai_overview'] && $rk['ai_overview']['cited'] ? ' <small>(cited in AI Overview)</small>' : '' ?><?php else: ?><small>GSC avg <?= $rk['position'] !== null ? number_format($rk['position'], 1) : '–' ?></small><?php endif; ?></td>
+				<td<?= $dg ? ' title="' . hf_e('Scanned ' . (int)$dg['organic_count'] . ' organic results. Top results: ' . $dg['top_domains']) . '"' : '' ?>><?php if (!$rk || !$k['is_active']): ?>–<?php elseif ($rk['source'] === 'rank'): ?><?= $rk['position'] !== null ? '#' . (int)$rk['position'] : (!empty($rk['local']['position']) ? '–' : 'outside top ' . HF_Rank::depth()) ?><?= $rk['ai_overview'] && $rk['ai_overview']['cited'] ? ' <small>(cited in AI Overview)</small>' : '' ?><?php else: ?><small>GSC avg <?= $rk['position'] !== null ? number_format($rk['position'], 1) : '–' ?></small><?php endif; ?></td>
 				<td><?php if (!$rk || !$k['is_active'] || !$rk['local']): ?>–<?php elseif ($rk['local']['position']): ?><b>#<?= (int)$rk['local']['position'] ?></b> in pack<?php elseif ($rk['local']['present']): ?>Not in pack<?php else: ?><small>no local pack</small><?php endif; ?></td>
 				<td><?= ($rk && $rk['change'] !== null) ? ($rk['change'] > 0 ? '▲ ' . $rk['change'] : ($rk['change'] < 0 ? '▼ ' . abs($rk['change']) : '=')) : '–' ?></td>
 				<td><?= ($rk && $rk['checked_on']) ? hf_e(date('j M', strtotime($rk['checked_on']))) : '–' ?></td>
@@ -242,7 +242,7 @@
 				<td><?= hf_e($p['prompt']) ?></td>
 				<?php foreach (array_keys($engines) as $ek): $c = $matrix[(int)$p['id']][$ek] ?? null; ?>
 					<td title="<?= $c ? hf_e('Checked ' . $c['checked_at'] . ($c['sources'] ? ' - sources: ' . implode(', ', array_slice(json_decode($c['sources'], true) ?: [], 0, 8)) : '')) : '' ?>">
-						<?= !$c ? '–' : ($c['cited'] ? '<b>Cited</b>' : ($c['mentioned'] ? 'Named' : 'No')) ?>
+						<?= !$c ? '–' : ($c['cited'] ? '<b>Cited</b>' : ($c['mentioned'] ? 'Named' : 'No')) ?><?= ($c && !$c['web_search']) ? ' <span title="The engine did not use web search for this answer, so it reflects the model\'s built-in knowledge only." style="color:#b3261e">⚠</span>' : '' ?>
 					</td>
 				<?php endforeach; ?>
 				<td><?= $btn('toggle_prompt', $p['is_active'] ? 'Pause' : 'Resume', ['prompt_id' => $p['id'], 'active' => $p['is_active'] ? '' : '1']) ?></td>

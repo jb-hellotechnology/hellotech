@@ -78,6 +78,8 @@ hf_page_start('Dashboard');
         <td>
           <?php if ($k['position'] !== null): ?>
             <?= $k['source'] === 'rank' ? '#' . (int)$k['position'] : number_format($k['position'], 1) ?>
+          <?php elseif ($k['local'] && $k['local']['position']): ?>
+            <span class="hf-flat">–</span>
           <?php elseif ($k['source'] === 'rank'): ?>
             <span class="hf-flat">Not in top <?= (int)HF_Rank::depth() ?></span>
           <?php else: ?>
