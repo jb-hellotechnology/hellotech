@@ -42,7 +42,7 @@ function hf_page_start($title)
 <main id="main" class="hf-wrap">
 <div class="hf-top">
   <a href="/"><img src="/assets/logo-primary.svg" alt="hellotechnology" width="105" height="44"></a>
-  <nav><?php if (HF_Members::logged_in()): ?><a href="<?= hf_e(hf_url('dashboard/')) ?>">Dashboard</a><a href="<?= hf_e(hf_url('account/')) ?>">Subscription</a><?php endif; ?></nav>
+  <nav><?php if (HF_Members::logged_in()): ?><a href="<?= hf_e(hf_url('dashboard/')) ?>">Dashboard</a><a href="<?= hf_e(hf_url('account/')) ?>">Subscription</a><a href="<?= hf_e(hf_url('signout/')) ?>">Sign out</a><?php endif; ?></nav>
 </div>
 <?php }
 
