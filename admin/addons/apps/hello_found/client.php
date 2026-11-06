@@ -49,7 +49,7 @@
 
 			case 'detect_gsc':
 				$site = HF_Gsc::detect_property($id);
-				$go_tab = 'gsc'; hf_flash($site ? "Property found: $site" : 'No matching property found.', $site ? 'success' : 'error');
+				$go_tab = 'gsc'; hf_flash($site ? "Property found: $site" : 'No matching property found.' . (HF_Gsc::$last_error ? ' Google said: ' . HF_Gsc::$last_error : ''), $site ? 'success' : 'error');
 				break;
 
 			case 'link_fathom':

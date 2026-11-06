@@ -1,6 +1,9 @@
 <?php
 class HF_Gsc
 {
+	/** Human-readable reason for the most recent failed Google call (never contains tokens). */
+	public static $last_error = '';
+
 	const SCOPE = 'https://www.googleapis.com/auth/webmasters.readonly';
 
 	public static function redirect_uri()
@@ -37,7 +40,7 @@ class HF_Gsc
 		]);
 	}
 
-	/** Exchange auth code and store encrypted tokens. @return bool */
+	/** Exchange auth code and store encrypted tokens. @return string|null error message, null on success */
 	public static function connect($account_id, $code, $admin)
 	{
 		$res = HF_Http::request('POST', 'https://oauth2.googleapis.com/token', [], http_build_query([
@@ -45,12 +48,19 @@ class HF_Gsc
 			'redirect_uri' => self::redirect_uri(), 'grant_type' => 'authorization_code',
 		]));
 		$j = $res['json'];
-		if ($res['status'] !== 200 || empty($j['access_token'])) { hf_log('GSC code exchange failed: ' . ($j['error'] ?? $res['status'])); return false; }
+		if ($res['status'] !== 200 || empty($j['access_token'])) {
+			$why = trim(($j['error'] ?? ('HTTP ' . $res['status'])) . (isset($j['error_description']) ? ': ' . $j['error_description'] : ''));
+			hf_log('GSC code exchange failed: ' . $why);
+			$hint = '';
+			if (strpos($why, 'redirect_uri_mismatch') !== false) $hint = ' Add exactly ' . self::redirect_uri() . ' to the OAuth client\'s Authorised redirect URIs.';
+			if (strpos($why, 'invalid_client') !== false) $hint = ' Check HELLOFOUND_GSC_CLIENT_ID and HELLOFOUND_GSC_CLIENT_SECRET.';
+			return 'Google rejected the sign-in (' . $why . ').' . $hint;
+		}
 
 		$existing = HF_Db::row('SELECT * FROM ' . HF_Db::t('gsc_tokens') . ' WHERE account_id=' . (int)$account_id);
 		// Google only returns a refresh token on first consent; keep the old one otherwise.
 		$refresh = $j['refresh_token'] ?? ($existing ? HF_Crypto::decrypt($existing['refresh_token']) : null);
-		if (!$refresh) return false;
+		if (!$refresh) return 'Google did not return a refresh token. Remove hello.found from the Google account\'s third-party access (myaccount.google.com/permissions) and connect again.';
 
 		$row = [
 			'account_id' => (int)$account_id,
@@ -61,7 +71,7 @@ class HF_Gsc
 		if ($existing) HF_Db::update('gsc_tokens', $row, (int)$existing['id']); else HF_Db::insert('gsc_tokens', $row);
 
 		self::detect_property($account_id);
-		return true;
+		return null;
 	}
 
 	public static function disconnect($account_id)
@@ -112,6 +122,7 @@ class HF_Gsc
 			$headers = ['Authorization: Bearer ' . $token, 'Content-Type: application/json'];
 			$res = HF_Http::request($method, $url, $headers, $body !== null ? json_encode($body) : null);
 
+			if ($res['status'] >= 400) self::$last_error = 'HTTP ' . $res['status'] . ': ' . ($res['json']['error']['message'] ?? 'no detail');
 			if ($res['status'] === 401 && !$refreshed) { $refreshed = true; self::access_token($account_id, true); continue; }
 			if ($res['status'] === 403) { self::mark_invalid($account_id, 'HTTP 403 - property not accessible'); return null; }
 			if ($res['status'] === 429 && $attempt < 3) { sleep(2 ** (++$attempt)); continue; }

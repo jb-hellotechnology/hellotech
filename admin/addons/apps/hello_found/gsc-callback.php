@@ -9,16 +9,27 @@
 
 	$back = ['id' => $account_id, 'tab' => 'gsc'];
 	if (!empty($_GET['error']) || empty($_GET['code'])) {
-		hf_flash('Google access was not granted.', 'error');
+		hf_flash('Google access was not granted' . (!empty($_GET['error']) ? ' (' . preg_replace('/[^a-z_ ]/i', '', (string)$_GET['error']) . ')' : '') . '.', 'error');
 		PerchUtil::redirect(hf_admin_url('client.php', $back));
 	}
 
-	if (HF_Gsc::connect($account_id, (string)$_GET['code'], hf_admin_name())) {
-		$domain = HF_Account::domain($account_id);
-		hf_flash($domain && $domain['gsc_site_url']
-			? 'Search Console connected: ' . $domain['gsc_site_url']
-			: 'Connected, but no matching property was found for this domain. Check the Google account has access to it.', $domain && $domain['gsc_site_url'] ? 'success' : 'error');
+	try {
+		$err = HF_Gsc::connect($account_id, (string)$_GET['code'], hf_admin_name());
+	} catch (Throwable $e) {
+		hf_log('GSC callback exception: ' . $e->getMessage());
+		// Config problems (e.g. bad encryption key) are safe and useful to show to an admin.
+		$err = 'Connection failed: ' . $e->getMessage();
+	}
+
+	if ($err) {
+		hf_flash($err, 'error');
 	} else {
-		hf_flash('Could not complete the Google connection. Check the OAuth settings and try again.', 'error');
+		$domain = HF_Account::domain($account_id);
+		if ($domain && $domain['gsc_site_url']) {
+			hf_flash('Search Console connected: ' . $domain['gsc_site_url']);
+		} else {
+			hf_flash('Connected to Google, but no Search Console property matched ' . ($domain['domain'] ?? 'this domain') . '.'
+				. (HF_Gsc::$last_error ? ' Google said: ' . HF_Gsc::$last_error : ' Check the Google account you signed in with has access to that property.'), 'error');
+		}
 	}
 	PerchUtil::redirect(hf_admin_url('client.php', $back));
