@@ -27,5 +27,5 @@ define('HELLOFOUND_DFS_PASSWORD',          '...');
 // define('HELLOFOUND_DFS_BASE',    'https://sandbox.dataforseo.com');   // free test mode: no real data, no spend
 // define('HELLOFOUND_SERP_DEPTH',  100);                                // results checked per keyword (10 per SERP credit)
 // define('HELLOFOUND_MAX_PROMPTS', 10);                                 // active AI prompts per client
-// define('HELLOFOUND_AI_ENGINES',  ['chat_gpt', 'claude', 'gemini', 'perplexity']);
-// define('HELLOFOUND_AI_MODELS',   ['chat_gpt' => 'gpt-4.1', 'claude' => 'claude-opus-4-0', 'gemini' => 'gemini-2.5-flash', 'perplexity' => 'sonar']);
+// define('HELLOFOUND_AI_ENGINES',  ['chat_gpt', 'gemini', 'perplexity']);
+// define('HELLOFOUND_AI_MODELS',   ['chat_gpt' => 'gpt-4.1', 'gemini' => 'gemini-2.5-flash', 'perplexity' => 'sonar']);

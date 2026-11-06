@@ -1,6 +1,6 @@
 <?php
 /**
- * AI-search citation tracking. Sends each client prompt to ChatGPT / Claude / Gemini / Perplexity
+ * AI-search citation tracking. Sends each client prompt to ChatGPT / Gemini / Perplexity
  * through DataForSEO's LLM Responses API (web search on) and records whether the client's domain
  * was cited. API answers approximate, but are not identical to, the consumer apps.
  */
@@ -13,7 +13,6 @@ class HF_Ai
 	{
 		return [
 			'chat_gpt'   => ['label' => 'ChatGPT',    'path' => 'chat_gpt',   'web_flag' => true,  'country' => true],
-			'claude'     => ['label' => 'Claude',     'path' => 'claude',     'web_flag' => true,  'country' => true],
 			'gemini'     => ['label' => 'Gemini',     'path' => 'gemini',     'web_flag' => true,  'country' => false], // no country option in the API
 			'perplexity' => ['label' => 'Perplexity', 'path' => 'perplexity', 'web_flag' => false, 'country' => true],  // search is built in
 		];
@@ -29,7 +28,7 @@ class HF_Ai
 	/** Model per engine. Override with define('HELLOFOUND_AI_MODELS', ['chat_gpt' => '...', ...]) after listing models in Settings. */
 	public static function model($engine)
 	{
-		$defaults = ['chat_gpt' => 'gpt-4.1', 'claude' => 'claude-opus-4-0', 'gemini' => 'gemini-2.5-flash', 'perplexity' => 'sonar'];
+		$defaults = ['chat_gpt' => 'gpt-4.1', 'gemini' => 'gemini-2.5-flash', 'perplexity' => 'sonar'];
 		$cfg = defined('HELLOFOUND_AI_MODELS') ? (array)HELLOFOUND_AI_MODELS : [];
 		return $cfg[$engine] ?? $defaults[$engine];
 	}

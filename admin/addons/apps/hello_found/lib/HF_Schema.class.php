@@ -33,6 +33,7 @@ class HF_Schema
 	  `fathom_site_id` varchar(20) DEFAULT NULL,
 	  `fathom_tracking_code` text,
 	  `serp_location` varchar(150) DEFAULT NULL,
+	  `business_name` varchar(150) DEFAULT NULL,
 	  `created_at` datetime NOT NULL,
 	  PRIMARY KEY (`id`),
 	  UNIQUE KEY `uq_account` (`account_id`)
@@ -110,6 +111,9 @@ class HF_Schema
 	  `url` varchar(500) DEFAULT NULL,
 	  `ai_overview_present` tinyint(1) NOT NULL DEFAULT 0,
 	  `ai_overview_cited` tinyint(1) NOT NULL DEFAULT 0,
+	  `local_present` tinyint(1) NOT NULL DEFAULT 0,
+	  `local_position` tinyint unsigned DEFAULT NULL,
+	  `local_title` varchar(150) DEFAULT NULL,
 	  `organic_count` smallint unsigned NOT NULL DEFAULT 0,
 	  `top_domains` varchar(500) DEFAULT NULL,
 	  `checked_at` datetime NOT NULL,
@@ -166,6 +170,10 @@ SQL;
 			['rank_checks', 'organic_count', 'ALTER TABLE `%s` ADD `organic_count` smallint unsigned NOT NULL DEFAULT 0 AFTER `ai_overview_cited`'],
 			['rank_checks', 'top_domains',   'ALTER TABLE `%s` ADD `top_domains` varchar(500) DEFAULT NULL AFTER `organic_count`'],
 			['domains',     'serp_location', 'ALTER TABLE `%s` ADD `serp_location` varchar(150) DEFAULT NULL AFTER `fathom_tracking_code`'],
+			['domains',     'business_name', 'ALTER TABLE `%s` ADD `business_name` varchar(150) DEFAULT NULL AFTER `serp_location`'],
+			['rank_checks', 'local_present', 'ALTER TABLE `%s` ADD `local_present` tinyint(1) NOT NULL DEFAULT 0 AFTER `ai_overview_cited`'],
+			['rank_checks', 'local_position', 'ALTER TABLE `%s` ADD `local_position` tinyint unsigned DEFAULT NULL AFTER `local_present`'],
+			['rank_checks', 'local_title',   'ALTER TABLE `%s` ADD `local_title` varchar(150) DEFAULT NULL AFTER `local_position`'],
 		];
 		foreach ($add as [$tbl, $col, $sql]) {
 			$full = PERCH_DB_PREFIX . 'hellofound_' . $tbl;

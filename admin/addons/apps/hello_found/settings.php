@@ -54,7 +54,7 @@
 <?php if ($models !== null): foreach ($models as $k => [$names, $merr]): ?>
 	<p><b><?= hf_e(HF_Ai::engines_all()[$k]['label']) ?>:</b> <?= $merr ? '<em>' . hf_e($merr) . '</em>' : hf_e(implode(', ', $names)) ?></p>
 <?php endforeach; ?>
-	<p><small>To change a model, add to config.php: <code>define('HELLOFOUND_AI_MODELS', ['chat_gpt' =&gt; '...', 'claude' =&gt; '...', 'gemini' =&gt; '...', 'perplexity' =&gt; '...']);</code></small></p>
+	<p><small>To change a model, add to config.php: <code>define('HELLOFOUND_AI_MODELS', ['chat_gpt' =&gt; '...', 'gemini' =&gt; '...', 'perplexity' =&gt; '...']);</code></small></p>
 <?php endif; ?>
 <h2>URLs to register</h2>
 <table class="d">

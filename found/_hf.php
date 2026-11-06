@@ -36,6 +36,11 @@ function hf_page_start($title)
 .hf-notice{padding:.8rem 1rem;border-radius:8px;background:#fdebc8;margin-bottom:1.5rem}
 .hf-form input[type=text],.hf-form input[type=password]{width:100%;padding:.7rem;border:1px solid #bbb;border-radius:8px;font:inherit;margin:.4rem 0 1rem}
 .hf-err{color:#b3261e}
+.hf-local-card{border-left:6px solid #1a7f4b;background:#f1faf5}
+.hf-local-card h2{margin-top:0}
+.hf-pill{display:inline-block;padding:.15rem .65rem;border-radius:999px;font-size:.85rem;font-weight:700;background:#d9f2e3;color:#145c37;white-space:nowrap}
+.hf-pill.none{background:#eee;color:#666;font-weight:500}
+.hf-local-row td{background:#f1faf5}
 </style>
 </head>
 <body>

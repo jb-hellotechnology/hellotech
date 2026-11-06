@@ -44,8 +44,9 @@
 
 			case 'set_location':
 				$loc = trim((string)($_POST['serp_location'] ?? ''));
-				if ($d = HF_Account::domain($id)) HF_Db::update('domains', ['serp_location' => $loc !== '' ? substr($loc, 0, 150) : null], (int)$d['id']);
-				$go_tab = 'keywords'; hf_flash($loc !== '' ? 'Search location set. Re-run rankings to use it.' : 'Search location reset to the default.');
+				$biz = trim((string)($_POST['business_name'] ?? ''));
+				if ($d = HF_Account::domain($id)) HF_Db::update('domains', ['serp_location' => $loc !== '' ? substr($loc, 0, 150) : null, 'business_name' => $biz !== '' ? substr($biz, 0, 150) : null], (int)$d['id']);
+				$go_tab = 'keywords'; hf_flash('Search settings saved. Re-run rankings to use them.');
 				break;
 
 			case 'add_prompt':
@@ -176,7 +177,7 @@
 	$loc_now = HF_Rank::location_for($domain ?: []); ?>
 	<p><?= HF_Keyword::active_count($id) ?> of <?= (int)HELLOFOUND_MAX_KEYWORDS ?> active keywords.</p>
 	<table class="d">
-		<thead><tr><th>Keyword</th><th>UK rank</th><th>Change</th><th>Checked</th><th>Category</th><th>Target URL</th><th></th></tr></thead>
+		<thead><tr><th>Keyword</th><th>UK rank</th><th>Local pack</th><th>Change</th><th>Checked</th><th>Category</th><th>Target URL</th><th></th></tr></thead>
 		<tbody>
 		<?php foreach ($kws as $k): ?>
 			<tr<?= $k['is_active'] ? '' : ' style="opacity:.55"' ?>>
@@ -184,6 +185,7 @@
 				<?php $rk = $ranks[$k['keyword']] ?? null; ?>
 				<?php $dg = $rank_diag[(int)$k['id']] ?? null; ?>
 				<td<?= $dg ? ' title="' . hf_e('Scanned ' . (int)$dg['organic_count'] . ' organic results. Top results: ' . $dg['top_domains']) . '"' : '' ?>><?php if (!$rk || !$k['is_active']): ?>–<?php elseif ($rk['source'] === 'rank'): ?><?= $rk['position'] !== null ? '#' . (int)$rk['position'] : 'outside top ' . HF_Rank::depth() ?><?= $rk['ai_overview'] && $rk['ai_overview']['cited'] ? ' <small>(cited in AI Overview)</small>' : '' ?><?php else: ?><small>GSC avg <?= $rk['position'] !== null ? number_format($rk['position'], 1) : '–' ?></small><?php endif; ?></td>
+				<td><?php if (!$rk || !$k['is_active'] || !$rk['local']): ?>–<?php elseif ($rk['local']['position']): ?><b>#<?= (int)$rk['local']['position'] ?></b> in pack<?php elseif ($rk['local']['present']): ?>Not in pack<?php else: ?><small>no local pack</small><?php endif; ?></td>
 				<td><?= ($rk && $rk['change'] !== null) ? ($rk['change'] > 0 ? '▲ ' . $rk['change'] : ($rk['change'] < 0 ? '▼ ' . abs($rk['change']) : '=')) : '–' ?></td>
 				<td><?= ($rk && $rk['checked_on']) ? hf_e(date('j M', strtotime($rk['checked_on']))) : '–' ?></td>
 				<td><input form="kwf<?= (int)$k['id'] ?>" type="text" name="category" value="<?= hf_e($k['category']) ?>" size="10" list="hf-cats"></td>
@@ -196,7 +198,7 @@
 					<?= $btn('toggle_keyword', $k['is_active'] ? 'Pause' : 'Resume', ['keyword_id' => $k['id'], 'active' => $k['is_active'] ? '' : '1']) ?>
 				</td>
 			</tr>
-		<?php endforeach; if (!$kws): ?><tr><td colspan="7">No keywords yet.</td></tr><?php endif; ?>
+		<?php endforeach; if (!$kws): ?><tr><td colspan="8">No keywords yet.</td></tr><?php endif; ?>
 		</tbody>
 	</table>
 	<?php $run_items = []; foreach ($kws as $k) if ($k['is_active']) $run_items[] = ['keyword_id' => (int)$k['id'], 'label' => $k['keyword']]; ?>
@@ -212,7 +214,9 @@
 	<form method="post" action="<?= hf_e($self(['tab' => 'keywords'])) ?>">
 		<?= hf_csrf_field() ?><input type="hidden" name="action" value="set_location">
 		Search location: <input type="text" name="serp_location" value="<?= hf_e($domain['serp_location'] ?? '') ?>" placeholder="<?= hf_e(HF_Rank::default_location()) ?>" size="40">
+		<br>Business name: <input type="text" name="business_name" value="<?= hf_e($domain['business_name'] ?? '') ?>" placeholder="<?= hf_e(ucfirst(explode('.', $domain['domain'])[0])) ?>" size="40">
 		<input type="submit" class="button button-simple" value="Save">
+		<br><small>Business name is how the client appears in Google's local map pack (e.g. <code>Hello Technology</code>). It is matched loosely against the business names Google lists, so an exact match isn't needed; leave blank to use the domain name.</small>
 		<br><small>Currently checking from <b><?= hf_e($loc_now) ?></b>. For a local business, a town or city gives results closer to what local customers see, e.g. <code>Whitby,England,United Kingdom</code> (must match a DataForSEO location name).</small>
 	</form>
 	<?php endif; ?>
@@ -307,9 +311,9 @@
 			<p><?= hf_e($ai['label']) ?>: cited in <b><?= (int)$ai['cited'] ?></b> of <?= (int)$ai['prompts'] ?> prompts</p>
 		<?php endforeach; ?>
 		<?php if (!empty($snap['keywords'])): ?>
-		<table class="d"><thead><tr><th>Keyword</th><th>Position</th><th>Change</th><th>Clicks</th></tr></thead><tbody>
+		<table class="d"><thead><tr><th>Keyword</th><th>Position</th><th>Local pack</th><th>Change</th><th>Clicks</th></tr></thead><tbody>
 			<?php foreach ($snap['keywords'] as $k): ?>
-				<tr><td><?= hf_e($k['keyword']) ?></td><td><?= $k['position'] !== null ? number_format($k['position'], 1) : '–' ?></td><td><?= $k['change'] !== null ? ($k['change'] > 0 ? '+' : '') . $k['change'] : '–' ?></td><td><?= (int)$k['clicks'] ?></td></tr>
+				<tr><td><?= hf_e($k['keyword']) ?></td><td><?= $k['position'] !== null ? number_format($k['position'], 1) : '–' ?></td><td><?= !empty($k['local']['position']) ? '#' . (int)$k['local']['position'] : '–' ?></td><td><?= $k['change'] !== null ? ($k['change'] > 0 ? '+' : '') . $k['change'] : '–' ?></td><td><?= (int)$k['clicks'] ?></td></tr>
 			<?php endforeach; ?></tbody></table>
 		<?php endif; ?>
 		<?php if ($draft): ?>

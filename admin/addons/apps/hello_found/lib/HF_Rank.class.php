@@ -6,6 +6,39 @@ class HF_Rank
 
 	public static function depth() { return defined('HELLOFOUND_SERP_DEPTH') ? (int)HELLOFOUND_SERP_DEPTH : 100; }
 
+	/**
+	 * The real website host of an organic result. DataForSEO can return domain = "google.com" and a google.com/goto
+	 * redirect as url; the true site is then only in `breadcrumb` ("https://example.co.uk › Services") or `website_name`.
+	 */
+	public static function result_host(array $it)
+	{
+		$clean = function ($h) { return preg_replace('/^www\./', '', strtolower(trim((string)$h))); };
+		$is_google = function ($h) { return $h === '' || $h === 'google.com' || substr($h, -11) === '.google.com'; };
+
+		$bc = trim((string)($it['breadcrumb'] ?? ''));
+		if ($bc !== '' && preg_match('~^(?:https?://)?([^\s\x{203A}/]+)~u', $bc, $m)) { $h = $clean($m[1]); if (!$is_google($h)) return $h; }
+
+		$h = $clean($it['domain'] ?? '');
+		if (!$is_google($h)) return $h;
+		$h = $clean(parse_url($it['url'] ?? '', PHP_URL_HOST));
+		if (!$is_google($h)) return $h;
+		$wn = $clean($it['website_name'] ?? '');
+		if (preg_match('/^[a-z0-9-]+(\.[a-z0-9-]+)+$/', $wn)) return $wn;
+		return '';
+	}
+
+	/** Lower-case letters+digits only, for comparing business names loosely ("Hello Technology Ltd" ~ "hellotechnology"). */
+	private static function norm($s) { return preg_replace('/[^a-z0-9]/', '', mb_strtolower((string)$s)); }
+
+	/** What to look for in local-pack business names: the configured business name, else the domain's first label. */
+	public static function local_needle(array $domain_row)
+	{
+		$n = self::norm($domain_row['business_name'] ?? '');
+		if ($n !== '') return $n;
+		$label = self::norm(explode('.', preg_replace('/^www\./', '', strtolower($domain_row['domain'] ?? '')))[0]);
+		return strlen($label) >= 5 ? $label : '';
+	}
+
 	/** Default Google location (DataForSEO location_name). Override per client in the admin, or globally with HELLOFOUND_SERP_LOCATION. */
 	public static function default_location() { return defined('HELLOFOUND_SERP_LOCATION') ? HELLOFOUND_SERP_LOCATION : 'United Kingdom'; }
 
@@ -27,18 +60,29 @@ class HF_Rank
 
 		$items = $task['result'][0]['items'] ?? [];
 		$pos = null; $url = null; $ao_present = 0; $ao_cited = 0; $organic = 0; $top = [];
+		$local_present = 0; $local_pos = null; $local_title = null; $needle = self::local_needle($domain_row);
 		foreach ($items as $it) {
 			$type = $it['type'] ?? '';
 			if ($type === 'organic') {
 				$organic++;
-				$d = preg_replace('/^www\./', '', strtolower($it['domain'] ?? (string)parse_url($it['url'] ?? '', PHP_URL_HOST)));
-				if (count($top) < 5) $top[] = $d;
-				if ($pos === null && HF_Dfs::host_matches($d, $domain)) { $pos = (int)($it['rank_group'] ?? 0) ?: null; $url = $it['url'] ?? null; }
+				$d = self::result_host($it);
+				if (count($top) < 5) $top[] = $d !== '' ? $d : '(unknown)';
+				if ($pos === null && $d !== '' && HF_Dfs::host_matches($d, $domain)) {
+					$pos = (int)($it['rank_group'] ?? 0) ?: null;
+					// the result's own url can be a google.com redirect; prefer the human-readable breadcrumb
+					$url = (!empty($it['breadcrumb'])) ? $it['breadcrumb'] : ($it['url'] ?? null);
+				}
+			}
+			if ($type === 'local_pack') {
+				$local_present = 1;
+				if ($local_pos === null && $needle !== '' && strpos(self::norm($it['title'] ?? ''), $needle) !== false) {
+					$local_pos = (int)($it['rank_group'] ?? 0) ?: null; $local_title = substr((string)$it['title'], 0, 150);
+				}
 			}
 			if ($type === 'ai_overview') {
 				$ao_present = 1;
 				$refs = [];
-				HF_Dfs::collect($it, 'url', $refs); HF_Dfs::collect($it, 'domain', $refs);
+				HF_Dfs::collect($it, 'url', $refs); HF_Dfs::collect($it, 'domain', $refs); HF_Dfs::collect($it, 'breadcrumb', $refs);
 				foreach ($refs as $r) if (HF_Dfs::host_matches($r, $domain)) { $ao_cited = 1; break; }
 			}
 		}
@@ -48,6 +92,7 @@ class HF_Rank
 			'account_id' => (int)$kw['account_id'], 'keyword_id' => (int)$kw['id'], 'checked_on' => gmdate('Y-m-d'),
 			'position' => $pos, 'url' => $url !== null ? substr($url, 0, 500) : null,
 			'ai_overview_present' => $ao_present, 'ai_overview_cited' => $ao_cited,
+			'local_present' => $local_present, 'local_position' => $local_pos, 'local_title' => $local_title,
 			'organic_count' => $organic, 'top_domains' => substr(implode(', ', $top), 0, 500), 'checked_at' => HF_Db::now(),
 		]);
 		return null;

@@ -63,6 +63,7 @@ class HF_GscData
 				'keyword' => $kw['keyword'], 'category' => $kw['category'], 'target_url' => $kw['target_url'],
 				'source' => $source, 'position' => $pos, 'prior_position' => $ppos, 'change' => $change, 'ranking_url' => $url,
 				'checked_on' => $rc['checked_on'] ?? null,
+				'local' => $rc ? ['present' => (int)$rc['local_present'], 'position' => $rc['local_position'] !== null ? (int)$rc['local_position'] : null] : null,
 				'ai_overview' => $rc ? ['present' => (int)$rc['ai_overview_present'], 'cited' => (int)$rc['ai_overview_cited']] : null,
 				'clicks' => $cur ? (int)$cur['clicks'] : 0, 'impressions' => $cur ? (int)$cur['impressions'] : 0,
 			];
