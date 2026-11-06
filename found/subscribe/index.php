@@ -6,6 +6,14 @@ if (!HF_Members::logged_in()) hf_redirect(HELLOFOUND_LOGIN_URL . '?r=' . rawurle
 $member_id = HF_Members::current_id();
 $account = HF_Account::by_member($member_id);
 if (!$account) $account = HF_Account::find(HF_Account::create(['member_id' => $member_id]));
+if (!$account) {   // tables missing / insert failed: fail clearly instead of a fatal error
+	hf_log('could not load or create account for member ' . (int)$member_id . ' (is the hello_found app activated?)');
+	http_response_code(503);
+	hf_page_start('Temporarily unavailable');
+	echo '<div class="hf-card"><h1 class="h2">Something went wrong</h1><p>We couldn\'t set up your account just now. Please contact <a href="mailto:' . hf_e(HELLOFOUND_NOTIFY_EMAIL) . '">' . hf_e(HELLOFOUND_NOTIFY_EMAIL) . '</a>.</p></div>';
+	hf_page_end();
+	exit;
+}
 if (HF_Account::is_active($account)) hf_redirect(hf_url($account['onboarding_complete'] ? 'dashboard/' : 'onboarding/'));
 
 $error = '';
