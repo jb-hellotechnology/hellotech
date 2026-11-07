@@ -263,5 +263,25 @@
       </div>
     </section>
   </perch:block>
+  
+  <perch:block type="testimonials" label="Testimonials">
+    <section class="section section--white">
+      <div class="container">
+        <div class="section-head">
+          <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" default="Kind words" /></span></perch:if>
+          <h2 class="h2 mw-560"><perch:content id="heading" type="text" label="Heading" /></h2>
+        </div>
+        <div class="grid grid--3">
+          <perch:repeater id="quotes" label="Quotes">
+            <div class="quote-card">
+              <div class="stars"><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i></div>
+              <p class="quote-card__text">&ldquo;<perch:content id="text" type="text" label="Quote" />&rdquo;</p>
+              <div class="quote-card__by">&mdash; <perch:content id="by" type="text" label="Attribution" /></div>
+            </div>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
 
 </perch:blocks>
