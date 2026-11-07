@@ -7,12 +7,7 @@
       <div class="site-footer__brand">
         <img src="/assets/logo-reversed.svg" alt="hellotechnology" width="81" height="34" loading="lazy">
         <p>Friendly, expert technology for small businesses across Whitby and North Yorkshire.</p>
-        <br />
-        <!-- static button start -->
-        <link href="https://meetings.brevo.com/assets/styles/popup.css" rel="stylesheet" />
-        <script src="https://meetings.brevo.com/assets/libs/popup.min.js" type="text/javascript" defer></script>
-        <a href="https://meet.brevo.com/hellotechnology/borderless" onclick="BrevoBookingPage.initStaticButton({ url: 'https://meet.brevo.com/hellotechnology/borderless' });return false;" style="cursor: pointer; font-family: 'Work Sans', Inter; font-weight: 500; background-color: #f5b82a; color: #2b2b2b; padding: 0.5rem 1rem; border: 0px; box-shadow: rgba(0, 0, 0, 0.15) 0px -2px 0px inset; border-radius: 16px; text-decoration: none; display: inline-block;">Book a meeting</a>
-        <!-- static button end -->
+        <a class="btn btn--primary btn--sm" href="/contact">Get in touch</a>
       </div>
       <div class="site-footer__cols">
         <div>
