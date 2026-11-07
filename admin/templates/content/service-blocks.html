@@ -226,5 +226,42 @@
       </div>
     </section>
   </perch:block>
+  
+  <perch:block type="work" label="Selected work">
+    <section class="section section--lg scroll-anchor" id="<perch:content id="anchor" type="text" label="Anchor id (optional)" default="work" />">
+      <div class="container">
+        <div class="section-head section-head--row">
+          <div>
+            <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" default="Selected work" /></span></perch:if>
+            <h2 class="h2 mw-560"><perch:content id="heading" type="text" label="Heading" /></h2>
+          </div>
+          <perch:if exists="link_label">
+            <a class="btn btn--outline btn--sm" href="<perch:content id="link_url" type="text" label="Top link URL" default="/contact" />"><perch:content id="link_label" type="text" label="Top link label" /> <i data-lucide="arrow-right"></i></a>
+          </perch:if>
+        </div>
+        <div class="grid grid--3">
+          <perch:repeater id="items" label="Projects">
+            <a class="work-card" href="<perch:content id="url" type="text" label="Project URL" default="/case-study" />">
+              <div class="work-card__thumb stripe t-<perch:content id="colour" type="select" label="Colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />">
+                <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Thumbnail" width="700" height="460" crop />" alt="<perch:content id="title" type="text" label="Title" />" width="700" height="460" loading="lazy" decoding="async"><perch:else /><i data-lucide="image"></i></perch:if>
+                <span class="work-card__tag tag tag--<perch:content id="colour" type="select" />"><perch:content id="tag" type="text" label="Tag" /></span>
+              </div>
+              <div class="work-card__body">
+                <h3 class="h3"><perch:content id="title" type="text" label="Title" /></h3>
+                <p><perch:content id="text" type="text" label="Summary" /></p>
+                <div class="work-card__foot">
+                  <div>
+                    <div class="stat-inline__num c-<perch:content id="colour" type="select" />"><perch:content id="stat_num" type="text" label="Stat number" /></div>
+                    <div class="stat-inline__label"><perch:content id="stat_label" type="text" label="Stat label" /></div>
+                  </div>
+                  <span class="link link--sm work-card__view">View <i data-lucide="arrow-right"></i></span>
+                </div>
+              </div>
+            </a>
+          </perch:repeater>
+        </div>
+      </div>
+    </section>
+  </perch:block>
 
 </perch:blocks>

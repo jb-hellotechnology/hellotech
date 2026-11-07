@@ -86,7 +86,7 @@
           <perch:repeater id="items" label="Projects">
             <a class="work-card" href="<perch:content id="url" type="text" label="Project URL" default="/case-study" />">
               <div class="work-card__thumb stripe t-<perch:content id="colour" type="select" label="Colour" options="Teal|teal, Orange|orange, Yellow|yellow" default="teal" />">
-                <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Thumbnail" width="700" height="460" crop />" alt="" width="700" height="460" loading="lazy" decoding="async"><perch:else /><i data-lucide="image"></i></perch:if>
+                <perch:if exists="image"><img src="<perch:content type="image" id="image" label="Thumbnail" width="700" height="460" crop />" alt="<perch:content id="title" type="text" label="Title" />" width="700" height="460" loading="lazy" decoding="async"><perch:else /><i data-lucide="image"></i></perch:if>
                 <span class="work-card__tag tag tag--<perch:content id="colour" type="select" />"><perch:content id="tag" type="text" label="Tag" /></span>
               </div>
               <div class="work-card__body">
