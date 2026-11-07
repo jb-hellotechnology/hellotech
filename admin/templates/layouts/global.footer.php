@@ -7,7 +7,7 @@
       <div class="site-footer__brand">
         <img src="/assets/logo-reversed.svg" alt="hellotechnology" width="81" height="34" loading="lazy">
         <p>Friendly, expert technology for small businesses across Whitby and North Yorkshire.</p>
-        <a class="btn btn--primary btn--sm" href="/contact">Get in touch</a>
+        <p><a class="btn btn--primary btn--sm" href="/contact">Get in touch</a></p>
       </div>
       <div class="site-footer__cols">
         <div>
