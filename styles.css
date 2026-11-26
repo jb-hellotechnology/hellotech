@@ -1356,7 +1356,7 @@ main:focus { outline: none; }
   font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
   color: var(--teal-deep);
 }
-.timeline__title { font-size: 21px; line-height: 1.25; margin: 0 0 10px; }
+.timeline__title { font-size: 21px; line-height: 1.25; margin: 0 0 10px; text-wrap: balance; }
 .timeline__text p { font-size: 16.5px; line-height: 1.65; color: var(--muted); margin: 0 0 10px; }
 .timeline__text p:last-child { margin-bottom: 0; }
 .timeline__media {
