@@ -1364,6 +1364,17 @@ main:focus { outline: none; }
 }
 .timeline__media img { width: 100%; height: 100%; object-fit: cover; }
 
+/* Desktop: pull each item up alongside the previous one so the two columns interleave
+   instead of stacking. The overlap is only vertical (items sit in opposite columns), and
+   is small enough that same-side cards never touch, even for the shortest cards. */
+@media (min-width: 761px) {
+  .timeline { --tl-overlap: 84px; }
+  .timeline__item { padding-bottom: 40px; }
+  .timeline__item:nth-child(even) { padding-bottom: 40px; }
+  .timeline__item + .timeline__item { margin-top: calc(var(--tl-overlap) * -1); }
+  .timeline__item:last-child, .timeline__item:nth-child(even):last-child { padding-bottom: 0; }
+}
+
 @media (max-width: 760px) {
   .timeline::before { left: 8px; margin-left: -1px; }
   .timeline__item, .timeline__item:nth-child(even) { width: 100%; margin-left: 0; padding: 0 0 32px 40px; }
