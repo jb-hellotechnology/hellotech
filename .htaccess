@@ -142,6 +142,7 @@ RewriteRule ^(articles|blog)/week-notes-berlin-edition/?$ - [G,L,NC]
 RewriteRule ^(articles|blog)/whos-wearing-your-t-shirt/?$ - [G,L,NC]
 RewriteRule ^(articles|blog)/woocommerce-vs-shopify-which-is-best/?$ - [G,L,NC]
 RewriteRule ^(articles|blog)/wordpress-functions/?$ - [G,L,NC]
+RewriteRule ^services/design/website-design/?$ https://hellotechnology.co.uk/services/website-design [R=301,L,NC]
 </IfModule>
 
 # Old WordPress archive pages (tags, categories, author, pagination) → blog index

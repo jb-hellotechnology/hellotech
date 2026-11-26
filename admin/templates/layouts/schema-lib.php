@@ -249,7 +249,7 @@ if (!function_exists('ht_schema_render')) {
             'url'       => HT_SITE . '/about',
             'jobTitle'  => 'Founder',
             'worksFor'  => ['@id' => HT_SITE . '/#organization'],
-            'image'     => HT_SITE . '/admin/resources/jb3a-copy-w900.jpg',
+            'image'     => HT_SITE . '/admin/resources/jb3a-copy-w900h1125.jpg',
             'knowsAbout' => ['Website design', 'Web development', 'Search engine optimisation', 'AI search optimisation', 'AI integration'],
             'address'   => ['@type' => 'PostalAddress', 'addressLocality' => 'Whitby', 'addressRegion' => 'North Yorkshire', 'addressCountry' => 'GB'],
             'sameAs'    => ['https://www.linkedin.com/in/jack-barber-uk/'],

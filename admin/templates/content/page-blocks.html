@@ -107,6 +107,37 @@
     </section>
   </perch:block>
 
+  <perch:block type="timeline" label="Timeline — alternating, newest first">
+    <section class="section <perch:content id="bg" type="select" label="Background" options="Light (default)|, White|section--white, White tint|section--white-t" default="" />">
+      <div class="container container--narrow">
+        <perch:if exists="heading">
+          <div class="section-head section-head--center">
+            <perch:if exists="eyebrow"><span class="eyebrow"><perch:content id="eyebrow" type="text" label="Eyebrow" default="My story" /></span></perch:if>
+            <h2 class="h2"><perch:content id="heading" type="text" label="Heading" /></h2>
+            <perch:if exists="lead"><p class="lead"><perch:content id="lead" type="text" label="Lead" /></p></perch:if>
+          </div>
+        </perch:if>
+        <ol class="timeline">
+          <perch:repeater id="items" label="Timeline items (add the most recent first)">
+            <li class="timeline__item">
+              <span class="timeline__dot" aria-hidden="true"></span>
+              <div class="timeline__card">
+                <span class="timeline__date"><perch:content id="date" type="text" label="Date (e.g. 2019 or 2015 – 2018)" required /></span>
+                <h3 class="h3 timeline__title"><perch:content id="title" type="text" label="Heading" required /></h3>
+                <perch:if exists="text"><div class="timeline__text"><perch:content id="text" type="textarea" label="Short description" textile /></div></perch:if>
+                <perch:if exists="image">
+                  <div class="timeline__media stripe">
+                    <img src="<perch:content id="image" type="image" label="Image (optional)" width="800" />" alt="<perch:content id="alt" type="text" label="Image description" />" loading="lazy" decoding="async">
+                  </div>
+                </perch:if>
+              </div>
+            </li>
+          </perch:repeater>
+        </ol>
+      </div>
+    </section>
+  </perch:block>
+
   <perch:block type="faq" label="FAQ">
     <section class="section section--white-t">
       <div class="container container--text">

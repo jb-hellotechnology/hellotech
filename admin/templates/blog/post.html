@@ -12,7 +12,7 @@
       <p class="post-meta lead mt-3">
         <i data-lucide="calendar"></i>
         <time class="dt-published" datetime="<perch:blog id="postDateTime" type="date" label="Date" time="true" format="Y-m-d H:i:s" divider-before="Publishing" />"><perch:blog id="postDateTime" type="date" time="true" format="%d %B %Y" /></time>
-        <perch:if exists="authorGivenName"> &middot; <span class="p-author h-card"><perch:blog id="authorGivenName" type="hidden" /> <perch:blog id="authorFamilyName" type="hidden" /></span></perch:if>
+        <perch:if exists="authorGivenName"> &middot; <span class="p-author h-card"><a class="p-name u-url" href="/about" rel="author"><perch:blog id="authorGivenName" type="hidden" /> <perch:blog id="authorFamilyName" type="hidden" /></a></span></perch:if>
       </p>
     </div>
   </section>

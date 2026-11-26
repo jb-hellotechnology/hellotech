@@ -776,8 +776,15 @@ ul { list-style: none; padding: 0; margin: 0; }
 .prose h2 { font-size: 26px; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); margin: 36px 0 12px; }
 .prose h3 { font-size: 19px; font-weight: 600; color: var(--ink); margin: 24px 0 8px; }
 .prose ul { display: flex; flex-direction: column; gap: 10px; margin: 0 0 18px; }
-.prose ul li { position: relative; padding-left: 22px; font-size: 17px; line-height: 1.6; color: var(--muted); }
-.prose ul li::before { content: ""; position: absolute; left: 2px; top: 11px; width: 7px; height: 7px; border-radius: 2px; background: var(--teal); }
+.prose ul li { position: relative; padding-left: 22px; font-size: 18px; line-height: 1.7; color: var(--muted); }
+.prose ul li::before { content: ""; position: absolute; left: 2px; top: 12px; width: 7px; height: 7px; border-radius: 2px; background: var(--teal); }
+/* Numbered lists: same size, line height, colour and rhythm as the paragraphs.
+   (Only <ul> had a reset above, so <ol> was falling back to browser defaults.) */
+.prose ol { list-style: decimal; margin: 0 0 18px; padding-left: 1.6em; }
+.prose ol li { padding-left: 6px; margin-bottom: 10px; font-size: 18px; line-height: 1.7; color: var(--muted); }
+.prose ol li:last-child { margin-bottom: 0; }
+.prose ol li::marker { color: var(--teal); font-weight: 600; }
+.prose ol ul, .prose ol ol { margin-top: 10px; }
 .prose a { color: var(--teal-deep); font-weight: 500; }
 .prose strong { color: var(--ink); }
 
@@ -1308,6 +1315,89 @@ main:focus { outline: none; }
       animation-timeline: --post;
       animation-range: contain 0% contain 100%;
       pointer-events: none;
+    }
+  }
+}
+
+/* Author name in the post byline links to /about */
+.post-meta a { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color .15s ease; }
+.post-meta a:hover { color: var(--teal-deep); text-decoration-thickness: 2px; }
+
+
+/* --------------------------------------------------------------------------
+   Timeline block (About page): vertical line, items alternating either side,
+   newest first. One column with the line on the left on small screens.
+   -------------------------------------------------------------------------- */
+.timeline { position: relative; list-style: none; margin: 56px 0 0; padding: 0; }
+.timeline::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 50%;
+  width: 2px; margin-left: -1px; background: var(--line-2); border-radius: 2px;
+  transform-origin: top;
+}
+.timeline__item { position: relative; width: 50%; margin: 0; padding: 0 52px 44px 0; }
+.timeline__item:last-child { padding-bottom: 0; }
+.timeline__item:nth-child(even) { margin-left: 50%; padding: 0 0 44px 52px; }
+.timeline__item:nth-child(even):last-child { padding-bottom: 0; }
+
+.timeline__dot {
+  position: absolute; top: 26px; right: -9px; z-index: 1;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--yellow); border: 3px solid var(--cream); box-shadow: 0 0 0 2px var(--teal);
+}
+.timeline__item:nth-child(even) .timeline__dot { right: auto; left: -9px; }
+
+.timeline__card {
+  background: var(--cream-card); border: 1px solid var(--line-2);
+  border-radius: 18px; padding: 26px 28px;
+}
+.section--white .timeline__card, .section--white-t .timeline__card { background: var(--cream); }
+.timeline__date {
+  display: inline-block; margin-bottom: 10px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--teal-deep);
+}
+.timeline__title { font-size: 21px; line-height: 1.25; margin: 0 0 10px; }
+.timeline__text p { font-size: 16.5px; line-height: 1.65; color: var(--muted); margin: 0 0 10px; }
+.timeline__text p:last-child { margin-bottom: 0; }
+.timeline__media {
+  margin-top: 18px; border-radius: 12px; overflow: hidden; aspect-ratio: 16 / 10;
+}
+.timeline__media img { width: 100%; height: 100%; object-fit: cover; }
+
+@media (max-width: 760px) {
+  .timeline::before { left: 8px; margin-left: -1px; }
+  .timeline__item, .timeline__item:nth-child(even) { width: 100%; margin-left: 0; padding: 0 0 32px 40px; }
+  .timeline__item:last-child, .timeline__item:nth-child(even):last-child { padding-bottom: 0; }
+  .timeline__dot, .timeline__item:nth-child(even) .timeline__dot { left: -1px; right: auto; top: 24px; }
+  .timeline__card { padding: 22px; }
+}
+
+/* Scroll reveal: items slide in from their own side, dots pop, the line draws down. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    @keyframes ht-from-right { from { opacity: 0; translate: 32px 0; } to { opacity: 1; translate: 0 0; } }
+    @keyframes ht-dot-pop    { from { scale: 0; } to { scale: 1; } }
+    @keyframes ht-line-draw  { from { scale: 1 0; } to { scale: 1 1; } }
+
+    .timeline { view-timeline: --timeline block; }
+    .timeline::before {
+      animation: ht-line-draw linear both;
+      animation-timeline: --timeline;
+      animation-range: cover 5% cover 75%;
+    }
+    .timeline__item {
+      animation: ht-from-left linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 60%;
+    }
+    .timeline__item:nth-child(even) { animation-name: ht-from-right; }
+    .timeline__dot {
+      animation: ht-dot-pop linear both;
+      animation-timeline: view();
+      animation-range: entry 15% entry 50%;
+    }
+    @media (max-width: 760px) {
+      .timeline__item:nth-child(even) { animation-name: ht-from-left; }
     }
   }
 }
